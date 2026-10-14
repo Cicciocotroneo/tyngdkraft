@@ -184,38 +184,52 @@
   <div class="max-w-2xl mx-auto px-4 sm:px-6 pt-5 sm:pt-8">
     
     <!-- Top Editorial Header -->
-    <header class="flex items-center justify-between gap-3 pb-4 mb-5 border-b" style="border-color: var(--border);">
+    <header class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b" style="border-color: var(--border);">
       <div class="flex items-baseline gap-2.5">
         <h1 class="font-serif-editorial text-2xl sm:text-3xl font-medium tracking-tight" style="color: var(--text);">
           Tyngdkraft
         </h1>
-        <span class="text-xs uppercase tracking-widest font-medium hidden sm:inline-block" style="color: var(--text-muted);">
-          Append & Review
+        <span id="syncBadge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium border"
+          style="background-color: var(--surface); border-color: var(--border); color: var(--text-secondary);">
+          <span id="syncDot" class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+          <span id="syncLabel">Memoria Locale</span>
         </span>
       </div>
 
-      <!-- Right Controls: Storage Mode Pill, Local Data Menu, Theme Toggle -->
+      <!-- Direct JSON Controls & Theme Toggle -->
       <div class="flex items-center gap-1.5 sm:gap-2">
-        <!-- Storage & Cloud Sync Button -->
-        <button id="btnStorageModal" type="button"
-          class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium transition-all border"
-          style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
-          <span id="storageDot" class="w-2 h-2 rounded-full bg-amber-600"></span>
-          <span id="storageLabel">Locale</span>
+        <!-- Link Local File (Desktop File System API) -->
+        <button id="btnLinkLocalFile" type="button" title="Collega un file .json su disco per salvataggio continuo (Chrome/Edge Desktop)"
+          class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border hover:opacity-85 active:scale-95"
+          style="background-color: var(--surface); border-color: var(--border); color: var(--text); min-height: 36px;">
+          <span>🔗</span>
+          <span id="linkBtnText">Collega File</span>
         </button>
 
-        <!-- File / JSON Menu Button -->
-        <button id="btnFileModal" type="button" title="Gestione File JSON e Backup"
-          class="p-2 rounded-full border transition-all flex items-center justify-center"
-          style="background-color: var(--surface); border-color: var(--border); color: var(--text-secondary); min-width: 36px; min-height: 36px;">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+        <!-- Export JSON Button -->
+        <button id="btnExportJson" type="button" title="Scarica le note in formato .json"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border hover:opacity-85 active:scale-95"
+          style="background-color: var(--surface); border-color: var(--border); color: var(--text); min-height: 36px;">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          <span>Esporta .JSON</span>
+        </button>
+
+        <!-- Import JSON Button -->
+        <button id="btnImportJson" type="button" title="Carica un file .json dal dispositivo"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border hover:opacity-85 active:scale-95"
+          style="background-color: var(--surface); border-color: var(--border); color: var(--text); min-height: 36px;">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
           </svg>
+          <span>Importa .JSON</span>
         </button>
+        <input id="hiddenFileInput" type="file" accept=".json,application/json" class="hidden">
 
         <!-- Theme Toggle Button -->
         <button id="btnThemeToggle" type="button" title="Cambia tema Chiaro/Scuro"
-          class="p-2 rounded-full border transition-all flex items-center justify-center"
+          class="p-2 rounded-lg border transition-all flex items-center justify-center hover:opacity-85 active:scale-95"
           style="background-color: var(--surface); border-color: var(--border); color: var(--text-secondary); min-width: 36px; min-height: 36px;">
           <svg id="iconSun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
@@ -322,180 +336,7 @@
     </div>
   </div>
 
-  <!-- MODAL 1: FILE & JSON LOCAL MANAGEMENT -->
-  <div id="fileModal" class="fixed inset-0 z-40 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-    <div class="w-full max-w-md rounded-2xl p-5 sm:p-6 border shadow-xl space-y-4"
-      style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
-      <div class="flex items-center justify-between border-b pb-3" style="border-color: var(--border);">
-        <h2 class="font-serif-editorial text-xl font-medium">Gestione File JSON Locale</h2>
-        <button type="button" onclick="closeModals()" class="p-1.5 rounded-lg text-sm" style="color: var(--text-muted);">✕</button>
-      </div>
-
-      <p class="text-xs leading-relaxed" style="color: var(--text-secondary);">
-        Le tue note sono sempre salvate nella memoria locale del browser. Qui puoi esportare un file <code>.json</code> di backup, importarlo su un altro dispositivo o collegare direttamente un file sul tuo computer.
-      </p>
-
-      <div class="space-y-2.5 pt-1">
-        <!-- Direct File System Link (Desktop Chromium) -->
-        <button id="btnLinkLocalFile" type="button"
-          class="w-full p-3 rounded-xl border text-left flex items-center justify-between transition-colors hover:opacity-90"
-          style="background-color: var(--bg); border-color: var(--border);">
-          <div>
-            <div class="text-sm font-semibold flex items-center gap-2">
-              <span>🔗 Collega file .json su disco</span>
-              <span id="fileLinkBadge" class="text-[10px] px-2 py-0.5 rounded-full font-normal" style="background-color: var(--surface); border: 1px solid var(--border);">Non attivo</span>
-            </div>
-            <div class="text-xs mt-0.5" style="color: var(--text-muted);">Salva automaticamente ogni modifica sul file (Chrome/Edge Desktop)</div>
-          </div>
-        </button>
-
-        <!-- Export JSON -->
-        <button id="btnExportJson" type="button"
-          class="w-full p-3 rounded-xl border text-left flex items-center justify-between transition-colors hover:opacity-90"
-          style="background-color: var(--bg); border-color: var(--border);">
-          <div>
-            <div class="text-sm font-semibold">⬇️ Scarica Backup (.json)</div>
-            <div class="text-xs mt-0.5" style="color: var(--text-muted);">Esporta tutte le note in un file JSON portabile</div>
-          </div>
-        </button>
-
-        <!-- Import JSON -->
-        <button id="btnImportJson" type="button"
-          class="w-full p-3 rounded-xl border text-left flex items-center justify-between transition-colors hover:opacity-90"
-          style="background-color: var(--bg); border-color: var(--border);">
-          <div>
-            <div class="text-sm font-semibold">⬆️ Importa da file (.json)</div>
-            <div class="text-xs mt-0.5" style="color: var(--text-muted);">Unisci o sostituisci le note da un file esistente</div>
-          </div>
-        </button>
-        <input id="hiddenFileInput" type="file" accept=".json,application/json" class="hidden">
-      </div>
-
-      <div class="pt-2 flex justify-end">
-        <button type="button" onclick="closeModals()" class="px-4 py-2 rounded-lg text-xs font-medium border" style="border-color: var(--border);">Chiudi</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL 2: STORAGE MODE & FIREBASE CLOUD MULTIPLATFORM -->
-  <div id="storageModal" class="fixed inset-0 z-40 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-xs overflow-y-auto">
-    <div class="w-full max-w-lg rounded-2xl p-5 sm:p-6 border shadow-xl space-y-4 my-auto"
-      style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
-      
-      <div class="flex items-center justify-between border-b pb-3" style="border-color: var(--border);">
-        <div>
-          <h2 class="font-serif-editorial text-xl font-medium">Modalità di Archiviazione & Cloud</h2>
-          <p class="text-xs" style="color: var(--text-muted);">Scegli se lavorare in locale o sincronizzare con Firebase</p>
-        </div>
-        <button type="button" onclick="closeModals()" class="p-1.5 rounded-lg text-sm" style="color: var(--text-muted);">✕</button>
-      </div>
-
-      <!-- Mode Switcher Cards -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-        <button id="btnSelectLocalMode" type="button"
-          class="p-3.5 rounded-xl border text-left transition-all"
-          style="background-color: var(--bg); border-color: var(--border);">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-sm font-semibold">📁 Modalità Locale</span>
-            <span id="badgeLocalActive" class="text-[10px] px-2 py-0.5 rounded-full font-medium" style="background-color: var(--rescue-bg); color: var(--rescue-text);">Attiva</span>
-          </div>
-          <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
-            Salvataggio istantaneo nel browser e su file <code>.json</code>. Nessun account richiesto.
-          </p>
-        </button>
-
-        <button id="btnSelectCloudMode" type="button"
-          class="p-3.5 rounded-xl border text-left transition-all"
-          style="background-color: var(--bg); border-color: var(--border);">
-          <div class="flex items-center justify-between mb-1">
-            <span class="text-sm font-semibold">☁️ Cloud Firebase</span>
-            <span id="badgeCloudActive" class="hidden text-[10px] px-2 py-0.5 rounded-full font-medium" style="background-color: var(--rescue-bg); color: var(--rescue-text);">Attiva</span>
-          </div>
-          <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
-            Sincronizzazione in tempo reale tra mobile e desktop tramite Firestore.
-          </p>
-        </button>
-      </div>
-
-      <!-- Cloud Status & Auth Box -->
-      <div id="cloudDetailsSection" class="p-4 rounded-xl border space-y-3" style="background-color: var(--bg); border-color: var(--border);">
-        <div class="flex items-center justify-between">
-          <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--text-muted);">Stato Connessione Cloud</span>
-          <span id="cloudAuthBadge" class="text-xs font-medium" style="color: var(--text-secondary);">Non connesso</span>
-        </div>
-
-        <div id="userIdBox" class="hidden p-2.5 rounded-lg border text-xs break-all font-mono" style="background-color: var(--surface); border-color: var(--border);">
-          <div class="text-[10px] uppercase font-sans mb-0.5" style="color: var(--text-muted);">Il tuo ID Utente Cloud (UID):</div>
-          <span id="userIdDisplay">-</span>
-        </div>
-
-        <!-- Auth Actions (Email/Password, Google or Instant Cloud Session) -->
-        <div id="authActionsContainer" class="space-y-2.5 pt-1">
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            <input id="authEmail" type="email" placeholder="Email (opzionale)"
-              class="px-3 py-2 rounded-lg text-xs border outline-none"
-              style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
-            <input id="authPassword" type="password" placeholder="Password"
-              class="px-3 py-2 rounded-lg text-xs border outline-none"
-              style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
-          </div>
-          <div class="flex flex-wrap gap-2">
-            <button id="btnEmailSignIn" type="button"
-              class="px-3 py-2 rounded-lg text-xs font-semibold transition-all"
-              style="background-color: var(--accent); color: var(--accent-fg);">
-              Accedi / Registrati con Email
-            </button>
-            <button id="btnGoogleSignIn" type="button"
-              class="px-3 py-2 rounded-lg text-xs font-medium border transition-all"
-              style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
-              Accedi con Google
-            </button>
-            <button id="btnAnonSignIn" type="button"
-              class="px-3 py-2 rounded-lg text-xs font-medium border transition-all"
-              style="background-color: var(--surface); border-color: var(--border); color: var(--text-secondary);">
-              Sessione Cloud Rapida
-            </button>
-          </div>
-        </div>
-
-        <!-- Merge Local Notes to Cloud Button -->
-        <div class="pt-2 border-t flex items-center justify-between gap-2" style="border-color: var(--border);">
-          <span class="text-xs" style="color: var(--text-muted);">Hai note salvate in locale?</span>
-          <button id="btnPushLocalToCloud" type="button"
-            class="px-3 py-1.5 rounded-lg text-xs font-medium border transition-all"
-            style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
-            ⬆️ Invia note locali al Cloud
-          </button>
-        </div>
-      </div>
-
-      <!-- Custom Firebase Config Accordion (For Self-Hosted / Standalone Use) -->
-      <details class="rounded-xl border p-3 text-xs" style="border-color: var(--border); background-color: var(--bg-subtle);">
-        <summary class="cursor-pointer font-medium select-none" style="color: var(--text-secondary);">
-          ⚙️ Configurazione Firebase Personale (per uso fuori da questo ambiente)
-        </summary>
-        <div class="mt-3 space-y-2">
-          <p style="color: var(--text-muted);">
-            Se scarichi questo file HTML per usarlo sui tuoi dispositivi personali, incolla qui l'oggetto JSON <code>firebaseConfig</code> del tuo progetto Firebase:
-          </p>
-          <textarea id="customFirebaseConfigInput" rows="4"
-            placeholder='{"apiKey": "...", "authDomain": "...", "projectId": "..."}'
-            class="w-full p-2.5 rounded-lg font-mono text-[11px] border outline-none"
-            style="background-color: var(--surface); border-color: var(--border); color: var(--text);"></textarea>
-          <div class="flex justify-end gap-2">
-            <button id="btnClearCustomConfig" type="button" class="px-3 py-1.5 rounded-lg border" style="border-color: var(--border);">Ripristina Default</button>
-            <button id="btnSaveCustomConfig" type="button" class="px-3 py-1.5 rounded-lg font-semibold" style="background-color: var(--accent); color: var(--accent-fg);">Salva e Connetti</button>
-          </div>
-        </div>
-      </details>
-
-      <div class="pt-1 flex justify-end">
-        <button type="button" onclick="closeModals()" class="px-4 py-2 rounded-lg text-xs font-medium border" style="border-color: var(--border);">Chiudi</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL 3: IMPORT CONFIRMATION (MERGE OR REPLACE) -->
+  <!-- MODAL: IMPORT CONFIRMATION (MERGE OR REPLACE) -->
   <div id="importChoiceModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
     <div class="w-full max-w-sm rounded-2xl p-5 border shadow-xl space-y-4"
       style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
@@ -505,44 +346,20 @@
       </p>
       <div class="flex justify-end gap-2 pt-2">
         <button type="button" onclick="closeImportModal()" class="px-3 py-2 rounded-lg text-xs border" style="border-color: var(--border);">Annulla</button>
-        <button id="btnImportReplace" type="button" class="px-3 py-2 rounded-lg text-xs border font-medium" style="border-color: var(--border); color: var(--danger-text);">Sostituisci tutto</button>
+        <button id="btnImportReplace" type="button" class="px-3 py-2 rounded-lg text-xs border font-medium" style="border-color: var(--border); color: var(--danger-text);">Sovrascrivi</button>
         <button id="btnImportMerge" type="button" class="px-3 py-2 rounded-lg text-xs font-semibold" style="background-color: var(--accent); color: var(--accent-fg);">Unisci (Consigliato)</button>
       </div>
     </div>
   </div>
 
-  <!-- APPLICATION & FIREBASE SCRIPT -->
-  <script type="module">
-    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import {
-      getAuth,
-      signInAnonymously,
-      signInWithCustomToken,
-      onAuthStateChanged,
-      GoogleAuthProvider,
-      signInWithPopup,
-      signInWithEmailAndPassword,
-      createUserWithEmailAndPassword
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import {
-      getFirestore,
-      collection,
-      doc,
-      setDoc,
-      deleteDoc,
-      onSnapshot
-    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
+  <!-- APPLICATION SCRIPT (100% LOCAL & ZERO CONFIG) -->
+  <script>
     // --- CONSTANTS & STATE ---
     const LOCAL_NOTES_KEY = 'tyngdkraft_notes_v1';
     const THEME_KEY = 'tyngdkraft_theme_v1';
-    const STORAGE_MODE_KEY = 'tyngdkraft_mode_v1';
-    const CUSTOM_FB_KEY = 'tyngdkraft_custom_fb_v1';
     const KNOWN_TAGS = ['read', 'watch', 'idea', 'todo', 'listen', 'code', 'work'];
 
     let localNotes = [];
-    let cloudNotes = [];
-    let storageMode = localStorage.getItem(STORAGE_MODE_KEY) || 'local'; // 'local' | 'cloud'
     let activeTag = null;
     let showArchived = false;
     let selectedIndex = -1;
@@ -551,20 +368,11 @@
     let fileHandle = null;
     let pendingImportedNotes = null;
 
-    // Firebase Instances
-    let app = null;
-    let db = null;
-    let auth = null;
-    let currentUser = null;
-    let unsubscribeFirestore = null;
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'tyngdkraft-notes-app';
-
     // --- INITIALIZATION ---
     function initApp() {
       initTheme();
       loadLocalNotes();
-      initFirebase();
-      updateModeUI();
+      updateSyncBadge();
       render();
     }
 
@@ -656,135 +464,19 @@
       }
     }
 
-    // --- FIREBASE INITIALIZATION & REALTIME SYNC ---
-    async function initFirebase() {
-      let config = null;
-      const customConfigRaw = localStorage.getItem(CUSTOM_FB_KEY);
+    function updateSyncBadge() {
+      const dot = document.getElementById('syncDot');
+      const label = document.getElementById('syncLabel');
+      const linkBtnText = document.getElementById('linkBtnText');
 
-      if (customConfigRaw) {
-        try {
-          config = JSON.parse(customConfigRaw);
-          document.getElementById('customFirebaseConfigInput').value = customConfigRaw;
-        } catch (e) {
-          console.error('Custom Firebase config non valido:', e);
-        }
-      } else if (typeof __firebase_config !== 'undefined' && __firebase_config) {
-        try {
-          config = JSON.parse(__firebase_config);
-        } catch (e) {
-          console.error('Ambiente Firebase config non valido:', e);
-        }
-      }
-
-      if (!config) {
-        updateCloudStatusUI(false, 'Configurazione mancante');
-        return;
-      }
-
-      try {
-        app = getApps().length === 0 ? initializeApp(config) : getApps()[0];
-        auth = getAuth(app);
-        db = getFirestore(app);
-
-        // Rule 3: Auth Before Queries
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token && !customConfigRaw) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else if (!auth.currentUser) {
-          await signInAnonymously(auth);
-        }
-
-        onAuthStateChanged(auth, (user) => {
-          currentUser = user;
-          if (user) {
-            const label = user.email ? user.email : 'Connesso (Cloud)';
-            updateCloudStatusUI(true, label, user.uid);
-            startFirestoreListener(user.uid);
-          } else {
-            updateCloudStatusUI(false, 'Disconnesso');
-          }
-        });
-      } catch (err) {
-        console.error('Errore inizializzazione Firebase:', err);
-        updateCloudStatusUI(false, 'Errore connessione Cloud');
-      }
-    }
-
-    function startFirestoreListener(uid) {
-      if (!db || !uid) return;
-      if (unsubscribeFirestore) unsubscribeFirestore();
-
-      // Rule 1 & Rule 2: Strict path, simple collection query without orderBy/where
-      const notesCol = collection(db, 'artifacts', appId, 'users', uid, 'notes');
-      unsubscribeFirestore = onSnapshot(
-        notesCol,
-        (snapshot) => {
-          const fetched = [];
-          snapshot.forEach((docSnap) => {
-            fetched.push(docSnap.data());
-          });
-          cloudNotes = fetched;
-          if (storageMode === 'cloud') {
-            render();
-          }
-        },
-        (error) => {
-          console.error('Errore sincronizzazione Firestore:', error);
-          showToast('Errore di sincronizzazione Cloud');
-        }
-      );
-    }
-
-    function updateCloudStatusUI(connected, statusText, uid = '') {
-      const badge = document.getElementById('cloudAuthBadge');
-      const uidBox = document.getElementById('userIdBox');
-      const uidDisplay = document.getElementById('userIdDisplay');
-
-      badge.textContent = statusText;
-      badge.style.color = connected ? 'var(--rescue-text)' : 'var(--text-muted)';
-
-      if (connected && uid) {
-        uidBox.classList.remove('hidden');
-        uidDisplay.textContent = uid;
+      if (fileHandle) {
+        dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-600';
+        label.textContent = `File: ${fileHandle.name}`;
+        if (linkBtnText) linkBtnText.textContent = 'File Collegato';
       } else {
-        uidBox.classList.add('hidden');
-      }
-      updateModeUI();
-    }
-
-    // --- ACTIVE DATA SOURCE HELPERS ---
-    function getActiveNotesArray() {
-      return storageMode === 'cloud' ? cloudNotes : localNotes;
-    }
-
-    async function saveSingleNote(noteObj) {
-      if (storageMode === 'cloud') {
-        if (!currentUser || !db) {
-          showToast('Connettiti al Cloud o passa in modalità Locale');
-          return;
-        }
-        const ref = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'notes', noteObj.id);
-        await setDoc(ref, noteObj);
-      } else {
-        const idx = localNotes.findIndex(n => n.id === noteObj.id);
-        if (idx >= 0) {
-          localNotes[idx] = noteObj;
-        } else {
-          localNotes.unshift(noteObj);
-        }
-        await persistLocalNotes();
-        render();
-      }
-    }
-
-    async function removeSingleNote(noteId) {
-      if (storageMode === 'cloud') {
-        if (!currentUser || !db) return;
-        const ref = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'notes', noteId);
-        await deleteDoc(ref);
-      } else {
-        localNotes = localNotes.filter(n => n.id !== noteId);
-        await persistLocalNotes();
-        render();
+        dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-600';
+        label.textContent = 'Memoria Locale';
+        if (linkBtnText) linkBtnText.textContent = 'Collega File';
       }
     }
 
@@ -801,23 +493,28 @@
         rescueCount: 0,
         archived: false
       };
-      await saveSingleNote(newNote);
+      localNotes.unshift(newNote);
+      await persistLocalNotes();
+      render();
       showToast('Aggiunta in cima ↑');
     }
 
     window.rescueNote = async function(id) {
-      const list = getActiveNotesArray();
-      const target = list.find(n => n.id === id);
-      if (!target) return;
+      const idx = localNotes.findIndex(n => n.id === id);
+      if (idx === -1) return;
 
+      const target = localNotes[idx];
       const updated = {
         ...target,
         lastRescuedAt: Date.now(),
         rescueCount: (target.rescueCount || 0) + 1,
         archived: false
       };
+      localNotes.splice(idx, 1);
+      localNotes.unshift(updated);
       selectedIndex = 0;
-      await saveSingleNote(updated);
+      await persistLocalNotes();
+      render();
       showToast(`Riportata a galla (${updated.rescueCount}×) ↑`);
     };
 
@@ -845,22 +542,24 @@
       const newText = el.value.trim();
       if (!newText) return;
 
-      const list = getActiveNotesArray();
-      const target = list.find(n => n.id === id);
-      if (!target) return;
+      const idx = localNotes.findIndex(n => n.id === id);
+      if (idx === -1) return;
 
+      localNotes[idx] = { ...localNotes[idx], text: newText };
       editingNoteId = null;
-      await saveSingleNote({ ...target, text: newText });
+      await persistLocalNotes();
+      render();
       showToast('Nota aggiornata');
     };
 
     window.toggleArchiveNote = async function(id) {
-      const list = getActiveNotesArray();
-      const target = list.find(n => n.id === id);
-      if (!target) return;
+      const idx = localNotes.findIndex(n => n.id === id);
+      if (idx === -1) return;
 
-      const nextState = !target.archived;
-      await saveSingleNote({ ...target, archived: nextState });
+      const nextState = !localNotes[idx].archived;
+      localNotes[idx] = { ...localNotes[idx], archived: nextState };
+      await persistLocalNotes();
+      render();
       showToast(nextState ? 'Spostata in archivio 📦' : 'Ripristinata nel flusso');
     };
 
@@ -871,7 +570,9 @@
 
     window.confirmDeleteNote = async function(id) {
       confirmingDeleteId = null;
-      await removeSingleNote(id);
+      localNotes = localNotes.filter(n => n.id !== id);
+      await persistLocalNotes();
+      render();
       showToast('Nota eliminata');
     };
 
@@ -921,11 +622,10 @@
 
     // --- FILTERING & RENDERING ---
     function getFilteredNotes() {
-      const source = getActiveNotesArray();
       const rawQuery = document.getElementById('searchInput').value || '';
       const queryNorm = rawQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
-      const sorted = [...source].sort((a, b) => (b.lastRescuedAt || 0) - (a.lastRescuedAt || 0));
+      const sorted = [...localNotes].sort((a, b) => (b.lastRescuedAt || 0) - (a.lastRescuedAt || 0));
 
       return sorted.filter(note => {
         if (Boolean(note.archived) !== showArchived) return false;
@@ -941,7 +641,7 @@
 
     function renderTagsFilterBar() {
       const container = document.getElementById('tagsFilterBar');
-      const source = getActiveNotesArray().filter(n => Boolean(n.archived) === showArchived);
+      const source = localNotes.filter(n => Boolean(n.archived) === showArchived);
       const counts = {};
 
       source.forEach(n => {
@@ -987,8 +687,7 @@
     function render() {
       renderTagsFilterBar();
 
-      const allSource = getActiveNotesArray();
-      const archivedCount = allSource.filter(n => n.archived).length;
+      const archivedCount = localNotes.filter(n => n.archived).length;
       document.getElementById('archiveCountBadge').textContent = archivedCount;
 
       const btnArch = document.getElementById('btnToggleArchive');
@@ -1002,7 +701,7 @@
 
       document.getElementById('streamStatusText').textContent = showArchived
         ? `Archivio (${archivedCount} note)`
-        : `Flusso attivo · ${allSource.length - archivedCount} pensieri`;
+        : `Flusso attivo · ${localNotes.length - archivedCount} pensieri`;
 
       const filtered = getFilteredNotes();
       const stream = document.getElementById('notesStream');
@@ -1175,55 +874,8 @@
       });
     }
 
-    // --- STORAGE MODE UI & SWITCHING ---
-    function updateModeUI() {
-      const dot = document.getElementById('storageDot');
-      const label = document.getElementById('storageLabel');
-      const badgeLocal = document.getElementById('badgeLocalActive');
-      const badgeCloud = document.getElementById('badgeCloudActive');
-
-      if (storageMode === 'cloud') {
-        dot.className = 'w-2 h-2 rounded-full ' + (currentUser ? 'bg-emerald-600' : 'bg-red-500');
-        label.textContent = currentUser ? 'Cloud Sync' : 'Cloud (Off)';
-        badgeLocal.classList.add('hidden');
-        badgeCloud.classList.remove('hidden');
-      } else {
-        dot.className = 'w-2 h-2 rounded-full ' + (fileHandle ? 'bg-emerald-600' : 'bg-amber-600');
-        label.textContent = fileHandle ? `File: ${fileHandle.name}` : 'Locale';
-        badgeLocal.classList.remove('hidden');
-        badgeCloud.classList.add('hidden');
-      }
-    }
-
-    function setStorageMode(mode) {
-      storageMode = mode;
-      localStorage.setItem(STORAGE_MODE_KEY, mode);
-      selectedIndex = -1;
-      updateModeUI();
-      render();
-      showToast(mode === 'cloud' ? 'Modalità Cloud Firebase attiva ☁️' : 'Modalità Locale attiva 📁');
-    }
-
     // --- EVENT LISTENERS ---
     document.getElementById('btnThemeToggle').addEventListener('click', toggleTheme);
-
-    // Modals open/close
-    document.getElementById('btnFileModal').addEventListener('click', () => {
-      document.getElementById('fileModal').classList.remove('hidden');
-      document.getElementById('fileModal').classList.add('flex');
-    });
-
-    document.getElementById('btnStorageModal').addEventListener('click', () => {
-      document.getElementById('storageModal').classList.remove('hidden');
-      document.getElementById('storageModal').classList.add('flex');
-    });
-
-    window.closeModals = function() {
-      document.getElementById('fileModal').classList.add('hidden');
-      document.getElementById('fileModal').classList.remove('flex');
-      document.getElementById('storageModal').classList.add('hidden');
-      document.getElementById('storageModal').classList.remove('flex');
-    };
 
     window.closeImportModal = function() {
       pendingImportedNotes = null;
@@ -1319,8 +971,7 @@
 
     // --- LOCAL FILE & JSON OPERATIONS ---
     document.getElementById('btnExportJson').addEventListener('click', () => {
-      const data = getActiveNotesArray();
-      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const blob = new Blob([JSON.stringify(localNotes, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -1347,7 +998,7 @@
           }
           pendingImportedNotes = parsed;
           document.getElementById('importModalDesc').textContent =
-            `Trovate ${parsed.length} note nel file "${file.name}". Come vuoi procedere?`;
+            `Trovate ${parsed.length} note nel file "${file.name}". Vuoi unirle alle note esistenti o sovrascrivere tutto?`;
           document.getElementById('importChoiceModal').classList.remove('hidden');
           document.getElementById('importChoiceModal').classList.add('flex');
         } catch (err) {
@@ -1368,7 +1019,6 @@
       localNotes = Array.from(map.values());
       await persistLocalNotes();
       window.closeImportModal();
-      window.closeModals();
       render();
       showToast('Note unite con successo');
     });
@@ -1378,14 +1028,13 @@
       localNotes = pendingImportedNotes.filter(n => n && n.id && n.text);
       await persistLocalNotes();
       window.closeImportModal();
-      window.closeModals();
       render();
-      showToast('Elenco note sostituito');
+      showToast('Elenco note aggiornato dal file');
     });
 
     document.getElementById('btnLinkLocalFile').addEventListener('click', async () => {
       if (!('showSaveFilePicker' in window)) {
-        showToast('Disponibile su browser desktop Chrome/Edge. Su mobile usa Esporta/Importa JSON.');
+        showToast('Usa Esporta/Importa JSON su questo browser');
         return;
       }
       try {
@@ -1394,100 +1043,11 @@
           types: [{ description: 'JSON File', accept: { 'application/json': ['.json'] } }]
         });
         await persistLocalNotes();
-        document.getElementById('fileLinkBadge').textContent = fileHandle.name;
-        document.getElementById('fileLinkBadge').style.backgroundColor = 'var(--rescue-bg)';
-        document.getElementById('fileLinkBadge').style.color = 'var(--rescue-text)';
-        updateModeUI();
-        showToast(`Collegato a ${fileHandle.name}`);
+        updateSyncBadge();
+        showToast(`Sincronizzazione attiva su ${fileHandle.name}`);
       } catch (err) {
-        // User cancelled picker
+        // User cancelled file picker
       }
-    });
-
-    // --- CLOUD MODE & AUTH HANDLERS ---
-    document.getElementById('btnSelectLocalMode').addEventListener('click', () => setStorageMode('local'));
-    document.getElementById('btnSelectCloudMode').addEventListener('click', () => setStorageMode('cloud'));
-
-    document.getElementById('btnEmailSignIn').addEventListener('click', async () => {
-      if (!auth) return showToast('Configura prima Firebase');
-      const email = document.getElementById('authEmail').value.trim();
-      const pwd = document.getElementById('authPassword').value.trim();
-      if (!email || !pwd) return showToast('Inserisci email e password');
-
-      try {
-        await signInWithEmailAndPassword(auth, email, pwd);
-        setStorageMode('cloud');
-        showToast('Accesso effettuato ☁️');
-      } catch (err) {
-        try {
-          await createUserWithEmailAndPassword(auth, email, pwd);
-          setStorageMode('cloud');
-          showToast('Account creato e connesso ☁️');
-        } catch (createErr) {
-          showToast('Errore autenticazione: verifica credenziali');
-        }
-      }
-    });
-
-    document.getElementById('btnGoogleSignIn').addEventListener('click', async () => {
-      if (!auth) return showToast('Configura prima Firebase');
-      try {
-        const provider = new GoogleAuthProvider();
-        await signInWithPopup(auth, provider);
-        setStorageMode('cloud');
-        showToast('Accesso con Google completato ☁️');
-      } catch (err) {
-        showToast('Popup Google non supportato in questo frame, usa Sessione Rapida');
-      }
-    });
-
-    document.getElementById('btnAnonSignIn').addEventListener('click', async () => {
-      if (!auth) return showToast('Configura prima Firebase');
-      try {
-        await signInAnonymously(auth);
-        setStorageMode('cloud');
-        showToast('Sessione Cloud attiva ☁️');
-      } catch (err) {
-        showToast('Errore avvio sessione Cloud');
-      }
-    });
-
-    document.getElementById('btnPushLocalToCloud').addEventListener('click', async () => {
-      if (!currentUser || !db) {
-        return showToast('Connettiti prima al Cloud Firebase');
-      }
-      if (localNotes.length === 0) {
-        return showToast('Nessuna nota locale da inviare');
-      }
-      try {
-        for (const note of localNotes) {
-          const ref = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'notes', note.id);
-          await setDoc(ref, note);
-        }
-        setStorageMode('cloud');
-        showToast(`${localNotes.length} note sincronizzate nel Cloud ☁️`);
-      } catch (err) {
-        showToast('Errore durante il caricamento sul Cloud');
-      }
-    });
-
-    document.getElementById('btnSaveCustomConfig').addEventListener('click', () => {
-      const val = document.getElementById('customFirebaseConfigInput').value.trim();
-      try {
-        JSON.parse(val);
-        localStorage.setItem(CUSTOM_FB_KEY, val);
-        showToast('Configurazione salvata, ricarico...');
-        setTimeout(() => location.reload(), 600);
-      } catch (e) {
-        showToast('JSON firebaseConfig non valido');
-      }
-    });
-
-    document.getElementById('btnClearCustomConfig').addEventListener('click', () => {
-      localStorage.removeItem(CUSTOM_FB_KEY);
-      document.getElementById('customFirebaseConfigInput').value = '';
-      showToast('Configurazione ripristinata');
-      setTimeout(() => location.reload(), 600);
     });
 
     // --- UTILITIES ---
