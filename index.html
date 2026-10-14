@@ -2,748 +2,1516 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gravity Local — Append & Review Notes</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Tyngdkraft — Append & Review Notes</title>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Google Fonts: Newsreader (Editorial Serif) & Plus Jakarta Sans (Clean Geometric UI) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #0f1115;
-      --surface: #181b22;
-      --surface-hover: #1f242d;
-      --border: #2a2f3a;
-      --text: #e6edf3;
-      --text-muted: #7d8590;
-      --accent: #58a6ff;
-      --rescue: #3fb950;
-      --danger: #f85149;
+      /* Swedish Light Theme (Nordic Warm Paper) */
+      --bg: #F7F5F0;
+      --bg-subtle: #EFECE4;
+      --surface: #FFFFFF;
+      --surface-hover: #FCFBF9;
+      --border: #E4E0D5;
+      --border-strong: #C9C3B5;
+      --text: #1C1B18;
+      --text-secondary: #57544D;
+      --text-muted: #78756E;
+      --accent: #2C3E35;
+      --accent-fg: #FFFFFF;
+      --rescue-bg: #E6EFEA;
+      --rescue-text: #22543D;
+      --rescue-border: #B8D4C5;
+      --danger-text: #9B2C2C;
+      --danger-bg: #FDE8E8;
+      --shadow: 0 2px 10px rgba(28, 27, 24, 0.04);
+
+      /* Prefix Tag Pastels - Light (High contrast Nordic tones) */
+      --tag-read-bg: #E3EFF5;   --tag-read-text: #1B4965;   --tag-read-border: #BBD7E6;
+      --tag-watch-bg: #EFE6F2;  --tag-watch-text: #532B60;  --tag-watch-border: #D9C2E0;
+      --tag-idea-bg: #F9EFE0;   --tag-idea-text: #7C4D12;   --tag-idea-border: #EBD3AD;
+      --tag-todo-bg: #F9E5E1;   --tag-todo-text: #82271A;   --tag-todo-border: #E8BDB5;
+      --tag-listen-bg: #E5F0E6; --tag-listen-text: #235328; --tag-listen-border: #C0DBC2;
+      --tag-code-bg: #ECE9E2;   --tag-code-text: #4A3F35;   --tag-code-border: #D3CCC0;
+      --tag-work-bg: #E6E9F2;   --tag-work-text: #2B365E;   --tag-work-border: #C3CAE0;
+      --tag-custom-bg: #EFECE6; --tag-custom-text: #45423B; --tag-custom-border: #D8D3C8;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html.dark {
+      /* Swedish Dark Theme (Nordic Night) */
+      --bg: #141413;
+      --bg-subtle: #1A1A18;
+      --surface: #1E1E1C;
+      --surface-hover: #252522;
+      --border: #2E2E2B;
+      --border-strong: #45443F;
+      --text: #ECEAE4;
+      --text-secondary: #B5B2A8;
+      --text-muted: #858279;
+      --accent: #A3B899;
+      --accent-fg: #141413;
+      --rescue-bg: rgba(163, 184, 153, 0.14);
+      --rescue-text: #B5CBA9;
+      --rescue-border: rgba(163, 184, 153, 0.32);
+      --danger-text: #F29B9B;
+      --danger-bg: rgba(155, 44, 44, 0.25);
+      --shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+
+      /* Prefix Tag Pastels - Dark */
+      --tag-read-bg: rgba(56, 142, 189, 0.16);   --tag-read-text: #9AD1F0;   --tag-read-border: rgba(56, 142, 189, 0.35);
+      --tag-watch-bg: rgba(162, 107, 181, 0.16); --tag-watch-text: #DAB6E6;  --tag-watch-border: rgba(162, 107, 181, 0.35);
+      --tag-idea-bg: rgba(217, 155, 67, 0.16);   --tag-idea-text: #F2CA8A;   --tag-idea-border: rgba(217, 155, 67, 0.35);
+      --tag-todo-bg: rgba(212, 95, 78, 0.16);    --tag-todo-text: #F4ACA0;   --tag-todo-border: rgba(212, 95, 78, 0.35);
+      --tag-listen-bg: rgba(104, 166, 112, 0.16);--tag-listen-text: #A8DBA8; --tag-listen-border: rgba(104, 166, 112, 0.35);
+      --tag-code-bg: rgba(176, 148, 116, 0.16);  --tag-code-text: #DFC8B0;   --tag-code-border: rgba(176, 148, 116, 0.35);
+      --tag-work-bg: rgba(114, 130, 191, 0.16);  --tag-work-text: #B8C4F0;   --tag-work-border: rgba(114, 130, 191, 0.35);
+      --tag-custom-bg: rgba(160, 156, 146, 0.14);--tag-custom-text: #D1CEC5; --tag-custom-border: rgba(160, 156, 146, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
 
     body {
       background-color: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      line-height: 1.5;
-      padding: 20px 16px 80px;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    .container {
-      max-width: 680px;
-      margin: 0 auto;
+    .font-serif-editorial {
+      font-family: 'Newsreader', Georgia, Cambria, "Times New Roman", Times, serif;
     }
 
-    /* Header & File Controls */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid var(--border);
-      flex-wrap: wrap;
-      gap: 10px;
-    }
+    /* Tag Classes */
+    .tag-read   { background-color: var(--tag-read-bg);   color: var(--tag-read-text);   border: 1px solid var(--tag-read-border); }
+    .tag-watch  { background-color: var(--tag-watch-bg);  color: var(--tag-watch-text);  border: 1px solid var(--tag-watch-border); }
+    .tag-idea   { background-color: var(--tag-idea-bg);   color: var(--tag-idea-text);   border: 1px solid var(--tag-idea-border); }
+    .tag-todo   { background-color: var(--tag-todo-bg);   color: var(--tag-todo-text);   border: 1px solid var(--tag-todo-border); }
+    .tag-listen { background-color: var(--tag-listen-bg); color: var(--tag-listen-text); border: 1px solid var(--tag-listen-border); }
+    .tag-code   { background-color: var(--tag-code-bg);   color: var(--tag-code-text);   border: 1px solid var(--tag-code-border); }
+    .tag-work   { background-color: var(--tag-work-bg);   color: var(--tag-work-text);   border: 1px solid var(--tag-work-border); }
+    .tag-custom { background-color: var(--tag-custom-bg); color: var(--tag-custom-text); border: 1px solid var(--tag-custom-border); }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    /* Left accent bar on cards matching prefix */
+    .card-border-read   { border-left: 3.5px solid var(--tag-read-text) !important; }
+    .card-border-watch  { border-left: 3.5px solid var(--tag-watch-text) !important; }
+    .card-border-idea   { border-left: 3.5px solid var(--tag-idea-text) !important; }
+    .card-border-todo   { border-left: 3.5px solid var(--tag-todo-text) !important; }
+    .card-border-listen { border-left: 3.5px solid var(--tag-listen-text) !important; }
+    .card-border-code   { border-left: 3.5px solid var(--tag-code-text) !important; }
+    .card-border-work   { border-left: 3.5px solid var(--tag-work-text) !important; }
+    .card-border-custom { border-left: 3.5px solid var(--tag-custom-text) !important; }
 
-    .brand h1 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      letter-spacing: -0.5px;
-    }
+    /* Gravity Visual Decay Levels */
+    .gravity-0 { opacity: 1; }
+    .gravity-1 { opacity: 0.82; } /* > 3 days */
+    .gravity-2 { opacity: 0.62; } /* > 14 days */
+    .gravity-3 { opacity: 0.44; } /* > 45 days */
 
-    .sync-status {
-      font-size: 0.75rem;
-      padding: 2px 8px;
+    .note-card-wrapper {
+      position: relative;
+      overflow: hidden;
       border-radius: 12px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-    }
-    .sync-status.active {
-      color: var(--rescue);
-      border-color: rgba(63, 185, 80, 0.4);
     }
 
-    .file-actions {
+    .swipe-backdrop {
+      position: absolute;
+      inset: 0;
       display: flex;
-      gap: 6px;
-    }
-
-    button {
-      background: var(--surface);
-      color: var(--text);
-      border: 1px solid var(--border);
-      padding: 6px 10px;
-      border-radius: 6px;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    button:hover {
-      background: var(--surface-hover);
-      border-color: var(--text-muted);
-    }
-
-    button.primary {
-      background: var(--accent);
-      color: #000;
-      border-color: var(--accent);
-      font-weight: 600;
-    }
-
-    button.primary:hover {
-      opacity: 0.9;
-    }
-
-    /* Capture Box */
-    .capture-box {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 12px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      transition: border-color 0.2s;
-    }
-
-    .capture-box:focus-within {
-      border-color: var(--accent);
-    }
-
-    textarea {
-      width: 100%;
-      background: transparent;
-      border: none;
-      color: var(--text);
-      font-size: 0.95rem;
-      font-family: inherit;
-      resize: vertical;
-      min-height: 64px;
-      outline: none;
-    }
-
-    .capture-footer {
-      display: flex;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      margin-top: 8px;
-      padding-top: 8px;
-      border-top: 1px solid rgba(255,255,255,0.05);
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    /* Search & Tag Bar */
-    .toolbar {
-      display: flex;
-       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .search-row {
-      display: flex;
-      gap: 8px;
-    }
-
-    .search-input {
-      flex: 1;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 8px 12px;
-      border-radius: 8px;
-      font-size: 0.9rem;
-      outline: none;
-    }
-
-    .search-input:focus {
-      border-color: var(--accent);
-    }
-
-    .tags-bar {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-
-    .tag-chip {
-      font-size: 0.75rem;
-      padding: 3px 10px;
-      border-radius: 99px;
-      cursor: pointer;
-      border: 1px solid transparent;
+      padding: 0 20px;
       font-weight: 600;
-      user-select: none;
-      transition: transform 0.1s, opacity 0.2s;
-    }
-
-    .tag-chip:hover {
-      transform: translateY(-1px);
-    }
-
-    .tag-chip.inactive {
-      opacity: 0.4;
-    }
-
-    /* Colori dinamici per i prefissi */
-    .tag-read   { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
-    .tag-watch  { background: rgba(168, 85, 247, 0.15); color: #c084fc; border-color: rgba(168, 85, 247, 0.3); }
-    .tag-idea   { background: rgba(250, 204, 21, 0.15); color: #facc15; border-color: rgba(250, 204, 21, 0.3); }
-    .tag-todo   { background: rgba(248, 113, 113, 0.15); color: #f87171; border-color: rgba(248, 113, 113, 0.3); }
-    .tag-listen { background: rgba(74, 222, 128, 0.15); color: #4ade80; border-color: rgba(74, 222, 128, 0.3); }
-    .tag-code   { background: rgba(251, 146, 60, 0.15); color: #fb923c; border-color: rgba(251, 146, 60, 0.3); }
-    .tag-work   { background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3); }
-    .tag-custom { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border-color: rgba(148, 163, 184, 0.3); }
-
-    /* Stream & Note Cards */
-    .stream {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
+      font-size: 0.82rem;
+      border-radius: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
     }
 
     .note-card {
-      background: var(--surface);
+      background-color: var(--surface);
       border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 14px;
-      transition: opacity 0.25s ease, border-color 0.15s ease, transform 0.15s ease;
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: opacity 0.25s ease, border-color 0.2s ease, transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease;
       position: relative;
-      cursor: pointer;
+      z-index: 2;
+      touch-action: pan-y;
     }
 
-    .note-card:hover, .note-card.selected {
+    .note-card:hover,
+    .note-card:focus-within,
+    .note-card.selected {
       opacity: 1 !important;
-      border-color: #484f58;
+      border-color: var(--border-strong);
+      background-color: var(--surface-hover);
     }
 
     .note-card.selected {
       box-shadow: 0 0 0 2px var(--accent);
     }
 
-    /* Livelli di "Gravità" (Sbiadimento) */
-    .gravity-0 { opacity: 1; }
-    .gravity-1 { opacity: 0.78; } /* > 3 giorni */
-    .gravity-2 { opacity: 0.55; } /* > 14 giorni */
-    .gravity-3 { opacity: 0.35; } /* > 45 giorni */
+    /* Hide scrollbars on horizontal pill bars */
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
-    .note-content {
-      font-size: 0.95rem;
-      white-space: pre-wrap;
-      word-break: break-word;
-      margin-bottom: 10px;
+    /* Subtle animation when rescuing a note */
+    @keyframes floatUp {
+      0% { transform: translateY(10px); opacity: 0.5; }
+      100% { transform: translateY(0); opacity: 1; }
     }
-
-    .prefix-badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      padding: 1px 7px;
-      border-radius: 5px;
-      margin-right: 6px;
-      vertical-align: baseline;
-      text-transform: lowercase;
-    }
-
-    .note-meta {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .meta-info {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .rescued-badge {
-      color: var(--rescue);
-      font-weight: 600;
-    }
-
-    .note-actions {
-      display: flex;
-      gap: 6px;
-      opacity: 0.2;
-      transition: opacity 0.15s;
-    }
-
-    .note-card:hover .note-actions,
-    .note-card.selected .note-actions {
-      opacity: 1;
-    }
-
-    .btn-rescue {
-      color: var(--rescue);
-      border-color: rgba(63, 185, 80, 0.3);
-    }
-    .btn-rescue:hover {
-      background: rgba(63, 185, 80, 0.15);
-      border-color: var(--rescue);
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px 20px;
-      color: var(--text-muted);
-      border: 1px dashed var(--border);
-      border-radius: 10px;
-    }
-
-    .shortcuts-help {
-      margin-top: 30px;
-      text-align: center;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    kbd {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      padding: 1px 5px;
-      font-size: 0.7rem;
+    .animate-rescue {
+      animation: floatUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
   </style>
 </head>
-<body>
+<body class="pb-24 selection:bg-[#2C3E35] selection:text-white dark:selection:bg-[#A3B899] dark:selection:text-[#141413]">
 
-<div class="container">
-  <header>
-    <div class="brand">
-      <h1>↓↑ Gravity Local</h1>
-      <span id="syncStatus" class="sync-status">Memoria Browser</span>
-    </div>
-    <div class="file-actions">
-      <button id="btnLinkFile" title="Collega un file .json locale per salvataggio automatico (Chrome/Edge)">🔗 Collega File</button>
-      <button id="btnExport" title="Scarica backup .json">⬇️ Esporta</button>
-      <button id="btnImport" title="Carica un file .json">⬆️ Importa</button>
-      <input type="file" id="fileInput" accept=".json" style="display:none">
-    </div>
-  </header>
+  <!-- Main Container -->
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 pt-5 sm:pt-8">
+    
+    <!-- Top Editorial Header -->
+    <header class="flex items-center justify-between gap-3 pb-4 mb-5 border-b" style="border-color: var(--border);">
+      <div class="flex items-baseline gap-2.5">
+        <h1 class="font-serif-editorial text-2xl sm:text-3xl font-medium tracking-tight" style="color: var(--text);">
+          Tyngdkraft
+        </h1>
+        <span class="text-xs uppercase tracking-widest font-medium hidden sm:inline-block" style="color: var(--text-muted);">
+          Append & Review
+        </span>
+      </div>
 
-  <div class="capture-box">
-    <textarea id="noteInput" placeholder="Scrivi un pensiero... (Usa prefissi come read:, idea:, todo:, watch:, code: per colorare)" autofocus></textarea>
-    <div class="capture-footer">
-      <span>Suggerimento: <kbd>Ctrl</kbd>+<kbd>Invio</kbd> o <kbd>Doppio Invio</kbd> per salvare in cima</span>
-      <button class="primary" id="btnAdd">Aggiungi ↑</button>
+      <!-- Right Controls: Storage Mode Pill, Local Data Menu, Theme Toggle -->
+      <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- Storage & Cloud Sync Button -->
+        <button id="btnStorageModal" type="button"
+          class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-xs font-medium transition-all border"
+          style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
+          <span id="storageDot" class="w-2 h-2 rounded-full bg-amber-600"></span>
+          <span id="storageLabel">Locale</span>
+        </button>
+
+        <!-- File / JSON Menu Button -->
+        <button id="btnFileModal" type="button" title="Gestione File JSON e Backup"
+          class="p-2 rounded-full border transition-all flex items-center justify-center"
+          style="background-color: var(--surface); border-color: var(--border); color: var(--text-secondary); min-width: 36px; min-height: 36px;">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+          </svg>
+        </button>
+
+        <!-- Theme Toggle Button -->
+        <button id="btnThemeToggle" type="button" title="Cambia tema Chiaro/Scuro"
+          class="p-2 rounded-full border transition-all flex items-center justify-center"
+          style="background-color: var(--surface); border-color: var(--border); color: var(--text-secondary); min-width: 36px; min-height: 36px;">
+          <svg id="iconSun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+          </svg>
+          <svg id="iconMoon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Capture Box (Karpathy's Top Append Area) -->
+    <section class="rounded-xl p-3.5 sm:p-4 mb-5 border transition-all"
+      style="background-color: var(--surface); border-color: var(--border); box-shadow: var(--shadow);">
+      
+      <textarea id="noteInput" rows="3"
+        class="w-full bg-transparent border-0 outline-none resize-y font-serif-editorial text-lg sm:text-xl leading-relaxed placeholder:opacity-50"
+        style="color: var(--text);"
+        placeholder="Annota un pensiero nel flusso... (es. idea:, read:, todo:)"></textarea>
+
+      <!-- Quick Prefix Pills for Mobile & Fast Tagging -->
+      <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-2 border-t mt-1" style="border-color: var(--border);">
+        <span class="text-[11px] uppercase tracking-wider font-medium mr-1 shrink-0" style="color: var(--text-muted);">Prefissi:</span>
+        <button type="button" onclick="insertPrefix('idea')" class="tag-idea text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">idea:</button>
+        <button type="button" onclick="insertPrefix('todo')" class="tag-todo text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">todo:</button>
+        <button type="button" onclick="insertPrefix('read')" class="tag-read text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">read:</button>
+        <button type="button" onclick="insertPrefix('watch')" class="tag-watch text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">watch:</button>
+        <button type="button" onclick="insertPrefix('listen')" class="tag-listen text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">listen:</button>
+        <button type="button" onclick="insertPrefix('code')" class="tag-code text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">code:</button>
+        <button type="button" onclick="insertPrefix('work')" class="tag-work text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">work:</button>
+      </div>
+
+      <!-- Capture Footer -->
+      <div class="flex items-center justify-between gap-2 pt-2">
+        <span class="text-xs hidden sm:inline" style="color: var(--text-muted);">
+          Doppio <kbd class="px-1.5 py-0.5 text-[11px] rounded border" style="border-color: var(--border);">Invio</kbd> o <kbd class="px-1.5 py-0.5 text-[11px] rounded border" style="border-color: var(--border);">⌘/Ctrl+Invio</kbd>
+        </span>
+        <span class="text-[11px] sm:hidden" style="color: var(--text-muted);">
+          Doppio Invio rapido per salvare
+        </span>
+
+        <button id="btnAddNote" type="button"
+          class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold tracking-wide transition-all active:scale-95 ml-auto flex items-center gap-1.5"
+          style="background-color: var(--accent); color: var(--accent-fg);">
+          <span>Aggiungi in cima</span>
+          <span>↑</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Search, Archive & Filter Toolbar -->
+    <section class="mb-5 space-y-2.5">
+      <div class="flex items-center gap-2">
+        <div class="relative flex-1">
+          <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" style="color: var(--text-muted);" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input id="searchInput" type="search" placeholder="Cerca tra i pensieri..."
+            class="w-full pl-9 pr-8 py-2 rounded-lg text-sm border outline-none transition-colors"
+            style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
+          <button id="btnClearSearch" type="button" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-xs p-1" style="color: var(--text-muted);">✕</button>
+        </div>
+
+        <button id="btnToggleArchive" type="button"
+          class="px-3 py-2 rounded-lg text-xs font-medium border shrink-0 transition-all flex items-center gap-1.5"
+          style="background-color: var(--surface); border-color: var(--border); color: var(--text-secondary); min-height: 38px;">
+          <span>Archivio</span>
+          <span id="archiveCountBadge" class="px-1.5 py-0.2 rounded-full text-[11px]" style="background-color: var(--bg-subtle);">0</span>
+        </button>
+      </div>
+
+      <!-- Dynamic Tag Chips Filter Bar -->
+      <div id="tagsFilterBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5"></div>
+    </section>
+
+    <!-- Stream Stats / Gravity Legend Bar -->
+    <div class="flex items-center justify-between text-[11px] mb-3 px-1" style="color: var(--text-muted);">
+      <span id="streamStatusText">Flusso attivo · ordinato per attenzione</span>
+      <span class="hidden sm:inline">Scorri e salva (<kbd class="underline">↑ Rescue</kbd>) ciò che conta</span>
+      <span class="sm:hidden">Swipe → Rescue · Swipe ← Archivia</span>
+    </div>
+
+    <!-- Notes Stream -->
+    <main id="notesStream" class="space-y-3"></main>
+
+    <!-- Editorial Footer & Keyboard Guide -->
+    <footer class="mt-12 pt-6 border-t text-center space-y-2" style="border-color: var(--border); color: var(--text-muted);">
+      <p class="font-serif-editorial italic text-sm">
+        "Lascia che il tempo filtri i pensieri: ciò che è importante tornerà a galla."
+      </p>
+      <p class="text-xs hidden sm:block">
+        Tastiera: <kbd class="px-1.5 py-0.5 rounded border text-[11px]" style="border-color: var(--border);">↑</kbd> <kbd class="px-1.5 py-0.5 rounded border text-[11px]" style="border-color: var(--border);">↓</kbd> Seleziona · 
+        <kbd class="px-1.5 py-0.5 rounded border text-[11px]" style="border-color: var(--border);">R</kbd> Rescue · 
+        <kbd class="px-1.5 py-0.5 rounded border text-[11px]" style="border-color: var(--border);">E</kbd> Modifica · 
+        <kbd class="px-1.5 py-0.5 rounded border text-[11px]" style="border-color: var(--border);">A</kbd> Archivia
+      </p>
+    </footer>
+  </div>
+
+  <!-- Toast Notification -->
+  <div id="toastContainer" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 translate-y-2">
+    <div id="toastMessage" class="px-4 py-2.5 rounded-full text-xs font-medium shadow-lg border flex items-center gap-2"
+      style="background-color: var(--text); color: var(--bg); border-color: var(--border);">
     </div>
   </div>
 
-  <div class="toolbar">
-    <div class="search-row">
-      <input type="text" id="searchInput" class="search-input" placeholder="Cerca nel flusso (Ctrl+F)...">
-      <button id="btnToggleArchive">📦 Archivio (0)</button>
-    </div>
-    <div class="tags-bar" id="tagsBar"></div>
-  </div>
+  <!-- MODAL 1: FILE & JSON LOCAL MANAGEMENT -->
+  <div id="fileModal" class="fixed inset-0 z-40 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+    <div class="w-full max-w-md rounded-2xl p-5 sm:p-6 border shadow-xl space-y-4"
+      style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
+      <div class="flex items-center justify-between border-b pb-3" style="border-color: var(--border);">
+        <h2 class="font-serif-editorial text-xl font-medium">Gestione File JSON Locale</h2>
+        <button type="button" onclick="closeModals()" class="p-1.5 rounded-lg text-sm" style="color: var(--text-muted);">✕</button>
+      </div>
 
-  <div class="stream" id="notesStream"></div>
+      <p class="text-xs leading-relaxed" style="color: var(--text-secondary);">
+        Le tue note sono sempre salvate nella memoria locale del browser. Qui puoi esportare un file <code>.json</code> di backup, importarlo su un altro dispositivo o collegare direttamente un file sul tuo computer.
+      </p>
 
-  <div class="shortcuts-help">
-    Scorciatoie su nota selezionata: <kbd>↑</kbd><kbd>↓</kbd> Naviga · <kbd>R</kbd> Rescue (Riporta in cima) · <kbd>E</kbd> Modifica · <kbd>A</kbd> Archivia
-  </div>
-</div>
-
-<script>
-  // --- STATO DELL'APPLICAZIONE ---
-  const STORAGE_KEY = 'gravity_local_notes_v1';
-  let notes = [];
-  let activeTag = null;
-  let showArchived = false;
-  let selectedIndex = -1;
-  let fileHandle = null; // Per File System Access API
-
-  const KNOWN_TAGS = ['read', 'watch', 'idea', 'todo', 'listen', 'code', 'work'];
-
-  // --- INIZIALIZZAZIONE ---
-  function init() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      try { notes = JSON.parse(saved); } catch (e) { notes = []; }
-    } else {
-      // Note di benvenuto per mostrare l'effetto gravità e i tag
-      const now = Date.now();
-      const day = 86400000;
-      notes = [
-        { id: '1', text: 'idea: Costruire un sistema di note locale basato sulla gravità di Karpathy', createdAt: now - (day * 2), lastRescuedAt: now - 600000, rescueCount: 2, archived: false },
-        { id: '2', text: 'todo: Provare a premere il tasto R dopo aver cliccato su una nota per riportarla in cima', createdAt: now - (day * 1), lastRescuedAt: now - (day * 1), rescueCount: 0, archived: false },
-        { id: '3', text: 'read: Articolo su Append-and-Review note e sull\'effetto Zeigarnik', createdAt: now - (day * 6), lastRescuedAt: now - (day * 6), rescueCount: 1, archived: false },
-        { id: '4', text: 'watch: Questa nota ha più di 20 giorni e sta affondando visivamente (sbiadisce)', createdAt: now - (day * 22), lastRescuedAt: now - (day * 22), rescueCount: 0, archived: false }
-      ];
-      saveNotes();
-    }
-    render();
-  }
-
-  // --- SALVATAGGIO (LocalStorage + File Locale) ---
-  async function saveNotes() {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-    if (fileHandle) {
-      try {
-        const writable = await fileHandle.createWritable();
-        await writable.write(JSON.stringify(notes, null, 2));
-        await writable.close();
-      } catch (err) {
-        console.error('Errore scrittura su file:', err);
-      }
-    }
-  }
-
-  // --- PARSING PREFISSI (es. "read: Titolo libro") ---
-  function parsePrefix(text) {
-    const match = text.match(/^([a-zA-Z0-9_-]+):\s*(.*)$/s);
-    if (!match) return { prefix: null, body: text, tagClass: '' };
-    const prefix = match[1].toLowerCase();
-    const body = match[2];
-    const tagClass = KNOWN_TAGS.includes(prefix) ? `tag-${prefix}` : 'tag-custom';
-    return { prefix, body, tagClass };
-  }
-
-  // --- CALCOLO GRAVITÀ (Sbiadimento nel tempo) ---
-  function getGravityClass(timestamp) {
-    const ageDays = (Date.now() - timestamp) / (1000 * 60 * 60 * 24);
-    if (ageDays > 45) return 'gravity-3';
-    if (ageDays > 14) return 'gravity-2';
-    if (ageDays > 3)  return 'gravity-1';
-    return 'gravity-0';
-  }
-
-  // --- FORMATTAZIONE TEMPO RELATIVO ---
-  function timeAgo(ts) {
-    const sec = Math.floor((Date.now() - ts) / 1000);
-    if (sec < 60) return 'ora';
-    const min = Math.floor(sec / 60);
-    if (min < 60) return `${min}m fa`;
-    const hrs = Math.floor(min / 60);
-    if (hrs < 24) return `${hrs}h fa`;
-    const days = Math.floor(hrs / 24);
-    if (days < 30) return `${days}g fa`;
-    const months = Math.floor(days / 30);
-    return `${months} mesi fa`;
-  }
-
-  // --- AZIONI SULLE NOTE ---
-  function addNote(rawText) {
-    const text = rawText.trim();
-    if (!text) return;
-    const now = Date.now();
-    notes.unshift({
-      id: now.toString(36) + Math.random().toString(36).substr(2, 4),
-      text,
-      createdAt: now,
-      lastRescuedAt: now,
-      rescueCount: 0,
-      archived: false
-    });
-    saveNotes();
-    render();
-  }
-
-  function rescueNote(id) {
-    const idx = notes.findIndex(n => n.id === id);
-    if (idx === -1) return;
-    const note = notes[idx];
-    note.lastRescuedAt = Date.now();
-    note.rescueCount = (note.rescueCount || 0) + 1;
-    note.archived = false;
-    // Sposta in cima
-    notes.splice(idx, 1);
-    notes.unshift(note);
-    selectedIndex = 0;
-    saveNotes();
-    render();
-  }
-
-  function editNote(id) {
-    const note = notes.find(n => n.id === id);
-    if (!note) return;
-    const updated = prompt('Modifica nota (non altera la posizione nel flusso):', note.text);
-    if (updated !== null && updated.trim() !== '') {
-      note.text = updated.trim();
-      saveNotes();
-      render();
-    }
-  }
-
-  function toggleArchiveNote(id) {
-    const note = notes.find(n => n.id === id);
-    if (!note) return;
-    note.archived = !note.archived;
-    saveNotes();
-    render();
-  }
-
-  function deleteNote(id) {
-    if (!confirm('Eliminare definitivamente questa nota?')) return;
-    notes = notes.filter(n => n.id !== id);
-    saveNotes();
-    render();
-  }
-
-  // --- RENDERING ---
-  function getFilteredNotes() {
-    const q = document.getElementById('searchInput').value
-      .toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-    // Ordina sempre per lastRescuedAt decrescente
-    const sorted = [...notes].sort((a, b) => b.lastRescuedAt - a.lastRescuedAt);
-
-    return sorted.filter(n => {
-      if (Boolean(n.archived) !== showArchived) return false;
-      const { prefix } = parsePrefix(n.text);
-      if (activeTag && prefix !== activeTag) return false;
-      if (q) {
-        const cleanText = n.text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        if (!cleanText.includes(q)) return false;
-      }
-      return true;
-    });
-  }
-
-  function renderTagsBar() {
-    const tagsBar = document.getElementById('tagsBar');
-    const counts = {};
-    notes.filter(n => Boolean(n.archived) === showArchived).forEach(n => {
-      const { prefix } = parsePrefix(n.text);
-      if (prefix) counts[prefix] = (counts[prefix] || 0) + 1;
-    });
-
-    const tags = Object.keys(counts).sort();
-    if (tags.length === 0) {
-      tagsBar.innerHTML = '';
-      return;
-    }
-
-    tagsBar.innerHTML = tags.map(t => {
-      const cls = KNOWN_TAGS.includes(t) ? `tag-${t}` : 'tag-custom';
-      const inactive = (activeTag && activeTag !== t) ? 'inactive' : '';
-      return `<span class="tag-chip ${cls} ${inactive}" onclick="toggleTagFilter('${t}')">${t}: (${counts[t]})</span>`;
-    }).join('');
-  }
-
-  window.toggleTagFilter = function(tag) {
-    activeTag = (activeTag === tag) ? null : tag;
-    selectedIndex = -1;
-    render();
-  };
-
-  function render() {
-    renderTagsBar();
-
-    const archivedCount = notes.filter(n => n.archived).length;
-    const btnArch = document.getElementById('btnToggleArchive');
-    btnArch.textContent = showArchived ? `⬅️ Torna al Flusso` : `📦 Archivio (${archivedCount})`;
-    btnArch.classList.toggle('primary', showArchived);
-
-    const list = getFilteredNotes();
-    const stream = document.getElementById('notesStream');
-
-    if (list.length === 0) {
-      stream.innerHTML = `<div class="empty-state">Nessuna nota trovata in questa vista.</div>`;
-      return;
-    }
-
-    stream.innerHTML = list.map((n, idx) => {
-      const { prefix, body, tagClass } = parsePrefix(n.text);
-      const gravClass = getGravityClass(n.lastRescuedAt);
-      const isSelected = idx === selectedIndex ? 'selected' : '';
-
-      const prefixHtml = prefix
-        ? `<span class="prefix-badge ${tagClass}">${escapeHtml(prefix)}:</span>`
-        : '';
-
-      const rescueInfo = n.rescueCount > 0
-        ? `<span class="rescued-badge">↑ salvata ${timeAgo(n.lastRescuedAt)} (${n.rescueCount}x)</span> · `
-        : '';
-
-      return `
-        <div class="note-card ${gravClass} ${isSelected}" onclick="selectCard(${idx})">
-          <div class="note-content">${prefixHtml}${escapeHtml(body)}</div>
-          <div class="note-meta">
-            <div class="meta-info">
-              ${rescueInfo}<span>scritta ${timeAgo(n.createdAt)}</span>
+      <div class="space-y-2.5 pt-1">
+        <!-- Direct File System Link (Desktop Chromium) -->
+        <button id="btnLinkLocalFile" type="button"
+          class="w-full p-3 rounded-xl border text-left flex items-center justify-between transition-colors hover:opacity-90"
+          style="background-color: var(--bg); border-color: var(--border);">
+          <div>
+            <div class="text-sm font-semibold flex items-center gap-2">
+              <span>🔗 Collega file .json su disco</span>
+              <span id="fileLinkBadge" class="text-[10px] px-2 py-0.5 rounded-full font-normal" style="background-color: var(--surface); border: 1px solid var(--border);">Non attivo</span>
             </div>
-            <div class="note-actions" onclick="event.stopPropagation()">
-              <button class="btn-rescue" onclick="rescueNote('${n.id}')" title="Riporta in cima (R)">↑ Rescue</button>
-              <button onclick="editNote('${n.id}')" title="Modifica (E)">✎</button>
-              <button onclick="toggleArchiveNote('${n.id}')" title="Archivia/Ripristina (A)">${n.archived ? '📤' : '📦'}</button>
-              <button onclick="deleteNote('${n.id}')" title="Elimina">✕</button>
-            </div>
+            <div class="text-xs mt-0.5" style="color: var(--text-muted);">Salva automaticamente ogni modifica sul file (Chrome/Edge Desktop)</div>
+          </div>
+        </button>
+
+        <!-- Export JSON -->
+        <button id="btnExportJson" type="button"
+          class="w-full p-3 rounded-xl border text-left flex items-center justify-between transition-colors hover:opacity-90"
+          style="background-color: var(--bg); border-color: var(--border);">
+          <div>
+            <div class="text-sm font-semibold">⬇️ Scarica Backup (.json)</div>
+            <div class="text-xs mt-0.5" style="color: var(--text-muted);">Esporta tutte le note in un file JSON portabile</div>
+          </div>
+        </button>
+
+        <!-- Import JSON -->
+        <button id="btnImportJson" type="button"
+          class="w-full p-3 rounded-xl border text-left flex items-center justify-between transition-colors hover:opacity-90"
+          style="background-color: var(--bg); border-color: var(--border);">
+          <div>
+            <div class="text-sm font-semibold">⬆️ Importa da file (.json)</div>
+            <div class="text-xs mt-0.5" style="color: var(--text-muted);">Unisci o sostituisci le note da un file esistente</div>
+          </div>
+        </button>
+        <input id="hiddenFileInput" type="file" accept=".json,application/json" class="hidden">
+      </div>
+
+      <div class="pt-2 flex justify-end">
+        <button type="button" onclick="closeModals()" class="px-4 py-2 rounded-lg text-xs font-medium border" style="border-color: var(--border);">Chiudi</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: STORAGE MODE & FIREBASE CLOUD MULTIPLATFORM -->
+  <div id="storageModal" class="fixed inset-0 z-40 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-xs overflow-y-auto">
+    <div class="w-full max-w-lg rounded-2xl p-5 sm:p-6 border shadow-xl space-y-4 my-auto"
+      style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
+      
+      <div class="flex items-center justify-between border-b pb-3" style="border-color: var(--border);">
+        <div>
+          <h2 class="font-serif-editorial text-xl font-medium">Modalità di Archiviazione & Cloud</h2>
+          <p class="text-xs" style="color: var(--text-muted);">Scegli se lavorare in locale o sincronizzare con Firebase</p>
+        </div>
+        <button type="button" onclick="closeModals()" class="p-1.5 rounded-lg text-sm" style="color: var(--text-muted);">✕</button>
+      </div>
+
+      <!-- Mode Switcher Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+        <button id="btnSelectLocalMode" type="button"
+          class="p-3.5 rounded-xl border text-left transition-all"
+          style="background-color: var(--bg); border-color: var(--border);">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-semibold">📁 Modalità Locale</span>
+            <span id="badgeLocalActive" class="text-[10px] px-2 py-0.5 rounded-full font-medium" style="background-color: var(--rescue-bg); color: var(--rescue-text);">Attiva</span>
+          </div>
+          <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
+            Salvataggio istantaneo nel browser e su file <code>.json</code>. Nessun account richiesto.
+          </p>
+        </button>
+
+        <button id="btnSelectCloudMode" type="button"
+          class="p-3.5 rounded-xl border text-left transition-all"
+          style="background-color: var(--bg); border-color: var(--border);">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-sm font-semibold">☁️ Cloud Firebase</span>
+            <span id="badgeCloudActive" class="hidden text-[10px] px-2 py-0.5 rounded-full font-medium" style="background-color: var(--rescue-bg); color: var(--rescue-text);">Attiva</span>
+          </div>
+          <p class="text-xs leading-relaxed" style="color: var(--text-muted);">
+            Sincronizzazione in tempo reale tra mobile e desktop tramite Firestore.
+          </p>
+        </button>
+      </div>
+
+      <!-- Cloud Status & Auth Box -->
+      <div id="cloudDetailsSection" class="p-4 rounded-xl border space-y-3" style="background-color: var(--bg); border-color: var(--border);">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-semibold uppercase tracking-wider" style="color: var(--text-muted);">Stato Connessione Cloud</span>
+          <span id="cloudAuthBadge" class="text-xs font-medium" style="color: var(--text-secondary);">Non connesso</span>
+        </div>
+
+        <div id="userIdBox" class="hidden p-2.5 rounded-lg border text-xs break-all font-mono" style="background-color: var(--surface); border-color: var(--border);">
+          <div class="text-[10px] uppercase font-sans mb-0.5" style="color: var(--text-muted);">Il tuo ID Utente Cloud (UID):</div>
+          <span id="userIdDisplay">-</span>
+        </div>
+
+        <!-- Auth Actions (Email/Password, Google or Instant Cloud Session) -->
+        <div id="authActionsContainer" class="space-y-2.5 pt-1">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <input id="authEmail" type="email" placeholder="Email (opzionale)"
+              class="px-3 py-2 rounded-lg text-xs border outline-none"
+              style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
+            <input id="authPassword" type="password" placeholder="Password"
+              class="px-3 py-2 rounded-lg text-xs border outline-none"
+              style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
+          </div>
+          <div class="flex flex-wrap gap-2">
+            <button id="btnEmailSignIn" type="button"
+              class="px-3 py-2 rounded-lg text-xs font-semibold transition-all"
+              style="background-color: var(--accent); color: var(--accent-fg);">
+              Accedi / Registrati con Email
+            </button>
+            <button id="btnGoogleSignIn" type="button"
+              class="px-3 py-2 rounded-lg text-xs font-medium border transition-all"
+              style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
+              Accedi con Google
+            </button>
+            <button id="btnAnonSignIn" type="button"
+              class="px-3 py-2 rounded-lg text-xs font-medium border transition-all"
+              style="background-color: var(--surface); border-color: var(--border); color: var(--text-secondary);">
+              Sessione Cloud Rapida
+            </button>
           </div>
         </div>
-      `;
-    }).join('');
-  }
 
-  window.selectCard = function(idx) {
-    selectedIndex = idx;
-    render();
-  };
+        <!-- Merge Local Notes to Cloud Button -->
+        <div class="pt-2 border-t flex items-center justify-between gap-2" style="border-color: var(--border);">
+          <span class="text-xs" style="color: var(--text-muted);">Hai note salvate in locale?</span>
+          <button id="btnPushLocalToCloud" type="button"
+            class="px-3 py-1.5 rounded-lg text-xs font-medium border transition-all"
+            style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
+            ⬆️ Invia note locali al Cloud
+          </button>
+        </div>
+      </div>
 
-  function escapeHtml(str) {
-    return str.replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
-  }
+      <!-- Custom Firebase Config Accordion (For Self-Hosted / Standalone Use) -->
+      <details class="rounded-xl border p-3 text-xs" style="border-color: var(--border); background-color: var(--bg-subtle);">
+        <summary class="cursor-pointer font-medium select-none" style="color: var(--text-secondary);">
+          ⚙️ Configurazione Firebase Personale (per uso fuori da questo ambiente)
+        </summary>
+        <div class="mt-3 space-y-2">
+          <p style="color: var(--text-muted);">
+            Se scarichi questo file HTML per usarlo sui tuoi dispositivi personali, incolla qui l'oggetto JSON <code>firebaseConfig</code> del tuo progetto Firebase:
+          </p>
+          <textarea id="customFirebaseConfigInput" rows="4"
+            placeholder='{"apiKey": "...", "authDomain": "...", "projectId": "..."}'
+            class="w-full p-2.5 rounded-lg font-mono text-[11px] border outline-none"
+            style="background-color: var(--surface); border-color: var(--border); color: var(--text);"></textarea>
+          <div class="flex justify-end gap-2">
+            <button id="btnClearCustomConfig" type="button" class="px-3 py-1.5 rounded-lg border" style="border-color: var(--border);">Ripristina Default</button>
+            <button id="btnSaveCustomConfig" type="button" class="px-3 py-1.5 rounded-lg font-semibold" style="background-color: var(--accent); color: var(--accent-fg);">Salva e Connetti</button>
+          </div>
+        </div>
+      </details>
 
-  // --- EVENT LISTENERS ---
-  const noteInput = document.getElementById('noteInput');
-  let lastEnterTime = 0;
+      <div class="pt-1 flex justify-end">
+        <button type="button" onclick="closeModals()" class="px-4 py-2 rounded-lg text-xs font-medium border" style="border-color: var(--border);">Chiudi</button>
+      </div>
+    </div>
+  </div>
 
-  noteInput.addEventListener('keydown', (e) => {
-    // Ctrl+Invio o Cmd+Invio
-    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
-      e.preventDefault();
-      addNote(noteInput.value);
-      noteInput.value = '';
-      return;
+  <!-- MODAL 3: IMPORT CONFIRMATION (MERGE OR REPLACE) -->
+  <div id="importChoiceModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+    <div class="w-full max-w-sm rounded-2xl p-5 border shadow-xl space-y-4"
+      style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
+      <h3 class="font-serif-editorial text-lg font-medium">Importa note da JSON</h3>
+      <p id="importModalDesc" class="text-xs leading-relaxed" style="color: var(--text-secondary);">
+        Vuoi unire le note del file a quelle attuali o sostituire completamente l'elenco?
+      </p>
+      <div class="flex justify-end gap-2 pt-2">
+        <button type="button" onclick="closeImportModal()" class="px-3 py-2 rounded-lg text-xs border" style="border-color: var(--border);">Annulla</button>
+        <button id="btnImportReplace" type="button" class="px-3 py-2 rounded-lg text-xs border font-medium" style="border-color: var(--border); color: var(--danger-text);">Sostituisci tutto</button>
+        <button id="btnImportMerge" type="button" class="px-3 py-2 rounded-lg text-xs font-semibold" style="background-color: var(--accent); color: var(--accent-fg);">Unisci (Consigliato)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION & FIREBASE SCRIPT -->
+  <script type="module">
+    import { initializeApp, getApps } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import {
+      getAuth,
+      signInAnonymously,
+      signInWithCustomToken,
+      onAuthStateChanged,
+      GoogleAuthProvider,
+      signInWithPopup,
+      signInWithEmailAndPassword,
+      createUserWithEmailAndPassword
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import {
+      getFirestore,
+      collection,
+      doc,
+      setDoc,
+      deleteDoc,
+      onSnapshot
+    } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // --- CONSTANTS & STATE ---
+    const LOCAL_NOTES_KEY = 'tyngdkraft_notes_v1';
+    const THEME_KEY = 'tyngdkraft_theme_v1';
+    const STORAGE_MODE_KEY = 'tyngdkraft_mode_v1';
+    const CUSTOM_FB_KEY = 'tyngdkraft_custom_fb_v1';
+    const KNOWN_TAGS = ['read', 'watch', 'idea', 'todo', 'listen', 'code', 'work'];
+
+    let localNotes = [];
+    let cloudNotes = [];
+    let storageMode = localStorage.getItem(STORAGE_MODE_KEY) || 'local'; // 'local' | 'cloud'
+    let activeTag = null;
+    let showArchived = false;
+    let selectedIndex = -1;
+    let editingNoteId = null;
+    let confirmingDeleteId = null;
+    let fileHandle = null;
+    let pendingImportedNotes = null;
+
+    // Firebase Instances
+    let app = null;
+    let db = null;
+    let auth = null;
+    let currentUser = null;
+    let unsubscribeFirestore = null;
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'tyngdkraft-notes-app';
+
+    // --- INITIALIZATION ---
+    function initApp() {
+      initTheme();
+      loadLocalNotes();
+      initFirebase();
+      updateModeUI();
+      render();
     }
-    // Doppio Invio rapido (stile Gravity)
-    if (e.key === 'Enter' && !e.shiftKey) {
+
+    // --- THEME MANAGEMENT ---
+    function initTheme() {
+      const savedTheme = localStorage.getItem(THEME_KEY);
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      syncThemeIcons();
+    }
+
+    function toggleTheme() {
+      const isDark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem(THEME_KEY, isDark ? 'dark' : 'light');
+      syncThemeIcons();
+    }
+
+    function syncThemeIcons() {
+      const isDark = document.documentElement.classList.contains('dark');
+      document.getElementById('iconSun').classList.toggle('hidden', !isDark);
+      document.getElementById('iconMoon').classList.toggle('hidden', isDark);
+    }
+
+    // --- LOCAL STORAGE & INITIAL SEED NOTES ---
+    function loadLocalNotes() {
+      const raw = localStorage.getItem(LOCAL_NOTES_KEY);
+      if (raw) {
+        try {
+          localNotes = JSON.parse(raw);
+          return;
+        } catch (e) {
+          console.error('Errore lettura note locali:', e);
+        }
+      }
+
+      // Seed default editorial notes demonstrating Karpathy's Gravity method
       const now = Date.now();
-      if (now - lastEnterTime < 450 && noteInput.value.trim().length > 0) {
+      const day = 86400000;
+      localNotes = [
+        {
+          id: 'seed-1',
+          text: 'idea: Il metodo Append-and-Review di Andrej Karpathy elimina le cartelle: ogni nuovo pensiero entra in cima, il resto scende dolcemente sul fondo.',
+          createdAt: now - (day * 2),
+          lastRescuedAt: now - 120000,
+          rescueCount: 2,
+          archived: false
+        },
+        {
+          id: 'seed-2',
+          text: 'todo: Prova a premere "↑ Rescue" (o fai swipe a destra su mobile) su una nota più vecchia per riportarla in superficie.',
+          createdAt: now - (day * 1),
+          lastRescuedAt: now - (day * 1),
+          rescueCount: 0,
+          archived: false
+        },
+        {
+          id: 'seed-3',
+          text: 'read: "Why Gravity Exists" — Tristan Manchester sul perché organizzare le note mentre le catturi crea sovraccarico cognitivo.',
+          createdAt: now - (day * 7),
+          lastRescuedAt: now - (day * 6),
+          rescueCount: 1,
+          archived: false
+        },
+        {
+          id: 'seed-4',
+          text: 'watch: Questa nota non viene toccata da oltre 20 giorni: nota come la sua opacità si sia attenuata per lasciare spazio visivo ai pensieri freschi.',
+          createdAt: now - (day * 24),
+          lastRescuedAt: now - (day * 24),
+          rescueCount: 0,
+          archived: false
+        }
+      ];
+      persistLocalNotes();
+    }
+
+    async function persistLocalNotes() {
+      localStorage.setItem(LOCAL_NOTES_KEY, JSON.stringify(localNotes));
+      if (fileHandle) {
+        try {
+          const writable = await fileHandle.createWritable();
+          await writable.write(JSON.stringify(localNotes, null, 2));
+          await writable.close();
+        } catch (err) {
+          console.error('Errore scrittura su file collegato:', err);
+        }
+      }
+    }
+
+    // --- FIREBASE INITIALIZATION & REALTIME SYNC ---
+    async function initFirebase() {
+      let config = null;
+      const customConfigRaw = localStorage.getItem(CUSTOM_FB_KEY);
+
+      if (customConfigRaw) {
+        try {
+          config = JSON.parse(customConfigRaw);
+          document.getElementById('customFirebaseConfigInput').value = customConfigRaw;
+        } catch (e) {
+          console.error('Custom Firebase config non valido:', e);
+        }
+      } else if (typeof __firebase_config !== 'undefined' && __firebase_config) {
+        try {
+          config = JSON.parse(__firebase_config);
+        } catch (e) {
+          console.error('Ambiente Firebase config non valido:', e);
+        }
+      }
+
+      if (!config) {
+        updateCloudStatusUI(false, 'Configurazione mancante');
+        return;
+      }
+
+      try {
+        app = getApps().length === 0 ? initializeApp(config) : getApps()[0];
+        auth = getAuth(app);
+        db = getFirestore(app);
+
+        // Rule 3: Auth Before Queries
+        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token && !customConfigRaw) {
+          await signInWithCustomToken(auth, __initial_auth_token);
+        } else if (!auth.currentUser) {
+          await signInAnonymously(auth);
+        }
+
+        onAuthStateChanged(auth, (user) => {
+          currentUser = user;
+          if (user) {
+            const label = user.email ? user.email : 'Connesso (Cloud)';
+            updateCloudStatusUI(true, label, user.uid);
+            startFirestoreListener(user.uid);
+          } else {
+            updateCloudStatusUI(false, 'Disconnesso');
+          }
+        });
+      } catch (err) {
+        console.error('Errore inizializzazione Firebase:', err);
+        updateCloudStatusUI(false, 'Errore connessione Cloud');
+      }
+    }
+
+    function startFirestoreListener(uid) {
+      if (!db || !uid) return;
+      if (unsubscribeFirestore) unsubscribeFirestore();
+
+      // Rule 1 & Rule 2: Strict path, simple collection query without orderBy/where
+      const notesCol = collection(db, 'artifacts', appId, 'users', uid, 'notes');
+      unsubscribeFirestore = onSnapshot(
+        notesCol,
+        (snapshot) => {
+          const fetched = [];
+          snapshot.forEach((docSnap) => {
+            fetched.push(docSnap.data());
+          });
+          cloudNotes = fetched;
+          if (storageMode === 'cloud') {
+            render();
+          }
+        },
+        (error) => {
+          console.error('Errore sincronizzazione Firestore:', error);
+          showToast('Errore di sincronizzazione Cloud');
+        }
+      );
+    }
+
+    function updateCloudStatusUI(connected, statusText, uid = '') {
+      const badge = document.getElementById('cloudAuthBadge');
+      const uidBox = document.getElementById('userIdBox');
+      const uidDisplay = document.getElementById('userIdDisplay');
+
+      badge.textContent = statusText;
+      badge.style.color = connected ? 'var(--rescue-text)' : 'var(--text-muted)';
+
+      if (connected && uid) {
+        uidBox.classList.remove('hidden');
+        uidDisplay.textContent = uid;
+      } else {
+        uidBox.classList.add('hidden');
+      }
+      updateModeUI();
+    }
+
+    // --- ACTIVE DATA SOURCE HELPERS ---
+    function getActiveNotesArray() {
+      return storageMode === 'cloud' ? cloudNotes : localNotes;
+    }
+
+    async function saveSingleNote(noteObj) {
+      if (storageMode === 'cloud') {
+        if (!currentUser || !db) {
+          showToast('Connettiti al Cloud o passa in modalità Locale');
+          return;
+        }
+        const ref = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'notes', noteObj.id);
+        await setDoc(ref, noteObj);
+      } else {
+        const idx = localNotes.findIndex(n => n.id === noteObj.id);
+        if (idx >= 0) {
+          localNotes[idx] = noteObj;
+        } else {
+          localNotes.unshift(noteObj);
+        }
+        await persistLocalNotes();
+        render();
+      }
+    }
+
+    async function removeSingleNote(noteId) {
+      if (storageMode === 'cloud') {
+        if (!currentUser || !db) return;
+        const ref = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'notes', noteId);
+        await deleteDoc(ref);
+      } else {
+        localNotes = localNotes.filter(n => n.id !== noteId);
+        await persistLocalNotes();
+        render();
+      }
+    }
+
+    // --- CORE NOTE ACTIONS (APPEND, RESCUE, EDIT, ARCHIVE) ---
+    async function addNote(rawText) {
+      const text = rawText.trim();
+      if (!text) return;
+      const now = Date.now();
+      const newNote = {
+        id: now.toString(36) + '-' + Math.random().toString(36).slice(2, 7),
+        text,
+        createdAt: now,
+        lastRescuedAt: now,
+        rescueCount: 0,
+        archived: false
+      };
+      await saveSingleNote(newNote);
+      showToast('Aggiunta in cima ↑');
+    }
+
+    window.rescueNote = async function(id) {
+      const list = getActiveNotesArray();
+      const target = list.find(n => n.id === id);
+      if (!target) return;
+
+      const updated = {
+        ...target,
+        lastRescuedAt: Date.now(),
+        rescueCount: (target.rescueCount || 0) + 1,
+        archived: false
+      };
+      selectedIndex = 0;
+      await saveSingleNote(updated);
+      showToast(`Riportata a galla (${updated.rescueCount}×) ↑`);
+    };
+
+    window.startInlineEdit = function(id) {
+      editingNoteId = id;
+      confirmingDeleteId = null;
+      render();
+      setTimeout(() => {
+        const el = document.getElementById(`edit-textarea-${id}`);
+        if (el) {
+          el.focus();
+          el.setSelectionRange(el.value.length, el.value.length);
+        }
+      }, 20);
+    };
+
+    window.cancelInlineEdit = function() {
+      editingNoteId = null;
+      render();
+    };
+
+    window.saveInlineEdit = async function(id) {
+      const el = document.getElementById(`edit-textarea-${id}`);
+      if (!el) return;
+      const newText = el.value.trim();
+      if (!newText) return;
+
+      const list = getActiveNotesArray();
+      const target = list.find(n => n.id === id);
+      if (!target) return;
+
+      editingNoteId = null;
+      await saveSingleNote({ ...target, text: newText });
+      showToast('Nota aggiornata');
+    };
+
+    window.toggleArchiveNote = async function(id) {
+      const list = getActiveNotesArray();
+      const target = list.find(n => n.id === id);
+      if (!target) return;
+
+      const nextState = !target.archived;
+      await saveSingleNote({ ...target, archived: nextState });
+      showToast(nextState ? 'Spostata in archivio 📦' : 'Ripristinata nel flusso');
+    };
+
+    window.askDeleteNote = function(id) {
+      confirmingDeleteId = (confirmingDeleteId === id) ? null : id;
+      render();
+    };
+
+    window.confirmDeleteNote = async function(id) {
+      confirmingDeleteId = null;
+      await removeSingleNote(id);
+      showToast('Nota eliminata');
+    };
+
+    // --- PREFIX PARSING & GRAVITY CALCULATION ---
+    function parsePrefix(text) {
+      const match = (text || '').match(/^([a-zA-Z0-9_-]+):\s*(.*)$/s);
+      if (!match) return { prefix: null, body: text || '', tagKey: null };
+      const prefix = match[1].toLowerCase();
+      const body = match[2];
+      const tagKey = KNOWN_TAGS.includes(prefix) ? prefix : 'custom';
+      return { prefix, body, tagKey };
+    }
+
+    function getGravityClass(lastRescuedAt) {
+      const ageDays = (Date.now() - (lastRescuedAt || Date.now())) / 86400000;
+      if (ageDays > 45) return 'gravity-3';
+      if (ageDays > 14) return 'gravity-2';
+      if (ageDays > 3)  return 'gravity-1';
+      return 'gravity-0';
+    }
+
+    function formatRelativeTime(ts) {
+      const diffSec = Math.max(0, Math.floor((Date.now() - ts) / 1000));
+      if (diffSec < 60) return 'ora';
+      const min = Math.floor(diffSec / 60);
+      if (min < 60) return `${min}m fa`;
+      const hrs = Math.floor(min / 60);
+      if (hrs < 24) return `${hrs}h fa`;
+      const days = Math.floor(hrs / 24);
+      if (days < 30) return `${days}g fa`;
+      const months = Math.floor(days / 30);
+      return `${months} mesi fa`;
+    }
+
+    // --- QUICK PREFIX PILL INSERTION ---
+    window.insertPrefix = function(prefix) {
+      const input = document.getElementById('noteInput');
+      const current = input.value;
+      const existingMatch = current.match(/^([a-zA-Z0-9_-]+):\s*(.*)$/s);
+      if (existingMatch) {
+        input.value = `${prefix}: ${existingMatch[2]}`;
+      } else {
+        input.value = `${prefix}: ${current}`;
+      }
+      input.focus();
+    };
+
+    // --- FILTERING & RENDERING ---
+    function getFilteredNotes() {
+      const source = getActiveNotesArray();
+      const rawQuery = document.getElementById('searchInput').value || '';
+      const queryNorm = rawQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+      const sorted = [...source].sort((a, b) => (b.lastRescuedAt || 0) - (a.lastRescuedAt || 0));
+
+      return sorted.filter(note => {
+        if (Boolean(note.archived) !== showArchived) return false;
+        const { prefix } = parsePrefix(note.text);
+        if (activeTag && prefix !== activeTag) return false;
+        if (queryNorm) {
+          const textNorm = (note.text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+          if (!textNorm.includes(queryNorm)) return false;
+        }
+        return true;
+      });
+    }
+
+    function renderTagsFilterBar() {
+      const container = document.getElementById('tagsFilterBar');
+      const source = getActiveNotesArray().filter(n => Boolean(n.archived) === showArchived);
+      const counts = {};
+
+      source.forEach(n => {
+        const { prefix } = parsePrefix(n.text);
+        if (prefix) counts[prefix] = (counts[prefix] || 0) + 1;
+      });
+
+      const prefixes = Object.keys(counts).sort();
+      if (prefixes.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+
+      const allChip = `
+        <button type="button" onclick="setTagFilter(null)"
+          class="text-xs px-3 py-1 rounded-full font-medium shrink-0 border transition-all ${!activeTag ? 'ring-1 ring-current' : 'opacity-60'}"
+          style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
+          Tutte (${source.length})
+        </button>
+      `;
+
+      const tagChips = prefixes.map(p => {
+        const key = KNOWN_TAGS.includes(p) ? p : 'custom';
+        const isCurrent = activeTag === p;
+        const dimClass = (activeTag && !isCurrent) ? 'opacity-45' : '';
+        return `
+          <button type="button" onclick="setTagFilter('${escapeHtml(p)}')"
+            class="tag-${key} ${dimClass} text-xs px-3 py-1 rounded-full font-semibold shrink-0 transition-all">
+            ${escapeHtml(p)}: ${counts[p]}
+          </button>
+        `;
+      }).join('');
+
+      container.innerHTML = allChip + tagChips;
+    }
+
+    window.setTagFilter = function(tag) {
+      activeTag = (activeTag === tag) ? null : tag;
+      selectedIndex = -1;
+      render();
+    };
+
+    function render() {
+      renderTagsFilterBar();
+
+      const allSource = getActiveNotesArray();
+      const archivedCount = allSource.filter(n => n.archived).length;
+      document.getElementById('archiveCountBadge').textContent = archivedCount;
+
+      const btnArch = document.getElementById('btnToggleArchive');
+      if (showArchived) {
+        btnArch.style.backgroundColor = 'var(--accent)';
+        btnArch.style.color = 'var(--accent-fg)';
+      } else {
+        btnArch.style.backgroundColor = 'var(--surface)';
+        btnArch.style.color = 'var(--text-secondary)';
+      }
+
+      document.getElementById('streamStatusText').textContent = showArchived
+        ? `Archivio (${archivedCount} note)`
+        : `Flusso attivo · ${allSource.length - archivedCount} pensieri`;
+
+      const filtered = getFilteredNotes();
+      const stream = document.getElementById('notesStream');
+
+      if (filtered.length === 0) {
+        stream.innerHTML = `
+          <div class="rounded-xl p-10 text-center border border-dashed" style="border-color: var(--border); color: var(--text-muted);">
+            <p class="font-serif-editorial text-lg mb-1">Nessun pensiero in questa vista</p>
+            <p class="text-xs">Scrivi in alto per aggiungere al flusso o cambia i filtri attivi.</p>
+          </div>
+        `;
+        return;
+      }
+
+      stream.innerHTML = filtered.map((note, idx) => {
+        const { prefix, body, tagKey } = parsePrefix(note.text);
+        const gravityClass = getGravityClass(note.lastRescuedAt);
+        const isSelected = idx === selectedIndex ? 'selected' : '';
+        const borderAccentClass = tagKey ? `card-border-${tagKey}` : '';
+        const isEditing = editingNoteId === note.id;
+        const isConfirmingDelete = confirmingDeleteId === note.id;
+
+        const prefixBadgeHtml = prefix
+          ? `<span class="tag-${tagKey} inline-block text-xs font-sans font-semibold px-2 py-0.5 rounded-md mr-2 align-middle">${escapeHtml(prefix)}:</span>`
+          : '';
+
+        const rescuedHtml = (note.rescueCount || 0) > 0
+          ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
+               style="background-color: var(--rescue-bg); color: var(--rescue-text); border: 1px solid var(--rescue-border);">
+               ↑ salvata ${formatRelativeTime(note.lastRescuedAt)} (${note.rescueCount}×)
+             </span>`
+          : '';
+
+        if (isEditing) {
+          return `
+            <div class="note-card selected p-4 ${borderAccentClass}">
+              <textarea id="edit-textarea-${note.id}" rows="3"
+                class="w-full bg-transparent border rounded-lg p-2.5 outline-none font-serif-editorial text-lg leading-relaxed mb-3"
+                style="border-color: var(--border-strong); color: var(--text);">${escapeHtml(note.text)}</textarea>
+              <div class="flex justify-end gap-2">
+                <button type="button" onclick="cancelInlineEdit()" class="px-3 py-1.5 rounded-lg text-xs border" style="border-color: var(--border);">Annulla</button>
+                <button type="button" onclick="saveInlineEdit('${note.id}')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold" style="background-color: var(--accent); color: var(--accent-fg);">Salva modifica</button>
+              </div>
+            </div>
+          `;
+        }
+
+        return `
+          <div class="note-card-wrapper">
+            <!-- Touch Swipe Feedback Backdrop -->
+            <div id="backdrop-${note.id}" class="swipe-backdrop">
+              <span style="color: var(--rescue-text);">↑ Rescue in cima</span>
+              <span style="color: var(--text-secondary);">${note.archived ? '📤 Ripristina' : '📦 Archivia'}</span>
+            </div>
+
+            <article id="card-${note.id}" data-id="${note.id}"
+              onclick="selectCard(${idx})"
+              class="note-card ${gravityClass} ${isSelected} ${borderAccentClass} p-4 sm:p-5">
+              
+              <div class="font-serif-editorial text-[1.12rem] sm:text-[1.2rem] leading-relaxed whitespace-pre-wrap break-words mb-3.5" style="color: var(--text);">${prefixBadgeHtml}${escapeHtml(body)}</div>
+
+              <div class="flex items-center justify-between flex-wrap gap-2 pt-2 border-t" style="border-color: var(--border);">
+                <div class="flex items-center flex-wrap gap-2 text-xs" style="color: var(--text-muted);">
+                  ${rescuedHtml}
+                  <span>scritta ${formatRelativeTime(note.createdAt)}</span>
+                </div>
+
+                <!-- Touch-friendly Action Controls -->
+                <div class="flex items-center gap-1" onclick="event.stopPropagation()">
+                  ${isConfirmingDelete ? `
+                    <span class="text-xs mr-1" style="color: var(--danger-text);">Eliminare?</span>
+                    <button type="button" onclick="confirmDeleteNote('${note.id}')"
+                      class="px-2.5 py-1 rounded-md text-xs font-semibold"
+                      style="background-color: var(--danger-bg); color: var(--danger-text);">Sì</button>
+                    <button type="button" onclick="askDeleteNote('${note.id}')"
+                      class="px-2 py-1 rounded-md text-xs border" style="border-color: var(--border);">No</button>
+                  ` : `
+                    <button type="button" onclick="rescueNote('${note.id}')" title="Riporta in cima (R)"
+                      class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all active:scale-95"
+                      style="background-color: var(--rescue-bg); color: var(--rescue-text); border: 1px solid var(--rescue-border); min-height: 34px;">
+                      ↑ Rescue
+                    </button>
+                    <button type="button" onclick="startInlineEdit('${note.id}')" title="Modifica (E)"
+                      class="p-2 rounded-lg text-xs transition-colors hover:opacity-80"
+                      style="color: var(--text-secondary); min-width: 34px; min-height: 34px;">
+                      ✎
+                    </button>
+                    <button type="button" onclick="toggleArchiveNote('${note.id}')" title="${note.archived ? 'Ripristina' : 'Archivia'} (A)"
+                      class="p-2 rounded-lg text-xs transition-colors hover:opacity-80"
+                      style="color: var(--text-secondary); min-width: 34px; min-height: 34px;">
+                      ${note.archived ? '📤' : '📦'}
+                    </button>
+                    <button type="button" onclick="askDeleteNote('${note.id}')" title="Elimina"
+                      class="p-2 rounded-lg text-xs transition-colors hover:opacity-80"
+                      style="color: var(--text-muted); min-width: 34px; min-height: 34px;">
+                      ✕
+                    </button>
+                  `}
+                </div>
+              </div>
+            </article>
+          </div>
+        `;
+      }).join('');
+
+      attachTouchSwipeListeners();
+    }
+
+    window.selectCard = function(idx) {
+      selectedIndex = idx;
+      render();
+    };
+
+    // --- MOBILE TOUCH SWIPE GESTURES (SWIPE RIGHT = RESCUE, SWIPE LEFT = ARCHIVE) ---
+    function attachTouchSwipeListeners() {
+      const cards = document.querySelectorAll('.note-card[data-id]');
+      cards.forEach(card => {
+        let startX = 0;
+        let startY = 0;
+        let currentX = 0;
+        let isDragging = false;
+        const noteId = card.getAttribute('data-id');
+        const backdrop = document.getElementById(`backdrop-${noteId}`);
+
+        card.addEventListener('touchstart', (e) => {
+          if (e.touches.length !== 1) return;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          currentX = 0;
+          isDragging = true;
+          card.style.transition = 'none';
+        }, { passive: true });
+
+        card.addEventListener('touchmove', (e) => {
+          if (!isDragging) return;
+          const dx = e.touches[0].clientX - startX;
+          const dy = e.touches[0].clientY - startY;
+
+          // Ignore if scrolling vertically
+          if (Math.abs(dy) > Math.abs(dx) && Math.abs(currentX) < 12) {
+            isDragging = false;
+            card.style.transform = '';
+            return;
+          }
+
+          if (Math.abs(dx) > 12) {
+            currentX = Math.max(-110, Math.min(110, dx));
+            card.style.transform = `translateX(${currentX}px)`;
+            if (backdrop) {
+              backdrop.style.opacity = Math.min(1, Math.abs(currentX) / 75).toString();
+              backdrop.style.backgroundColor = currentX > 0 ? 'var(--rescue-bg)' : 'var(--bg-subtle)';
+            }
+          }
+        }, { passive: true });
+
+        card.addEventListener('touchend', () => {
+          if (!isDragging) return;
+          isDragging = false;
+          card.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)';
+          card.style.transform = '';
+          if (backdrop) backdrop.style.opacity = '0';
+
+          if (currentX > 72) {
+            window.rescueNote(noteId);
+          } else if (currentX < -72) {
+            window.toggleArchiveNote(noteId);
+          }
+          currentX = 0;
+        });
+      });
+    }
+
+    // --- STORAGE MODE UI & SWITCHING ---
+    function updateModeUI() {
+      const dot = document.getElementById('storageDot');
+      const label = document.getElementById('storageLabel');
+      const badgeLocal = document.getElementById('badgeLocalActive');
+      const badgeCloud = document.getElementById('badgeCloudActive');
+
+      if (storageMode === 'cloud') {
+        dot.className = 'w-2 h-2 rounded-full ' + (currentUser ? 'bg-emerald-600' : 'bg-red-500');
+        label.textContent = currentUser ? 'Cloud Sync' : 'Cloud (Off)';
+        badgeLocal.classList.add('hidden');
+        badgeCloud.classList.remove('hidden');
+      } else {
+        dot.className = 'w-2 h-2 rounded-full ' + (fileHandle ? 'bg-emerald-600' : 'bg-amber-600');
+        label.textContent = fileHandle ? `File: ${fileHandle.name}` : 'Locale';
+        badgeLocal.classList.remove('hidden');
+        badgeCloud.classList.add('hidden');
+      }
+    }
+
+    function setStorageMode(mode) {
+      storageMode = mode;
+      localStorage.setItem(STORAGE_MODE_KEY, mode);
+      selectedIndex = -1;
+      updateModeUI();
+      render();
+      showToast(mode === 'cloud' ? 'Modalità Cloud Firebase attiva ☁️' : 'Modalità Locale attiva 📁');
+    }
+
+    // --- EVENT LISTENERS ---
+    document.getElementById('btnThemeToggle').addEventListener('click', toggleTheme);
+
+    // Modals open/close
+    document.getElementById('btnFileModal').addEventListener('click', () => {
+      document.getElementById('fileModal').classList.remove('hidden');
+      document.getElementById('fileModal').classList.add('flex');
+    });
+
+    document.getElementById('btnStorageModal').addEventListener('click', () => {
+      document.getElementById('storageModal').classList.remove('hidden');
+      document.getElementById('storageModal').classList.add('flex');
+    });
+
+    window.closeModals = function() {
+      document.getElementById('fileModal').classList.add('hidden');
+      document.getElementById('fileModal').classList.remove('flex');
+      document.getElementById('storageModal').classList.add('hidden');
+      document.getElementById('storageModal').classList.remove('flex');
+    };
+
+    window.closeImportModal = function() {
+      pendingImportedNotes = null;
+      document.getElementById('importChoiceModal').classList.add('hidden');
+      document.getElementById('importChoiceModal').classList.remove('flex');
+    };
+
+    // Capture Input Listeners
+    const noteInput = document.getElementById('noteInput');
+    let lastEnterTimestamp = 0;
+
+    noteInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         addNote(noteInput.value);
         noteInput.value = '';
-        lastEnterTime = 0;
-      } else {
-        lastEnterTime = now;
+        return;
       }
-    }
-  });
-
-  document.getElementById('btnAdd').addEventListener('click', () => {
-    addNote(noteInput.value);
-    noteInput.value = '';
-    noteInput.focus();
-  });
-
-  document.getElementById('searchInput').addEventListener('input', () => {
-    selectedIndex = -1;
-    render();
-  });
-
-  document.getElementById('btnToggleArchive').addEventListener('click', () => {
-    showArchived = !showArchived;
-    selectedIndex = -1;
-    render();
-  });
-
-  // Scorciatoie da tastiera globali (R, E, A, Frecce)
-  document.addEventListener('keydown', (e) => {
-    const activeEl = document.activeElement;
-    const isTyping = activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'INPUT';
-    if (isTyping) {
-      if (e.key === 'Escape') activeEl.blur();
-      return;
-    }
-
-    const list = getFilteredNotes();
-    if (list.length === 0) return;
-
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      selectedIndex = Math.min(list.length - 1, selectedIndex + 1);
-      render();
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      selectedIndex = Math.max(0, selectedIndex - 1);
-      render();
-    } else if (selectedIndex >= 0 && selectedIndex < list.length) {
-      const target = list[selectedIndex];
-      if (e.key.toLowerCase() === 'r') {
-        e.preventDefault();
-        rescueNote(target.id);
-      } else if (e.key.toLowerCase() === 'a') {
-        e.preventDefault();
-        toggleArchiveNote(target.id);
-      } else if (e.key.toLowerCase() === 'e') {
-        e.preventDefault();
-        editNote(target.id);
-      }
-    }
-  });
-
-  // --- GESTIONE FILE LOCALE (File System Access API + Fallback) ---
-  document.getElementById('btnLinkFile').addEventListener('click', async () => {
-    if (!('showSaveFilePicker' in window)) {
-      alert('Il tuo browser non supporta il collegamento diretto ai file su disco (usa Chrome o Edge desktop). Puoi comunque usare Esporta/Importa.');
-      return;
-    }
-    try {
-      const choice = confirm('Vuoi APRIRE un file .json esistente (OK) o CREARNE uno nuovo (Annulla)?');
-      if (choice) {
-        const [handle] = await window.showOpenFilePicker({
-          types: [{ description: 'JSON File', accept: {'application/json': ['.json']} }]
-        });
-        fileHandle = handle;
-        const file = await fileHandle.getFile();
-        const content = await file.text();
-        notes = JSON.parse(content);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
-      } else {
-        fileHandle = await window.showSaveFilePicker({
-          suggestedName: 'gravity-notes.json',
-          types: [{ description: 'JSON File', accept: {'application/json': ['.json']} }]
-        });
-        await saveNotes();
-      }
-      const status = document.getElementById('syncStatus');
-      status.textContent = `Sincronizzato: ${fileHandle.name}`;
-      status.classList.add('active');
-      render();
-    } catch (err) {
-      console.log('Operazione file annullata:', err);
-    }
-  });
-
-  document.getElementById('btnExport').addEventListener('click', () => {
-    const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `gravity-notes-${new Date().toISOString().slice(0,10)}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
-  });
-
-  document.getElementById('btnImport').addEventListener('click', () => {
-    document.getElementById('fileInput').click();
-  });
-
-  document.getElementById('fileInput').addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      try {
-        const imported = JSON.parse(ev.target.result);
-        if (Array.isArray(imported)) {
-          notes = imported;
-          saveNotes();
-          render();
+      if (e.key === 'Enter' && !e.shiftKey) {
+        const now = Date.now();
+        if (now - lastEnterTimestamp < 420 && noteInput.value.trim().length > 0) {
+          e.preventDefault();
+          addNote(noteInput.value);
+          noteInput.value = '';
+          lastEnterTimestamp = 0;
+        } else {
+          lastEnterTimestamp = now;
         }
-      } catch (err) {
-        alert('File JSON non valido.');
       }
-    };
-    reader.readAsText(file);
-  });
+    });
 
-  init();
-</script>
+    document.getElementById('btnAddNote').addEventListener('click', () => {
+      addNote(noteInput.value);
+      noteInput.value = '';
+      noteInput.focus();
+    });
+
+    // Search & Archive Toggle
+    const searchInput = document.getElementById('searchInput');
+    const btnClearSearch = document.getElementById('btnClearSearch');
+
+    searchInput.addEventListener('input', () => {
+      btnClearSearch.classList.toggle('hidden', !searchInput.value);
+      selectedIndex = -1;
+      render();
+    });
+
+    btnClearSearch.addEventListener('click', () => {
+      searchInput.value = '';
+      btnClearSearch.classList.add('hidden');
+      render();
+    });
+
+    document.getElementById('btnToggleArchive').addEventListener('click', () => {
+      showArchived = !showArchived;
+      selectedIndex = -1;
+      render();
+    });
+
+    // Keyboard Navigation (Up/Down, R, E, A)
+    document.addEventListener('keydown', (e) => {
+      const tag = document.activeElement?.tagName;
+      if (tag === 'TEXTAREA' || tag === 'INPUT') {
+        if (e.key === 'Escape') document.activeElement.blur();
+        return;
+      }
+
+      const list = getFilteredNotes();
+      if (list.length === 0) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedIndex = Math.min(list.length - 1, selectedIndex + 1);
+        render();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = Math.max(0, selectedIndex - 1);
+        render();
+      } else if (selectedIndex >= 0 && selectedIndex < list.length) {
+        const current = list[selectedIndex];
+        if (e.key.toLowerCase() === 'r') {
+          e.preventDefault();
+          window.rescueNote(current.id);
+        } else if (e.key.toLowerCase() === 'e') {
+          e.preventDefault();
+          window.startInlineEdit(current.id);
+        } else if (e.key.toLowerCase() === 'a') {
+          e.preventDefault();
+          window.toggleArchiveNote(current.id);
+        }
+      }
+    });
+
+    // --- LOCAL FILE & JSON OPERATIONS ---
+    document.getElementById('btnExportJson').addEventListener('click', () => {
+      const data = getActiveNotesArray();
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `tyngdkraft-notes-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('File JSON esportato ⬇️');
+    });
+
+    document.getElementById('btnImportJson').addEventListener('click', () => {
+      document.getElementById('hiddenFileInput').click();
+    });
+
+    document.getElementById('hiddenFileInput').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const parsed = JSON.parse(ev.target.result);
+          if (!Array.isArray(parsed)) {
+            showToast('Formato JSON non valido');
+            return;
+          }
+          pendingImportedNotes = parsed;
+          document.getElementById('importModalDesc').textContent =
+            `Trovate ${parsed.length} note nel file "${file.name}". Come vuoi procedere?`;
+          document.getElementById('importChoiceModal').classList.remove('hidden');
+          document.getElementById('importChoiceModal').classList.add('flex');
+        } catch (err) {
+          showToast('Errore nella lettura del file JSON');
+        }
+      };
+      reader.readAsText(file);
+      e.target.value = '';
+    });
+
+    document.getElementById('btnImportMerge').addEventListener('click', async () => {
+      if (!pendingImportedNotes) return;
+      const map = new Map();
+      localNotes.forEach(n => map.set(n.id, n));
+      pendingImportedNotes.forEach(n => {
+        if (n && n.id && n.text) map.set(n.id, n);
+      });
+      localNotes = Array.from(map.values());
+      await persistLocalNotes();
+      window.closeImportModal();
+      window.closeModals();
+      render();
+      showToast('Note unite con successo');
+    });
+
+    document.getElementById('btnImportReplace').addEventListener('click', async () => {
+      if (!pendingImportedNotes) return;
+      localNotes = pendingImportedNotes.filter(n => n && n.id && n.text);
+      await persistLocalNotes();
+      window.closeImportModal();
+      window.closeModals();
+      render();
+      showToast('Elenco note sostituito');
+    });
+
+    document.getElementById('btnLinkLocalFile').addEventListener('click', async () => {
+      if (!('showSaveFilePicker' in window)) {
+        showToast('Disponibile su browser desktop Chrome/Edge. Su mobile usa Esporta/Importa JSON.');
+        return;
+      }
+      try {
+        fileHandle = await window.showSaveFilePicker({
+          suggestedName: 'tyngdkraft-notes.json',
+          types: [{ description: 'JSON File', accept: { 'application/json': ['.json'] } }]
+        });
+        await persistLocalNotes();
+        document.getElementById('fileLinkBadge').textContent = fileHandle.name;
+        document.getElementById('fileLinkBadge').style.backgroundColor = 'var(--rescue-bg)';
+        document.getElementById('fileLinkBadge').style.color = 'var(--rescue-text)';
+        updateModeUI();
+        showToast(`Collegato a ${fileHandle.name}`);
+      } catch (err) {
+        // User cancelled picker
+      }
+    });
+
+    // --- CLOUD MODE & AUTH HANDLERS ---
+    document.getElementById('btnSelectLocalMode').addEventListener('click', () => setStorageMode('local'));
+    document.getElementById('btnSelectCloudMode').addEventListener('click', () => setStorageMode('cloud'));
+
+    document.getElementById('btnEmailSignIn').addEventListener('click', async () => {
+      if (!auth) return showToast('Configura prima Firebase');
+      const email = document.getElementById('authEmail').value.trim();
+      const pwd = document.getElementById('authPassword').value.trim();
+      if (!email || !pwd) return showToast('Inserisci email e password');
+
+      try {
+        await signInWithEmailAndPassword(auth, email, pwd);
+        setStorageMode('cloud');
+        showToast('Accesso effettuato ☁️');
+      } catch (err) {
+        try {
+          await createUserWithEmailAndPassword(auth, email, pwd);
+          setStorageMode('cloud');
+          showToast('Account creato e connesso ☁️');
+        } catch (createErr) {
+          showToast('Errore autenticazione: verifica credenziali');
+        }
+      }
+    });
+
+    document.getElementById('btnGoogleSignIn').addEventListener('click', async () => {
+      if (!auth) return showToast('Configura prima Firebase');
+      try {
+        const provider = new GoogleAuthProvider();
+        await signInWithPopup(auth, provider);
+        setStorageMode('cloud');
+        showToast('Accesso con Google completato ☁️');
+      } catch (err) {
+        showToast('Popup Google non supportato in questo frame, usa Sessione Rapida');
+      }
+    });
+
+    document.getElementById('btnAnonSignIn').addEventListener('click', async () => {
+      if (!auth) return showToast('Configura prima Firebase');
+      try {
+        await signInAnonymously(auth);
+        setStorageMode('cloud');
+        showToast('Sessione Cloud attiva ☁️');
+      } catch (err) {
+        showToast('Errore avvio sessione Cloud');
+      }
+    });
+
+    document.getElementById('btnPushLocalToCloud').addEventListener('click', async () => {
+      if (!currentUser || !db) {
+        return showToast('Connettiti prima al Cloud Firebase');
+      }
+      if (localNotes.length === 0) {
+        return showToast('Nessuna nota locale da inviare');
+      }
+      try {
+        for (const note of localNotes) {
+          const ref = doc(db, 'artifacts', appId, 'users', currentUser.uid, 'notes', note.id);
+          await setDoc(ref, note);
+        }
+        setStorageMode('cloud');
+        showToast(`${localNotes.length} note sincronizzate nel Cloud ☁️`);
+      } catch (err) {
+        showToast('Errore durante il caricamento sul Cloud');
+      }
+    });
+
+    document.getElementById('btnSaveCustomConfig').addEventListener('click', () => {
+      const val = document.getElementById('customFirebaseConfigInput').value.trim();
+      try {
+        JSON.parse(val);
+        localStorage.setItem(CUSTOM_FB_KEY, val);
+        showToast('Configurazione salvata, ricarico...');
+        setTimeout(() => location.reload(), 600);
+      } catch (e) {
+        showToast('JSON firebaseConfig non valido');
+      }
+    });
+
+    document.getElementById('btnClearCustomConfig').addEventListener('click', () => {
+      localStorage.removeItem(CUSTOM_FB_KEY);
+      document.getElementById('customFirebaseConfigInput').value = '';
+      showToast('Configurazione ripristinata');
+      setTimeout(() => location.reload(), 600);
+    });
+
+    // --- UTILITIES ---
+    function showToast(msg) {
+      const container = document.getElementById('toastContainer');
+      const textEl = document.getElementById('toastMessage');
+      textEl.textContent = msg;
+      container.classList.remove('opacity-0', 'translate-y-2');
+      container.classList.add('opacity-100', 'translate-y-0');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => {
+        container.classList.add('opacity-0', 'translate-y-2');
+        container.classList.remove('opacity-100', 'translate-y-0');
+      }, 2400);
+    }
+
+    function escapeHtml(str) {
+      return (str || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
+    }
+
+    // Boot Application
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
 </body>
 </html>
