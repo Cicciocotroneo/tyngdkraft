@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Tyngdkraft — Append & Review</title>
   
-  <!-- PWA Manifest & Meta per Mobile -->
-  <link rel="manifest" id="pwaManifest">
+  <!-- PWA Manifest & Meta Mobile -->
+  <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Tyngdkraft%22%2C%22short_name%22%3A%22Tyngdkraft%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f7f5f0%22%2C%22theme_color%22%3A%22%23f7f5f0%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Bcharset%3Dutf-8%2C%253Csvg%2520xmlns%253D%2527http%253A%2F%2Fwww.w3.org%2F2000%2Fsvg%2527%2520viewBox%253D%25270%25200%2520512%2520512%2527%2520fill%253D%2527%25232c2a29%2527%253E%253Crect%2520width%253D%2527512%2527%2520height%253D%2527512%2527%2520rx%253D%2527120%2527%2520fill%253D%2527%2523f7f5f0%2527%2F%253E%253Cpath%2520d%253D%2527M256%2520120v220m0%25200l-70-70m70%252070l70-70%2527%2520stroke%253D%2527%25232c2a29%2527%2520stroke-width%253D%252740%2527%2520stroke-linecap%253D%2527round%2527%2520stroke-linejoin%253D%2527round%2527%2F%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%2522%7D%5D%7D">
   <meta name="theme-color" content="#f7f5f0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -29,7 +29,6 @@
       --rescue: #2e7d32;
       --danger: #c62828;
       
-      /* Tag pastelli nordici chiari */
       --tag-read-bg: #e0f2fe; --tag-read-txt: #0369a1;
       --tag-watch-bg: #f3e8ff; --tag-watch-txt: #7e22ce;
       --tag-idea-bg: #fef9c3; --tag-idea-txt: #854d0e;
@@ -51,7 +50,6 @@
       --rescue: #4ade80;
       --danger: #f87171;
       
-      /* Tag pastelli nordici scuri */
       --tag-read-bg: rgba(56, 189, 248, 0.15); --tag-read-txt: #38bdf8;
       --tag-watch-bg: rgba(168, 85, 247, 0.15); --tag-watch-txt: #c084fc;
       --tag-idea-bg: rgba(250, 204, 21, 0.15); --tag-idea-txt: #facc15;
@@ -78,7 +76,6 @@
       margin: 0 auto;
     }
 
-    /* Header Editoriale Svedese */
     header {
       display: flex;
       justify-content: space-between;
@@ -138,11 +135,8 @@
       font-weight: 600;
     }
 
-    button.primary:hover {
-      opacity: 0.9;
-    }
+    button.primary:hover { opacity: 0.9; }
 
-    /* Install PWA Button (nascosto di default finché installabile) */
     #btnInstall {
       display: none;
       background: var(--rescue);
@@ -151,7 +145,6 @@
       font-weight: 600;
     }
 
-    /* Capture Box */
     .capture-box {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -159,11 +152,6 @@
       padding: 14px;
       margin-bottom: 16px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-      transition: border-color 0.2s;
-    }
-
-    .capture-box:focus-within {
-      border-color: var(--text-muted);
     }
 
     textarea {
@@ -209,7 +197,6 @@
       color: var(--text-muted);
     }
 
-    /* Toolbar & Tags */
     .toolbar {
       display: flex;
       flex-direction: column;
@@ -217,10 +204,7 @@
       margin-bottom: 16px;
     }
 
-    .search-row {
-      display: flex;
-      gap: 8px;
-    }
+    .search-row { display: flex; gap: 8px; }
 
     .search-input {
       flex: 1;
@@ -233,11 +217,7 @@
       outline: none;
     }
 
-    .tags-bar {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-    }
+    .tags-bar { display: flex; gap: 6px; flex-wrap: wrap; }
 
     .tag-chip {
       font-size: 0.75rem;
@@ -247,12 +227,9 @@
       border: 1px solid transparent;
       font-weight: 600;
       user-select: none;
-      transition: transform 0.1s;
     }
-    .tag-chip:hover { transform: translateY(-1px); }
     .tag-chip.inactive { opacity: 0.35; }
 
-    /* Dinamica Tag Styling */
     .tag-read   { background: var(--tag-read-bg); color: var(--tag-read-txt); }
     .tag-watch  { background: var(--tag-watch-bg); color: var(--tag-watch-txt); }
     .tag-idea   { background: var(--tag-idea-bg); color: var(--tag-idea-txt); }
@@ -262,12 +239,7 @@
     .tag-work   { background: var(--tag-work-bg); color: var(--tag-work-txt); }
     .tag-custom { background: var(--tag-custom-bg); color: var(--tag-custom-txt); }
 
-    /* Stream & Note Cards */
-    .stream {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+    .stream { display: flex; flex-direction: column; gap: 10px; }
 
     .note-card {
       background: var(--surface);
@@ -276,7 +248,6 @@
       border-radius: 10px;
       padding: 14px;
       transition: opacity 0.25s, border-color 0.15s;
-      position: relative;
     }
 
     .note-card.has-tag-read { border-left-color: var(--tag-read-txt); }
@@ -287,7 +258,6 @@
     .note-card.has-tag-code { border-left-color: var(--tag-code-txt); }
     .note-card.has-tag-work { border-left-color: var(--tag-work-txt); }
 
-    /* Sbiadimento Temporale (Gravità) */
     .gravity-0 { opacity: 1; }
     .gravity-1 { opacity: 0.8; }
     .gravity-2 { opacity: 0.55; }
@@ -356,13 +326,13 @@
   <header>
     <div class="brand">
       <h1>Tyngdkraft</h1>
-      <p>Append & Review Notes</p>
+      <p>Append & Review</p>
     </div>
     <div class="header-actions">
       <button id="btnInstall" title="Installa App">📲 Installa</button>
       <button id="btnThemeToggle" title="Cambia Tema">🌓</button>
       <button id="btnLinkFile" title="Collega file .json locale">🔗 File</button>
-      <button id="btnExport" title="Esporta .json">⬇️ Esporta</button>
+      <button id="btnExport" title="Esporta .json">⬇️</button>
       <button id="btnImport" title="Importa .json">⬆️</button>
       <input type="file" id="fileInput" accept=".json" style="display:none">
     </div>
@@ -396,30 +366,12 @@
   <div class="stream" id="notesStream"></div>
 
   <div class="footer-help">
-    Gravity notes · Salvataggio automatico locale & PWA offline
+    Tyngdkraft · Salvataggio automatico locale & PWA offline
   </div>
 </div>
 
 <script>
-  // --- GENERAZIONE DINAMICA MANIFEST PWA & SERVICE WORKER ---
-  const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#2c2a29"><rect width="512" height="512" rx="120" fill="#f7f5f0"/><path d="M256 120v220m0 0l-70-70m70 70l70-70" stroke="#2c2a29" stroke-width="40" stroke-linecap="round" stroke-linejoin="round"/></svg>';`;
-  const manifestData = {
-    name: "Tyngdkraft",
-    short_name: "Tyngdkraft",
-    start_url: window.location.href,
-    display: "standalone",
-    background_color: "#f7f5f0",
-    theme_color: "#f7f5f0",
-    icons: [{
-      src: "data:image/svg+xml;charset=utf-8," + encodeURIComponent(iconSvg),
-      sizes: "512x512",
-      type: "image/svg+xml"
-    }]
-  };
-  const blobManifest = new Blob([JSON.stringify(manifestData)], {type: 'application/json'});
-  document.getElementById('pwaManifest').href = URL.createObjectURL(blobManifest);
-
-  // Registrazione Service Worker per offline cache
+  // Registrazione Service Worker per cache offline
   if ('serviceWorker' in navigator) {
     const swCode = `self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));`;
     const swBlob = new Blob([swCode], {type: 'text/javascript'});
@@ -443,7 +395,6 @@
     deferredPrompt = null;
   });
 
-  // --- STATO E LOGICA APPLICAZIONE ---
   const STORAGE_KEY = 'tyngdkraft_notes_v1';
   let notes = [];
   let activeTag = null;
@@ -453,7 +404,6 @@
   const KNOWN_TAGS = ['read', 'watch', 'idea', 'todo', 'listen', 'code', 'work'];
 
   function init() {
-    // Tema salvato
     const savedTheme = localStorage.getItem('tyngdkraft_theme') || 'light';
     setTheme(savedTheme);
 
@@ -653,7 +603,6 @@
     return str.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
   }
 
-  // Event Listeners
   const noteInput = document.getElementById('noteInput');
   let lastEnter = 0;
   noteInput.addEventListener('keydown', (e) => {
@@ -676,7 +625,6 @@
     showArchived = !showArchived; render();
   });
 
-  // Gestione File .JSON locale
   document.getElementById('btnLinkFile').addEventListener('click', async () => {
     if (!('showSaveFilePicker' in window)) { alert('Usa Chrome o Edge per il collegamento diretto al file su disco.'); return; }
     try {
