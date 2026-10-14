@@ -5,14 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Tyngdkraft — Append & Review</title>
   
-  <!-- PWA Manifest & Meta Mobile -->
   <link rel="manifest" href="data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22Tyngdkraft%22%2C%22short_name%22%3A%22Tyngdkraft%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f7f5f0%22%2C%22theme_color%22%3A%22%23f7f5f0%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Bcharset%3Dutf-8%2C%253Csvg%2520xmlns%253D%2527http%253A%2F%2Fwww.w3.org%2F2000%2Fsvg%2527%2520viewBox%253D%25270%25200%2520512%2520512%2527%2520fill%253D%2527%25232c2a29%2527%253E%253Crect%2520width%253D%2527512%2527%2520height%253D%2527512%2527%2520rx%253D%2527120%2527%2520fill%253D%2527%2523f7f5f0%2527%2F%253E%253Cpath%2520d%253D%2527M256%2520120v220m0%25200l-70-70m70%252070l70-70%2527%2520stroke%253D%2527%25232c2a29%2527%2520stroke-width%253D%252740%2527%2520stroke-linecap%253D%2527round%2527%2520stroke-linejoin%253D%2527round%2527%2F%253E%253C%2Fsvg%253E%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%2522%7D%5D%7D">
   <meta name="theme-color" content="#f7f5f0">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="Tyngdkraft">
 
-  <!-- Google Fonts: Newsreader (Editorial Serif) & Plus Jakarta Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -239,7 +237,27 @@
     .tag-work   { background: var(--tag-work-bg); color: var(--tag-work-txt); }
     .tag-custom { background: var(--tag-custom-bg); color: var(--tag-custom-txt); }
 
-    .stream { display: flex; flex-direction: column; gap: 10px; }
+    .stream { display: flex; flex-direction: column; gap: 10px; overflow-x: hidden; }
+
+    .note-card-wrapper {
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .swipe-bg-left, .swipe-bg-right {
+      position: absolute;
+      top: 0; bottom: 0; width: 50%;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .swipe-bg-left { left: 0; background: rgba(46, 125, 50, 0.15); color: var(--rescue); justify-content: flex-start; }
+    .swipe-bg-right { right: 0; background: rgba(198, 40, 40, 0.15); color: var(--danger); justify-content: flex-end; }
 
     .note-card {
       background: var(--surface);
@@ -247,7 +265,10 @@
       border-left: 3px solid var(--border);
       border-radius: 10px;
       padding: 14px;
-      transition: opacity 0.25s, border-color 0.15s;
+      position: relative;
+      z-index: 2;
+      transition: border-color 0.15s, transform 0.1s ease-out;
+      touch-action: pan-y;
     }
 
     .note-card.has-tag-read { border-left-color: var(--tag-read-txt); }
@@ -371,7 +392,6 @@
 </div>
 
 <script>
-  // Registrazione Service Worker per cache offline
   if ('serviceWorker' in navigator) {
     const swCode = `self.addEventListener('install', e => self.skipWaiting()); self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));`;
     const swBlob = new Blob([swCode], {type: 'text/javascript'});
@@ -583,20 +603,68 @@
       const rescueInfo = n.rescueCount > 0 ? `<span class="rescued-badge">↑ salvata ${timeAgo(n.lastRescuedAt)} (${n.rescueCount}x)</span> · ` : '';
 
       return `
-        <div class="note-card ${gravClass} ${cardTagClass}">
-          <div class="note-content">${prefixHtml}${escapeHtml(body)}</div>
-          <div class="note-meta">
-            <div class="meta-info">${rescueInfo}<span>scritta ${timeAgo(n.createdAt)}</span></div>
-            <div class="note-actions">
-              <button class="btn-rescue" onclick="rescueNote('${n.id}')">↑ Rescue</button>
-              <button onclick="editNote('${n.id}')">✎</button>
-              <button onclick="toggleArchiveNote('${n.id}')">${n.archived ? '📤' : '📦'}</button>
-              <button onclick="deleteNote('${n.id}')">✕</button>
+        <div class="note-card-wrapper" data-id="${n.id}">
+          <div class="swipe-bg-left">↑ Rescue</div>
+          <div class="swipe-bg-right">📦 Archivia</div>
+          <div class="note-card ${gravClass} ${cardTagClass}">
+            <div class="note-content">${prefixHtml}${escapeHtml(body)}</div>
+            <div class="note-meta">
+              <div class="meta-info">${rescueInfo}<span>scritta ${timeAgo(n.createdAt)}</span></div>
+              <div class="note-actions">
+                <button class="btn-rescue" onclick="rescueNote('${n.id}')">↑ Rescue</button>
+                <button onclick="editNote('${n.id}')">✎</button>
+                <button onclick="toggleArchiveNote('${n.id}')">${n.archived ? '📤' : '📦'}</button>
+                <button onclick="deleteNote('${n.id}')">✕</button>
+              </div>
             </div>
           </div>
         </div>
       `;
     }).join('');
+
+    attachSwipeListeners();
+  }
+
+  function attachSwipeListeners() {
+    document.querySelectorAll('.note-card').forEach(card => {
+      let startX = 0;
+      let currentX = 0;
+      let isDragging = false;
+      const id = card.closest('.note-card-wrapper').dataset.id;
+
+      card.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+        isDragging = true;
+        card.style.transition = 'none';
+      }, {passive: true});
+
+      card.addEventListener('touchmove', (e) => {
+        if (!isDragging) return;
+        currentX = e.touches[0].clientX - startX;
+        if (Math.abs(currentX) > 10) {
+          card.style.transform = `translateX(${currentX}px)`;
+        }
+      }, {passive: true});
+
+      card.addEventListener('touchend', () => {
+        if (!isDragging) return;
+        isDragging = false;
+        card.style.transition = 'transform 0.2s ease-out';
+        
+        if (currentX > 90) {
+          // Swipe a destra -> Rescue
+          card.style.transform = `translateX(100%)`;
+          setTimeout(() => rescueNote(id), 200);
+        } else if (currentX < -90) {
+          // Swipe a sinistra -> Archivia
+          card.style.transform = `translateX(-100%)`;
+          setTimeout(() => toggleArchiveNote(id), 200);
+        } else {
+          card.style.transform = 'translateX(0)';
+        }
+        currentX = 0;
+      });
+    });
   }
 
   function escapeHtml(str) {
