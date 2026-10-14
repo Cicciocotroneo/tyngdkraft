@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gravity Local — Append & Review Notes</title>
+  <style>
+    :root {
+      --bg: #0f1115;
+      --surface: #181b22;
+      --surface-hover: #1f242d;
+      --border: #2a2f3a;
+      --text: #e6edf3;
+      --text-muted: #7d8590;
+      --accent: #58a6ff;
+      --rescue: #3fb950;
+      --danger: #f85149;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      line-height: 1.5;
+      padding: 20px 16px 80px;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* Header & File Controls */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .sync-status {
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .sync-status.active {
+      color: var(--rescue);
+      border-color: rgba(63, 185, 80, 0.4);
+    }
+
+    .file-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    button {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 6px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    button:hover {
+      background: var(--surface-hover);
+      border-color: var(--text-muted);
+    }
+
+    button.primary {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    button.primary:hover {
+      opacity: 0.9;
+    }
+
+    /* Capture Box */
+    .capture-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      margin-bottom: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      transition: border-color 0.2s;
+    }
+
+    .capture-box:focus-within {
+      border-color: var(--accent);
+    }
+
+    textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 0.95rem;
+      font-family: inherit;
+      resize: vertical;
+      min-height: 64px;
+      outline: none;
+    }
+
+    .capture-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Search & Tag Bar */
+    .toolbar {
+      display: flex;
+       flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .search-row {
+      display: flex;
+      gap: 8px;
+    }
+
+    .search-input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+    }
+
+    .tags-bar {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .tag-chip {
+      font-size: 0.75rem;
+      padding: 3px 10px;
+      border-radius: 99px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      font-weight: 600;
+      user-select: none;
+      transition: transform 0.1s, opacity 0.2s;
+    }
+
+    .tag-chip:hover {
+      transform: translateY(-1px);
+    }
+
+    .tag-chip.inactive {
+      opacity: 0.4;
+    }
+
+    /* Colori dinamici per i prefissi */
+    .tag-read   { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.3); }
+    .tag-watch  { background: rgba(168, 85, 247, 0.15); color: #c084fc; border-color: rgba(168, 85, 247, 0.3); }
+    .tag-idea   { background: rgba(250, 204, 21, 0.15); color: #facc15; border-color: rgba(250, 204, 21, 0.3); }
+    .tag-todo   { background: rgba(248, 113, 113, 0.15); color: #f87171; border-color: rgba(248, 113, 113, 0.3); }
+    .tag-listen { background: rgba(74, 222, 128, 0.15); color: #4ade80; border-color: rgba(74, 222, 128, 0.3); }
+    .tag-code   { background: rgba(251, 146, 60, 0.15); color: #fb923c; border-color: rgba(251, 146, 60, 0.3); }
+    .tag-work   { background: rgba(99, 102, 241, 0.15); color: #818cf8; border-color: rgba(99, 102, 241, 0.3); }
+    .tag-custom { background: rgba(148, 163, 184, 0.15); color: #cbd5e1; border-color: rgba(148, 163, 184, 0.3); }
+
+    /* Stream & Note Cards */
+    .stream {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .note-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px;
+      transition: opacity 0.25s ease, border-color 0.15s ease, transform 0.15s ease;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .note-card:hover, .note-card.selected {
+      opacity: 1 !important;
+      border-color: #484f58;
+    }
+
+    .note-card.selected {
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    /* Livelli di "Gravità" (Sbiadimento) */
+    .gravity-0 { opacity: 1; }
+    .gravity-1 { opacity: 0.78; } /* > 3 giorni */
+    .gravity-2 { opacity: 0.55; } /* > 14 giorni */
+    .gravity-3 { opacity: 0.35; } /* > 45 giorni */
+
+    .note-content {
+      font-size: 0.95rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin-bottom: 10px;
+    }
+
+    .prefix-badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 5px;
+      margin-right: 6px;
+      vertical-align: baseline;
+      text-transform: lowercase;
+    }
+
+    .note-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .meta-info {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .rescued-badge {
+      color: var(--rescue);
+      font-weight: 600;
+    }
+
+    .note-actions {
+      display: flex;
+      gap: 6px;
+      opacity: 0.2;
+      transition: opacity 0.15s;
+    }
+
+    .note-card:hover .note-actions,
+    .note-card.selected .note-actions {
+      opacity: 1;
+    }
+
+    .btn-rescue {
+      color: var(--rescue);
+      border-color: rgba(63, 185, 80, 0.3);
+    }
+    .btn-rescue:hover {
+      background: rgba(63, 185, 80, 0.15);
+      border-color: var(--rescue);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-muted);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+    }
+
+    .shortcuts-help {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    kbd {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 0.7rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <div class="brand">
+      <h1>↓↑ Gravity Local</h1>
+      <span id="syncStatus" class="sync-status">Memoria Browser</span>
+    </div>
+    <div class="file-actions">
+      <button id="btnLinkFile" title="Collega un file .json locale per salvataggio automatico (Chrome/Edge)">🔗 Collega File</button>
+      <button id="btnExport" title="Scarica backup .json">⬇️ Esporta</button>
+      <button id="btnImport" title="Carica un file .json">⬆️ Importa</button>
+      <input type="file" id="fileInput" accept=".json" style="display:none">
+    </div>
+  </header>
+
+  <div class="capture-box">
+    <textarea id="noteInput" placeholder="Scrivi un pensiero... (Usa prefissi come read:, idea:, todo:, watch:, code: per colorare)" autofocus></textarea>
+    <div class="capture-footer">
+      <span>Suggerimento: <kbd>Ctrl</kbd>+<kbd>Invio</kbd> o <kbd>Doppio Invio</kbd> per salvare in cima</span>
+      <button class="primary" id="btnAdd">Aggiungi ↑</button>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-row">
+      <input type="text" id="searchInput" class="search-input" placeholder="Cerca nel flusso (Ctrl+F)...">
+      <button id="btnToggleArchive">📦 Archivio (0)</button>
+    </div>
+    <div class="tags-bar" id="tagsBar"></div>
+  </div>
+
+  <div class="stream" id="notesStream"></div>
+
+  <div class="shortcuts-help">
+    Scorciatoie su nota selezionata: <kbd>↑</kbd><kbd>↓</kbd> Naviga · <kbd>R</kbd> Rescue (Riporta in cima) · <kbd>E</kbd> Modifica · <kbd>A</kbd> Archivia
+  </div>
+</div>
+
+<script>
+  // --- STATO DELL'APPLICAZIONE ---
+  const STORAGE_KEY = 'gravity_local_notes_v1';
+  let notes = [];
+  let activeTag = null;
+  let showArchived = false;
+  let selectedIndex = -1;
+  let fileHandle = null; // Per File System Access API
+
+  const KNOWN_TAGS = ['read', 'watch', 'idea', 'todo', 'listen', 'code', 'work'];
+
+  // --- INIZIALIZZAZIONE ---
+  function init() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try { notes = JSON.parse(saved); } catch (e) { notes = []; }
+    } else {
+      // Note di benvenuto per mostrare l'effetto gravità e i tag
+      const now = Date.now();
+      const day = 86400000;
+      notes = [
+        { id: '1', text: 'idea: Costruire un sistema di note locale basato sulla gravità di Karpathy', createdAt: now - (day * 2), lastRescuedAt: now - 600000, rescueCount: 2, archived: false },
+        { id: '2', text: 'todo: Provare a premere il tasto R dopo aver cliccato su una nota per riportarla in cima', createdAt: now - (day * 1), lastRescuedAt: now - (day * 1), rescueCount: 0, archived: false },
+        { id: '3', text: 'read: Articolo su Append-and-Review note e sull\'effetto Zeigarnik', createdAt: now - (day * 6), lastRescuedAt: now - (day * 6), rescueCount: 1, archived: false },
+        { id: '4', text: 'watch: Questa nota ha più di 20 giorni e sta affondando visivamente (sbiadisce)', createdAt: now - (day * 22), lastRescuedAt: now - (day * 22), rescueCount: 0, archived: false }
+      ];
+      saveNotes();
+    }
+    render();
+  }
+
+  // --- SALVATAGGIO (LocalStorage + File Locale) ---
+  async function saveNotes() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+    if (fileHandle) {
+      try {
+        const writable = await fileHandle.createWritable();
+        await writable.write(JSON.stringify(notes, null, 2));
+        await writable.close();
+      } catch (err) {
+        console.error('Errore scrittura su file:', err);
+      }
+    }
+  }
+
+  // --- PARSING PREFISSI (es. "read: Titolo libro") ---
+  function parsePrefix(text) {
+    const match = text.match(/^([a-zA-Z0-9_-]+):\s*(.*)$/s);
+    if (!match) return { prefix: null, body: text, tagClass: '' };
+    const prefix = match[1].toLowerCase();
+    const body = match[2];
+    const tagClass = KNOWN_TAGS.includes(prefix) ? `tag-${prefix}` : 'tag-custom';
+    return { prefix, body, tagClass };
+  }
+
+  // --- CALCOLO GRAVITÀ (Sbiadimento nel tempo) ---
+  function getGravityClass(timestamp) {
+    const ageDays = (Date.now() - timestamp) / (1000 * 60 * 60 * 24);
+    if (ageDays > 45) return 'gravity-3';
+    if (ageDays > 14) return 'gravity-2';
+    if (ageDays > 3)  return 'gravity-1';
+    return 'gravity-0';
+  }
+
+  // --- FORMATTAZIONE TEMPO RELATIVO ---
+  function timeAgo(ts) {
+    const sec = Math.floor((Date.now() - ts) / 1000);
+    if (sec < 60) return 'ora';
+    const min = Math.floor(sec / 60);
+    if (min < 60) return `${min}m fa`;
+    const hrs = Math.floor(min / 60);
+    if (hrs < 24) return `${hrs}h fa`;
+    const days = Math.floor(hrs / 24);
+    if (days < 30) return `${days}g fa`;
+    const months = Math.floor(days / 30);
+    return `${months} mesi fa`;
+  }
+
+  // --- AZIONI SULLE NOTE ---
+  function addNote(rawText) {
+    const text = rawText.trim();
+    if (!text) return;
+    const now = Date.now();
+    notes.unshift({
+      id: now.toString(36) + Math.random().toString(36).substr(2, 4),
+      text,
+      createdAt: now,
+      lastRescuedAt: now,
+      rescueCount: 0,
+      archived: false
+    });
+    saveNotes();
+    render();
+  }
+
+  function rescueNote(id) {
+    const idx = notes.findIndex(n => n.id === id);
+    if (idx === -1) return;
+    const note = notes[idx];
+    note.lastRescuedAt = Date.now();
+    note.rescueCount = (note.rescueCount || 0) + 1;
+    note.archived = false;
+    // Sposta in cima
+    notes.splice(idx, 1);
+    notes.unshift(note);
+    selectedIndex = 0;
+    saveNotes();
+    render();
+  }
+
+  function editNote(id) {
+    const note = notes.find(n => n.id === id);
+    if (!note) return;
+    const updated = prompt('Modifica nota (non altera la posizione nel flusso):', note.text);
+    if (updated !== null && updated.trim() !== '') {
+      note.text = updated.trim();
+      saveNotes();
+      render();
+    }
+  }
+
+  function toggleArchiveNote(id) {
+    const note = notes.find(n => n.id === id);
+    if (!note) return;
+    note.archived = !note.archived;
+    saveNotes();
+    render();
+  }
+
+  function deleteNote(id) {
+    if (!confirm('Eliminare definitivamente questa nota?')) return;
+    notes = notes.filter(n => n.id !== id);
+    saveNotes();
+    render();
+  }
+
+  // --- RENDERING ---
+  function getFilteredNotes() {
+    const q = document.getElementById('searchInput').value
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    // Ordina sempre per lastRescuedAt decrescente
+    const sorted = [...notes].sort((a, b) => b.lastRescuedAt - a.lastRescuedAt);
+
+    return sorted.filter(n => {
+      if (Boolean(n.archived) !== showArchived) return false;
+      const { prefix } = parsePrefix(n.text);
+      if (activeTag && prefix !== activeTag) return false;
+      if (q) {
+        const cleanText = n.text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (!cleanText.includes(q)) return false;
+      }
+      return true;
+    });
+  }
+
+  function renderTagsBar() {
+    const tagsBar = document.getElementById('tagsBar');
+    const counts = {};
+    notes.filter(n => Boolean(n.archived) === showArchived).forEach(n => {
+      const { prefix } = parsePrefix(n.text);
+      if (prefix) counts[prefix] = (counts[prefix] || 0) + 1;
+    });
+
+    const tags = Object.keys(counts).sort();
+    if (tags.length === 0) {
+      tagsBar.innerHTML = '';
+      return;
+    }
+
+    tagsBar.innerHTML = tags.map(t => {
+      const cls = KNOWN_TAGS.includes(t) ? `tag-${t}` : 'tag-custom';
+      const inactive = (activeTag && activeTag !== t) ? 'inactive' : '';
+      return `<span class="tag-chip ${cls} ${inactive}" onclick="toggleTagFilter('${t}')">${t}: (${counts[t]})</span>`;
+    }).join('');
+  }
+
+  window.toggleTagFilter = function(tag) {
+    activeTag = (activeTag === tag) ? null : tag;
+    selectedIndex = -1;
+    render();
+  };
+
+  function render() {
+    renderTagsBar();
+
+    const archivedCount = notes.filter(n => n.archived).length;
+    const btnArch = document.getElementById('btnToggleArchive');
+    btnArch.textContent = showArchived ? `⬅️ Torna al Flusso` : `📦 Archivio (${archivedCount})`;
+    btnArch.classList.toggle('primary', showArchived);
+
+    const list = getFilteredNotes();
+    const stream = document.getElementById('notesStream');
+
+    if (list.length === 0) {
+      stream.innerHTML = `<div class="empty-state">Nessuna nota trovata in questa vista.</div>`;
+      return;
+    }
+
+    stream.innerHTML = list.map((n, idx) => {
+      const { prefix, body, tagClass } = parsePrefix(n.text);
+      const gravClass = getGravityClass(n.lastRescuedAt);
+      const isSelected = idx === selectedIndex ? 'selected' : '';
+
+      const prefixHtml = prefix
+        ? `<span class="prefix-badge ${tagClass}">${escapeHtml(prefix)}:</span>`
+        : '';
+
+      const rescueInfo = n.rescueCount > 0
+        ? `<span class="rescued-badge">↑ salvata ${timeAgo(n.lastRescuedAt)} (${n.rescueCount}x)</span> · `
+        : '';
+
+      return `
+        <div class="note-card ${gravClass} ${isSelected}" onclick="selectCard(${idx})">
+          <div class="note-content">${prefixHtml}${escapeHtml(body)}</div>
+          <div class="note-meta">
+            <div class="meta-info">
+              ${rescueInfo}<span>scritta ${timeAgo(n.createdAt)}</span>
+            </div>
+            <div class="note-actions" onclick="event.stopPropagation()">
+              <button class="btn-rescue" onclick="rescueNote('${n.id}')" title="Riporta in cima (R)">↑ Rescue</button>
+              <button onclick="editNote('${n.id}')" title="Modifica (E)">✎</button>
+              <button onclick="toggleArchiveNote('${n.id}')" title="Archivia/Ripristina (A)">${n.archived ? '📤' : '📦'}</button>
+              <button onclick="deleteNote('${n.id}')" title="Elimina">✕</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  window.selectCard = function(idx) {
+    selectedIndex = idx;
+    render();
+  };
+
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, m => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[m]));
+  }
+
+  // --- EVENT LISTENERS ---
+  const noteInput = document.getElementById('noteInput');
+  let lastEnterTime = 0;
+
+  noteInput.addEventListener('keydown', (e) => {
+    // Ctrl+Invio o Cmd+Invio
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      addNote(noteInput.value);
+      noteInput.value = '';
+      return;
+    }
+    // Doppio Invio rapido (stile Gravity)
+    if (e.key === 'Enter' && !e.shiftKey) {
+      const now = Date.now();
+      if (now - lastEnterTime < 450 && noteInput.value.trim().length > 0) {
+        e.preventDefault();
+        addNote(noteInput.value);
+        noteInput.value = '';
+        lastEnterTime = 0;
+      } else {
+        lastEnterTime = now;
+      }
+    }
+  });
+
+  document.getElementById('btnAdd').addEventListener('click', () => {
+    addNote(noteInput.value);
+    noteInput.value = '';
+    noteInput.focus();
+  });
+
+  document.getElementById('searchInput').addEventListener('input', () => {
+    selectedIndex = -1;
+    render();
+  });
+
+  document.getElementById('btnToggleArchive').addEventListener('click', () => {
+    showArchived = !showArchived;
+    selectedIndex = -1;
+    render();
+  });
+
+  // Scorciatoie da tastiera globali (R, E, A, Frecce)
+  document.addEventListener('keydown', (e) => {
+    const activeEl = document.activeElement;
+    const isTyping = activeEl.tagName === 'TEXTAREA' || activeEl.tagName === 'INPUT';
+    if (isTyping) {
+      if (e.key === 'Escape') activeEl.blur();
+      return;
+    }
+
+    const list = getFilteredNotes();
+    if (list.length === 0) return;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      selectedIndex = Math.min(list.length - 1, selectedIndex + 1);
+      render();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      selectedIndex = Math.max(0, selectedIndex - 1);
+      render();
+    } else if (selectedIndex >= 0 && selectedIndex < list.length) {
+      const target = list[selectedIndex];
+      if (e.key.toLowerCase() === 'r') {
+        e.preventDefault();
+        rescueNote(target.id);
+      } else if (e.key.toLowerCase() === 'a') {
+        e.preventDefault();
+        toggleArchiveNote(target.id);
+      } else if (e.key.toLowerCase() === 'e') {
+        e.preventDefault();
+        editNote(target.id);
+      }
+    }
+  });
+
+  // --- GESTIONE FILE LOCALE (File System Access API + Fallback) ---
+  document.getElementById('btnLinkFile').addEventListener('click', async () => {
+    if (!('showSaveFilePicker' in window)) {
+      alert('Il tuo browser non supporta il collegamento diretto ai file su disco (usa Chrome o Edge desktop). Puoi comunque usare Esporta/Importa.');
+      return;
+    }
+    try {
+      const choice = confirm('Vuoi APRIRE un file .json esistente (OK) o CREARNE uno nuovo (Annulla)?');
+      if (choice) {
+        const [handle] = await window.showOpenFilePicker({
+          types: [{ description: 'JSON File', accept: {'application/json': ['.json']} }]
+        });
+        fileHandle = handle;
+        const file = await fileHandle.getFile();
+        const content = await file.text();
+        notes = JSON.parse(content);
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+      } else {
+        fileHandle = await window.showSaveFilePicker({
+          suggestedName: 'gravity-notes.json',
+          types: [{ description: 'JSON File', accept: {'application/json': ['.json']} }]
+        });
+        await saveNotes();
+      }
+      const status = document.getElementById('syncStatus');
+      status.textContent = `Sincronizzato: ${fileHandle.name}`;
+      status.classList.add('active');
+      render();
+    } catch (err) {
+      console.log('Operazione file annullata:', err);
+    }
+  });
+
+  document.getElementById('btnExport').addEventListener('click', () => {
+    const blob = new Blob([JSON.stringify(notes, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `gravity-notes-${new Date().toISOString().slice(0,10)}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  document.getElementById('btnImport').addEventListener('click', () => {
+    document.getElementById('fileInput').click();
+  });
+
+  document.getElementById('fileInput').addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      try {
+        const imported = JSON.parse(ev.target.result);
+        if (Array.isArray(imported)) {
+          notes = imported;
+          saveNotes();
+          render();
+        }
+      } catch (err) {
+        alert('File JSON non valido.');
+      }
+    };
+    reader.readAsText(file);
+  });
+
+  init();
+</script>
+</body>
+</html>
