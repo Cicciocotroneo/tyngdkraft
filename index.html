@@ -15,73 +15,187 @@
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Newsreader (Editorial Serif) & Plus Jakarta Sans (Clean Geometric UI) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg: #F7F5F0; --bg-subtle: #EFECE4; --surface: #FFFFFF; --surface-hover: #FCFBF9;
-      --border: #E4E0D5; --border-strong: #C9C3B5; --text: #1C1B18; --text-secondary: #57544D;
-      --text-muted: #78756E; --accent: #2C3E35; --accent-fg: #FFFFFF;
-      --rescue-bg: #E6EFEA; --rescue-text: #22543D; --rescue-border: #B8D4C5;
-      --danger-text: #9B2C2C; --danger-bg: #FDE8E8; --shadow: 0 2px 10px rgba(28, 27, 24, 0.04);
-      --tag-book-bg: #F3E8EE; --tag-book-text: #6B2D5C; --tag-book-border: #E2C5DD;
-      --tag-read-bg: #E3EFF5; --tag-read-text: #1B4965; --tag-read-border: #BBD7E6;
-      --tag-watch-bg: #EFE6F2; --tag-watch-text: #532B60; --tag-watch-border: #D9C2E0;
-      --tag-idea-bg: #F9EFE0; --tag-idea-text: #7C4D12; --tag-idea-border: #EBD3AD;
-      --tag-todo-bg: #F9E5E1; --tag-todo-text: #82271A; --tag-todo-border: #E8BDB5;
+      /* Swedish Light Theme (Nordic Warm Paper) */
+      --bg: #F7F5F0;
+      --bg-subtle: #EFECE4;
+      --surface: #FFFFFF;
+      --surface-hover: #FCFBF9;
+      --border: #E4E0D5;
+      --border-strong: #C9C3B5;
+      --text: #1C1B18;
+      --text-secondary: #57544D;
+      --text-muted: #78756E;
+      --accent: #2C3E35;
+      --accent-fg: #FFFFFF;
+      --rescue-bg: #E6EFEA;
+      --rescue-text: #22543D;
+      --rescue-border: #B8D4C5;
+      --danger-text: #9B2C2C;
+      --danger-bg: #FDE8E8;
+      --shadow: 0 2px 10px rgba(28, 27, 24, 0.04);
+
+      /* Prefix Tag Pastels - Light (High contrast Nordic tones) */
+      --tag-read-bg: #E3EFF5;   --tag-read-text: #1B4965;   --tag-read-border: #BBD7E6;
+      --tag-watch-bg: #EFE6F2;  --tag-watch-text: #532B60;  --tag-watch-border: #D9C2E0;
+      --tag-idea-bg: #F9EFE0;   --tag-idea-text: #7C4D12;   --tag-idea-border: #EBD3AD;
+      --tag-todo-bg: #F9E5E1;   --tag-todo-text: #82271A;   --tag-todo-border: #E8BDB5;
       --tag-listen-bg: #E5F0E6; --tag-listen-text: #235328; --tag-listen-border: #C0DBC2;
-      --tag-code-bg: #ECE9E2; --tag-code-text: #4A3F35; --tag-code-border: #D3CCC0;
-      --tag-work-bg: #E6E9F2; --tag-work-text: #2B365E; --tag-work-border: #C3CAE0;
+      --tag-code-bg: #ECE9E2;   --tag-code-text: #4A3F35;   --tag-code-border: #D3CCC0;
+      --tag-work-bg: #E6E9F2;   --tag-work-text: #2B365E;   --tag-work-border: #C3CAE0;
       --tag-custom-bg: #EFECE6; --tag-custom-text: #45423B; --tag-custom-border: #D8D3C8;
     }
+
     html.dark {
-      --bg: #141413; --bg-subtle: #1A1A18; --surface: #1E1E1C; --surface-hover: #252522;
-      --border: #2E2E2B; --border-strong: #45443F; --text: #ECEAE4; --text-secondary: #B5B2A8;
-      --text-muted: #858279; --accent: #A3B899; --accent-fg: #141413;
-      --rescue-bg: rgba(163, 184, 153, 0.14); --rescue-text: #B5CBA9; --rescue-border: rgba(163, 184, 153, 0.32);
-      --danger-text: #F29B9B; --danger-bg: rgba(155, 44, 44, 0.25); --shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-      --tag-book-bg: rgba(189, 107, 168, 0.16); --tag-book-text: #E8A8D5; --tag-book-border: rgba(189, 107, 168, 0.35);
-      --tag-read-bg: rgba(56, 142, 189, 0.16); --tag-read-text: #9AD1F0; --tag-read-border: rgba(56, 142, 189, 0.35);
-      --tag-watch-bg: rgba(162, 107, 181, 0.16); --tag-watch-text: #DAB6E6; --tag-watch-border: rgba(162, 107, 181, 0.35);
-      --tag-idea-bg: rgba(217, 155, 67, 0.16); --tag-idea-text: #F2CA8A; --tag-idea-border: rgba(217, 155, 67, 0.35);
-      --tag-todo-bg: rgba(212, 95, 78, 0.16); --tag-todo-text: #F4ACA0; --tag-todo-border: rgba(212, 95, 78, 0.35);
-      --tag-listen-bg: rgba(104, 166, 112, 0.16); --tag-listen-text: #A8DBA8; --tag-listen-border: rgba(104, 166, 112, 0.35);
-      --tag-code-bg: rgba(176, 148, 116, 0.16); --tag-code-text: #DFC8B0; --tag-code-border: rgba(176, 148, 116, 0.35);
-      --tag-work-bg: rgba(114, 130, 191, 0.16); --tag-work-text: #B8C4F0; --tag-work-border: rgba(114, 130, 191, 0.35);
-      --tag-custom-bg: rgba(160, 156, 146, 0.14); --tag-custom-text: #D1CEC5; --tag-custom-border: rgba(160, 156, 146, 0.3);
+      /* Swedish Dark Theme (Nordic Night) */
+      --bg: #141413;
+      --bg-subtle: #1A1A18;
+      --surface: #1E1E1C;
+      --surface-hover: #252522;
+      --border: #2E2E2B;
+      --border-strong: #45443F;
+      --text: #ECEAE4;
+      --text-secondary: #B5B2A8;
+      --text-muted: #858279;
+      --accent: #A3B899;
+      --accent-fg: #141413;
+      --rescue-bg: rgba(163, 184, 153, 0.14);
+      --rescue-text: #B5CBA9;
+      --rescue-border: rgba(163, 184, 153, 0.32);
+      --danger-text: #F29B9B;
+      --danger-bg: rgba(155, 44, 44, 0.25);
+      --shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+
+      /* Prefix Tag Pastels - Dark */
+      --tag-read-bg: rgba(56, 142, 189, 0.16);   --tag-read-text: #9AD1F0;   --tag-read-border: rgba(56, 142, 189, 0.35);
+      --tag-watch-bg: rgba(162, 107, 181, 0.16); --tag-watch-text: #DAB6E6;  --tag-watch-border: rgba(162, 107, 181, 0.35);
+      --tag-idea-bg: rgba(217, 155, 67, 0.16);   --tag-idea-text: #F2CA8A;   --tag-idea-border: rgba(217, 155, 67, 0.35);
+      --tag-todo-bg: rgba(212, 95, 78, 0.16);    --tag-todo-text: #F4ACA0;   --tag-todo-border: rgba(212, 95, 78, 0.35);
+      --tag-listen-bg: rgba(104, 166, 112, 0.16);--tag-listen-text: #A8DBA8; --tag-listen-border: rgba(104, 166, 112, 0.35);
+      --tag-code-bg: rgba(176, 148, 116, 0.16);  --tag-code-text: #DFC8B0;   --tag-code-border: rgba(176, 148, 116, 0.35);
+      --tag-work-bg: rgba(114, 130, 191, 0.16);  --tag-work-text: #B8C4F0;   --tag-work-border: rgba(114, 130, 191, 0.35);
+      --tag-custom-bg: rgba(160, 156, 146, 0.14);--tag-custom-text: #D1CEC5; --tag-custom-border: rgba(160, 156, 146, 0.3);
     }
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-    body { background-color: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif; transition: background-color 0.25s ease, color 0.25s ease; min-height: 100vh; overflow-x: hidden; }
-    .font-serif-editorial { font-family: 'Newsreader', Georgia, serif; }
-    .tag-read { background-color: var(--tag-read-bg); color: var(--tag-read-text); border: 1px solid var(--tag-read-border); }
-    .tag-watch { background-color: var(--tag-watch-bg); color: var(--tag-watch-text); border: 1px solid var(--tag-watch-border); }
-    .tag-idea { background-color: var(--tag-idea-bg); color: var(--tag-idea-text); border: 1px solid var(--tag-idea-border); }
-    .tag-todo { background-color: var(--tag-todo-bg); color: var(--tag-todo-text); border: 1px solid var(--tag-todo-border); }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      transition: background-color 0.25s ease, color 0.25s ease;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .font-serif-editorial {
+      font-family: 'Newsreader', Georgia, Cambria, "Times New Roman", Times, serif;
+    }
+
+    /* Tag Classes */
+    .tag-read   { background-color: var(--tag-read-bg);   color: var(--tag-read-text);   border: 1px solid var(--tag-read-border); }
+    .tag-watch  { background-color: var(--tag-watch-bg);  color: var(--tag-watch-text);  border: 1px solid var(--tag-watch-border); }
+    .tag-idea   { background-color: var(--tag-idea-bg);   color: var(--tag-idea-text);   border: 1px solid var(--tag-idea-border); }
+    .tag-todo   { background-color: var(--tag-todo-bg);   color: var(--tag-todo-text);   border: 1px solid var(--tag-todo-border); }
     .tag-listen { background-color: var(--tag-listen-bg); color: var(--tag-listen-text); border: 1px solid var(--tag-listen-border); }
-    .tag-code { background-color: var(--tag-code-bg); color: var(--tag-code-text); border: 1px solid var(--tag-code-border); }
-    .tag-work { background-color: var(--tag-work-bg); color: var(--tag-work-text); border: 1px solid var(--tag-work-border); }
-    .tag-book { background-color: var(--tag-book-bg); color: var(--tag-book-text); border: 1px solid var(--tag-book-border); }
+    .tag-code   { background-color: var(--tag-code-bg);   color: var(--tag-code-text);   border: 1px solid var(--tag-code-border); }
+    .tag-work   { background-color: var(--tag-work-bg);   color: var(--tag-work-text);   border: 1px solid var(--tag-work-border); }
     .tag-custom { background-color: var(--tag-custom-bg); color: var(--tag-custom-text); border: 1px solid var(--tag-custom-border); }
-    .card-border-book { border-left: 3.5px solid var(--tag-book-text) !important; }
-    .gravity-0 { opacity: 1; } .gravity-1 { opacity: 0.82; } .gravity-2 { opacity: 0.62; } .gravity-3 { opacity: 0.44; }
-    .note-card-wrapper { position: relative; overflow: hidden; border-radius: 12px; }
-    .swipe-backdrop { position: absolute; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; font-weight: 600; font-size: 0.82rem; border-radius: 12px; pointer-events: none; opacity: 0; transition: opacity 0.15s ease; }
-    .note-card { background-color: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: var(--shadow); transition: opacity 0.25s ease, border-color 0.2s ease, transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease; position: relative; z-index: 2; touch-action: pan-y; }
-    .note-card:hover, .note-card:focus-within, .note-card.selected { opacity: 1 !important; border-color: var(--border-strong); background-color: var(--surface-hover); }
-    .note-card.selected { box-shadow: 0 0 0 2px var(--accent); }
+
+    /* Left accent bar on cards matching prefix */
+    .card-border-read   { border-left: 3.5px solid var(--tag-read-text) !important; }
+    .card-border-watch  { border-left: 3.5px solid var(--tag-watch-text) !important; }
+    .card-border-idea   { border-left: 3.5px solid var(--tag-idea-text) !important; }
+    .card-border-todo   { border-left: 3.5px solid var(--tag-todo-text) !important; }
+    .card-border-listen { border-left: 3.5px solid var(--tag-listen-text) !important; }
+    .card-border-code   { border-left: 3.5px solid var(--tag-code-text) !important; }
+    .card-border-work   { border-left: 3.5px solid var(--tag-work-text) !important; }
+    .card-border-custom { border-left: 3.5px solid var(--tag-custom-text) !important; }
+
+    /* Gravity Visual Decay Levels */
+    .gravity-0 { opacity: 1; }
+    .gravity-1 { opacity: 0.82; } /* > 3 days */
+    .gravity-2 { opacity: 0.62; } /* > 14 days */
+    .gravity-3 { opacity: 0.44; } /* > 45 days */
+
+    .note-card-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+
+    .swipe-backdrop {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-weight: 600;
+      font-size: 0.82rem;
+      border-radius: 12px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+    }
+
+    .note-card {
+      background-color: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      transition: opacity 0.25s ease, border-color 0.2s ease, transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease;
+      position: relative;
+      z-index: 2;
+      touch-action: pan-y;
+    }
+
+    .note-card:hover,
+    .note-card:focus-within,
+    .note-card.selected {
+      opacity: 1 !important;
+      border-color: var(--border-strong);
+      background-color: var(--surface-hover);
+    }
+
+    .note-card.selected {
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    /* Hide scrollbars on horizontal pill bars */
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* Subtle animation when rescuing a note */
+    @keyframes floatUp {
+      0% { transform: translateY(10px); opacity: 0.5; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+    .animate-rescue {
+      animation: floatUp 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
   </style>
 </head>
 <body class="pb-24 selection:bg-[#2C3E35] selection:text-white dark:selection:bg-[#A3B899] dark:selection:text-[#141413]">
 
+  <!-- Main Container -->
   <div class="max-w-2xl mx-auto px-4 sm:px-6 pt-5 sm:pt-8">
+    
+    <!-- Top Editorial Header -->
     <header class="flex flex-wrap items-center justify-between gap-3 pb-4 mb-5 border-b" style="border-color: var(--border);">
       <div class="flex items-baseline gap-2.5">
-        <h1 class="font-serif-editorial text-2xl sm:text-3xl font-medium tracking-tight" style="color: var(--text);">Tyngdkraft</h1>
+        <h1 class="font-serif-editorial text-2xl sm:text-3xl font-medium tracking-tight" style="color: var(--text);">
+          Tyngdkraft
+        </h1>
         <span id="syncBadge" class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-medium border"
           style="background-color: var(--surface); border-color: var(--border); color: var(--text-secondary);">
           <span id="syncDot" class="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
@@ -89,74 +203,98 @@
         </span>
       </div>
 
+      <!-- Direct JSON Controls & Theme Toggle -->
       <div class="flex items-center gap-1.5 sm:gap-2">
-        <button id="btnExportJson" type="button" title="Scarica .json"
-          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border hover:opacity-85 active:scale-95"
+        <!-- Link Local File (Desktop File System API) -->
+        <button id="btnLinkLocalFile" type="button" title="Collega un file .json su disco per salvataggio continuo (Chrome/Edge Desktop)"
+          class="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border hover:opacity-85 active:scale-95"
           style="background-color: var(--surface); border-color: var(--border); color: var(--text); min-height: 36px;">
-          <span>⬇️ Esporta</span>
+          <span>🔗</span>
+          <span id="linkBtnText">Collega File</span>
         </button>
 
-        <button id="btnImportJson" type="button" title="Carica .json"
+        <!-- Export JSON Button -->
+        <button id="btnExportJson" type="button" title="Scarica le note in formato .json"
           class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border hover:opacity-85 active:scale-95"
           style="background-color: var(--surface); border-color: var(--border); color: var(--text); min-height: 36px;">
-          <span>⬆️ Importa</span>
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          <span>Esporta .JSON</span>
+        </button>
+
+        <!-- Import JSON Button -->
+        <button id="btnImportJson" type="button" title="Carica un file .json dal dispositivo"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all border hover:opacity-85 active:scale-95"
+          style="background-color: var(--surface); border-color: var(--border); color: var(--text); min-height: 36px;">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+          </svg>
+          <span>Importa .JSON</span>
         </button>
         <input id="hiddenFileInput" type="file" accept=".json,application/json" class="hidden">
 
-        <button id="btnThemeToggle" type="button" title="Tema"
+        <!-- Theme Toggle Button -->
+        <button id="btnThemeToggle" type="button" title="Cambia tema Chiaro/Scuro"
           class="p-2 rounded-lg border transition-all flex items-center justify-center hover:opacity-85 active:scale-95"
           style="background-color: var(--surface); border-color: var(--border); color: var(--text-secondary); min-width: 36px; min-height: 36px;">
-          <svg id="iconSun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-          <svg id="iconMoon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+          <svg id="iconSun" class="w-4 h-4 hidden" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+          </svg>
+          <svg id="iconMoon" class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+          </svg>
         </button>
       </div>
     </header>
 
-    <!-- CAROUSEL "PILA DI LIBRI" -->
-    <section id="bookCarouselSection" class="hidden mb-6">
-      <div class="flex items-center justify-between mb-2 px-1">
-        <h2 class="font-serif-editorial text-sm font-semibold tracking-wide uppercase" style="color: var(--text-secondary);">📚 Pila di Libri</h2>
-        <span class="text-[11px]" style="color: var(--text-muted);" id="bookCountLabel">0 libri</span>
-      </div>
-      <div id="bookCarousel" class="flex items-center gap-3 overflow-x-auto no-scrollbar py-2 px-1"></div>
-    </section>
-
-    <!-- Capture Box -->
+    <!-- Capture Box (Karpathy's Top Append Area) -->
     <section class="rounded-xl p-3.5 sm:p-4 mb-5 border transition-all"
       style="background-color: var(--surface); border-color: var(--border); box-shadow: var(--shadow);">
       
       <textarea id="noteInput" rows="3"
         class="w-full bg-transparent border-0 outline-none resize-y font-serif-editorial text-lg sm:text-xl leading-relaxed placeholder:opacity-50"
         style="color: var(--text);"
-        placeholder="Annota un pensiero... (usa book: Titolo per registrare un libro)"></textarea>
+        placeholder="Annota un pensiero nel flusso... (es. idea:, read:, todo:)"></textarea>
 
+      <!-- Quick Prefix Pills for Mobile & Fast Tagging -->
       <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-2 border-t mt-1" style="border-color: var(--border);">
         <span class="text-[11px] uppercase tracking-wider font-medium mr-1 shrink-0" style="color: var(--text-muted);">Prefissi:</span>
-        <button type="button" onclick="insertPrefix('book')" class="tag-book text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95">book:</button>
-        <button type="button" onclick="insertPrefix('idea')" class="tag-idea text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95">idea:</button>
-        <button type="button" onclick="insertPrefix('todo')" class="tag-todo text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95">todo:</button>
-        <button type="button" onclick="insertPrefix('read')" class="tag-read text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95">read:</button>
-        <button type="button" onclick="insertPrefix('watch')" class="tag-watch text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95">watch:</button>
-        <button type="button" onclick="insertPrefix('listen')" class="tag-listen text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95">listen:</button>
-        <button type="button" onclick="insertPrefix('code')" class="tag-code text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95">code:</button>
+        <button type="button" onclick="insertPrefix('idea')" class="tag-idea text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">idea:</button>
+        <button type="button" onclick="insertPrefix('todo')" class="tag-todo text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">todo:</button>
+        <button type="button" onclick="insertPrefix('read')" class="tag-read text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">read:</button>
+        <button type="button" onclick="insertPrefix('watch')" class="tag-watch text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">watch:</button>
+        <button type="button" onclick="insertPrefix('listen')" class="tag-listen text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">listen:</button>
+        <button type="button" onclick="insertPrefix('code')" class="tag-code text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">code:</button>
+        <button type="button" onclick="insertPrefix('work')" class="tag-work text-xs px-2.5 py-1 rounded-full font-medium shrink-0 active:scale-95 transition-transform">work:</button>
       </div>
 
+      <!-- Capture Footer -->
       <div class="flex items-center justify-between gap-2 pt-2">
-        <span class="text-xs hidden sm:inline" style="color: var(--text-muted);">Doppio Invio per salvare</span>
+        <span class="text-xs hidden sm:inline" style="color: var(--text-muted);">
+          Doppio <kbd class="px-1.5 py-0.5 text-[11px] rounded border" style="border-color: var(--border);">Invio</kbd> o <kbd class="px-1.5 py-0.5 text-[11px] rounded border" style="border-color: var(--border);">⌘/Ctrl+Invio</kbd>
+        </span>
+        <span class="text-[11px] sm:hidden" style="color: var(--text-muted);">
+          Doppio Invio rapido per salvare
+        </span>
+
         <button id="btnAddNote" type="button"
           class="px-4 py-2 rounded-lg text-xs sm:text-sm font-semibold tracking-wide transition-all active:scale-95 ml-auto flex items-center gap-1.5"
           style="background-color: var(--accent); color: var(--accent-fg);">
-          <span>Aggiungi in cima</span><span>↑</span>
+          <span>Aggiungi in cima</span>
+          <span>↑</span>
         </button>
       </div>
     </section>
 
-    <!-- Search & Toolbar -->
+    <!-- Search, Archive & Filter Toolbar -->
     <section class="mb-5 space-y-2.5">
       <div class="flex items-center gap-2">
         <div class="relative flex-1">
-          <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" style="color: var(--text-muted);" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          <input id="searchInput" type="search" placeholder="Cerca tra i pensieri o libri..."
+          <svg class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" style="color: var(--text-muted);" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input id="searchInput" type="search" placeholder="Cerca tra i pensieri..."
             class="w-full pl-9 pr-8 py-2 rounded-lg text-sm border outline-none transition-colors"
             style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
           <button id="btnClearSearch" type="button" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 text-xs p-1" style="color: var(--text-muted);">✕</button>
@@ -170,69 +308,70 @@
         </button>
       </div>
 
+      <!-- Dynamic Tag Chips Filter Bar -->
       <div id="tagsFilterBar" class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5"></div>
     </section>
 
+    <!-- Stream Stats / Gravity Legend Bar -->
     <div class="flex items-center justify-between text-[11px] mb-3 px-1" style="color: var(--text-muted);">
-      <span id="streamStatusText">Flusso attivo</span>
-      <span>Swipe → Rescue · Swipe ← Archivia</span>
+      <span id="streamStatusText">Flusso attivo · ordinato per attenzione</span>
+      <span class="hidden sm:inline">Scorri e salva (<kbd class="underline">↑ Rescue</kbd>) ciò che conta</span>
+      <span class="sm:hidden">Swipe → Rescue · Swipe ← Archivia</span>
     </div>
 
+    <!-- Notes Stream -->
     <main id="notesStream" class="space-y-3"></main>
 
+    <!-- Editorial Footer & Keyboard Guide -->
     <footer class="mt-12 pt-6 border-t text-center space-y-2" style="border-color: var(--border); color: var(--text-muted);">
-      <p class="font-serif-editorial italic text-sm">"Lascia che il tempo filtri i pensieri: ciò che è importante tornerà a galla."</p>
+      <p class="font-serif-editorial italic text-sm">
+        "Lascia che il tempo filtri i pensieri: ciò che è importante tornerà a galla."
+      </p>
+      <p class="text-xs hidden sm:block">
+        Tastiera: <kbd class="px-1.5 py-0.5 rounded border text-[11px]" style="border-color: var(--border);">↑</kbd> <kbd class="px-1.5 py-0.5 rounded border text-[11px]" style="border-color: var(--border);">↓</kbd> Seleziona · 
+        <kbd class="px-1.5 py-0.5 rounded border text-[11px]" style="border-color: var(--border);">R</kbd> Rescue · 
+        <kbd class="px-1.5 py-0.5 rounded border text-[11px]" style="border-color: var(--border);">E</kbd> Modifica · 
+        <kbd class="px-1.5 py-0.5 rounded border text-[11px]" style="border-color: var(--border);">A</kbd> Archivia
+      </p>
     </footer>
   </div>
 
-  <!-- MODAL RICERCA COPERTINA -->
-  <div id="coverSearchModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/60 backdrop-blur-xs">
-    <div class="w-full max-w-lg rounded-2xl p-5 border shadow-2xl flex flex-col max-h-[85vh]"
-      style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
-      <div class="flex items-center justify-between pb-3 border-b mb-4" style="border-color: var(--border);">
-        <h3 class="font-serif-editorial text-lg font-medium">🔍 Cerca Copertina Libro</h3>
-        <button type="button" onclick="closeCoverModal()" class="text-xs p-1" style="color: var(--text-muted);">✕ Chiudi</button>
-      </div>
-      <div class="flex gap-2 mb-4">
-        <input type="text" id="coverSearchQuery" placeholder="Titolo o autore del libro..."
-          class="flex-1 px-3 py-2 rounded-lg text-sm border outline-none"
-          style="background-color: var(--bg); border-color: var(--border); color: var(--text);">
-        <button type="button" onclick="executeCoverSearch()" class="px-4 py-2 rounded-lg text-xs font-semibold" style="background-color: var(--accent); color: var(--accent-fg);">Cerca</button>
-      </div>
-      <div id="coverSearchResults" class="flex-1 overflow-y-auto grid grid-cols-3 sm:grid-cols-4 gap-3 p-1">
-        <p class="col-span-full text-center text-xs py-8" style="color: var(--text-muted);">Digita un titolo per cercare copertine online.</p>
-      </div>
+  <!-- Toast Notification -->
+  <div id="toastContainer" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 translate-y-2">
+    <div id="toastMessage" class="px-4 py-2.5 rounded-full text-xs font-medium shadow-lg border flex items-center gap-2"
+      style="background-color: var(--text); color: var(--bg); border-color: var(--border);">
     </div>
   </div>
 
-  <div id="toastContainer" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 opacity-0 translate-y-2">
-    <div id="toastMessage" class="px-4 py-2.5 rounded-full text-xs font-medium shadow-lg border flex items-center gap-2"
-      style="background-color: var(--text); color: var(--bg); border-color: var(--border);"></div>
-  </div>
-
+  <!-- MODAL: IMPORT CONFIRMATION (MERGE OR REPLACE) -->
   <div id="importChoiceModal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
     <div class="w-full max-w-sm rounded-2xl p-5 border shadow-xl space-y-4"
       style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
       <h3 class="font-serif-editorial text-lg font-medium">Importa note da JSON</h3>
-      <p id="importModalDesc" class="text-xs leading-relaxed" style="color: var(--text-secondary);"></p>
+      <p id="importModalDesc" class="text-xs leading-relaxed" style="color: var(--text-secondary);">
+        Vuoi unire le note del file a quelle attuali o sostituire completamente l'elenco?
+      </p>
       <div class="flex justify-end gap-2 pt-2">
         <button type="button" onclick="closeImportModal()" class="px-3 py-2 rounded-lg text-xs border" style="border-color: var(--border);">Annulla</button>
         <button id="btnImportReplace" type="button" class="px-3 py-2 rounded-lg text-xs border font-medium" style="border-color: var(--border); color: var(--danger-text);">Sovrascrivi</button>
-        <button id="btnImportMerge" type="button" class="px-3 py-2 rounded-lg text-xs font-semibold" style="background-color: var(--accent); color: var(--accent-fg);">Unisci</button>
+        <button id="btnImportMerge" type="button" class="px-3 py-2 rounded-lg text-xs font-semibold" style="background-color: var(--accent); color: var(--accent-fg);">Unisci (Consigliato)</button>
       </div>
     </div>
   </div>
 
+  <!-- APPLICATION SCRIPT (100% LOCAL & ZERO CONFIG) -->
   <script>
+    // --- SERVICE WORKER REGISTRATION (PWA) ---
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW registration failed:', err));
+        navigator.serviceWorker.register('./sw.js').catch(err => console.log('SW error:', err));
       });
     }
 
-    const LOCAL_NOTES_KEY = 'tyngdkraft_notes_v3';
+    // --- CONSTANTS & STATE ---
+    const LOCAL_NOTES_KEY = 'tyngdkraft_notes_v1';
     const THEME_KEY = 'tyngdkraft_theme_v1';
-    const KNOWN_TAGS = ['book', 'read', 'watch', 'idea', 'todo', 'listen', 'code', 'work'];
+    const KNOWN_TAGS = ['read', 'watch', 'idea', 'todo', 'listen', 'code', 'work'];
 
     let localNotes = [];
     let activeTag = null;
@@ -240,19 +379,25 @@
     let selectedIndex = -1;
     let editingNoteId = null;
     let confirmingDeleteId = null;
+    let fileHandle = null;
     let pendingImportedNotes = null;
-    let activeCoverTargetNoteId = null;
 
+    // --- INITIALIZATION ---
     function initApp() {
       initTheme();
       loadLocalNotes();
+      updateSyncBadge();
       render();
     }
 
+    // --- THEME MANAGEMENT ---
     function initTheme() {
       const savedTheme = localStorage.getItem(THEME_KEY);
-      if (savedTheme === 'dark') document.documentElement.classList.add('dark');
-      else document.documentElement.classList.remove('dark');
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
       syncThemeIcons();
     }
 
@@ -268,21 +413,52 @@
       document.getElementById('iconMoon').classList.toggle('hidden', isDark);
     }
 
+    // --- LOCAL STORAGE & INITIAL SEED NOTES ---
     function loadLocalNotes() {
       const raw = localStorage.getItem(LOCAL_NOTES_KEY);
       if (raw) {
-        try { localNotes = JSON.parse(raw); return; } catch (e) { console.error(e); }
+        try {
+          localNotes = JSON.parse(raw);
+          return;
+        } catch (e) {
+          console.error('Errore lettura note locali:', e);
+        }
       }
-      const now = Date.now(), day = 86400000;
+
+      // Seed default editorial notes demonstrating Karpathy's Gravity method
+      const now = Date.now();
+      const day = 86400000;
       localNotes = [
         {
-          id: 'seed-book',
-          text: 'book: Il nome della rosa',
-          coverUrl: 'https://covers.openlibrary.org/b/id/8230186-L.jpg',
-          synopsis: 'Un capolavoro della narrativa contemporanea ambientato in un monastero medievale.',
+          id: 'seed-1',
+          text: 'idea: Il metodo Append-and-Review di Andrej Karpathy elimina le cartelle: ogni nuovo pensiero entra in cima, il resto scende dolcemente sul fondo.',
+          createdAt: now - (day * 2),
+          lastRescuedAt: now - 120000,
+          rescueCount: 2,
+          archived: false
+        },
+        {
+          id: 'seed-2',
+          text: 'todo: Prova a premere "↑ Rescue" (o fai swipe a destra su mobile) su una nota più vecchia per riportarla in superficie.',
           createdAt: now - (day * 1),
-          lastRescuedAt: now,
+          lastRescuedAt: now - (day * 1),
+          rescueCount: 0,
+          archived: false
+        },
+        {
+          id: 'seed-3',
+          text: 'read: "Why Gravity Exists" — Tristan Manchester sul perché organizzare le note mentre le catturi crea sovraccarico cognitivo.',
+          createdAt: now - (day * 7),
+          lastRescuedAt: now - (day * 6),
           rescueCount: 1,
+          archived: false
+        },
+        {
+          id: 'seed-4',
+          text: 'watch: Questa nota non viene toccata da oltre 20 giorni: nota come la sua opacità si sia attenuata per lasciare spazio visivo ai pensieri freschi.',
+          createdAt: now - (day * 24),
+          lastRescuedAt: now - (day * 24),
+          rescueCount: 0,
           archived: false
         }
       ];
@@ -291,15 +467,45 @@
 
     async function persistLocalNotes() {
       localStorage.setItem(LOCAL_NOTES_KEY, JSON.stringify(localNotes));
+      if (fileHandle) {
+        try {
+          const writable = await fileHandle.createWritable();
+          await writable.write(JSON.stringify(localNotes, null, 2));
+          await writable.close();
+        } catch (err) {
+          console.error('Errore scrittura su file collegato:', err);
+        }
+      }
     }
 
+    function updateSyncBadge() {
+      const dot = document.getElementById('syncDot');
+      const label = document.getElementById('syncLabel');
+      const linkBtnText = document.getElementById('linkBtnText');
+
+      if (fileHandle) {
+        dot.className = 'w-1.5 h-1.5 rounded-full bg-emerald-600';
+        label.textContent = `File: ${fileHandle.name}`;
+        if (linkBtnText) linkBtnText.textContent = 'File Collegato';
+      } else {
+        dot.className = 'w-1.5 h-1.5 rounded-full bg-amber-600';
+        label.textContent = 'Memoria Locale';
+        if (linkBtnText) linkBtnText.textContent = 'Collega File';
+      }
+    }
+
+    // --- CORE NOTE ACTIONS (APPEND, RESCUE, EDIT, ARCHIVE) ---
     async function addNote(rawText) {
       const text = rawText.trim();
       if (!text) return;
       const now = Date.now();
       const newNote = {
         id: now.toString(36) + '-' + Math.random().toString(36).slice(2, 7),
-        text, coverUrl: '', synopsis: '', createdAt: now, lastRescuedAt: now, rescueCount: 0, archived: false
+        text,
+        createdAt: now,
+        lastRescuedAt: now,
+        rescueCount: 0,
+        archived: false
       };
       localNotes.unshift(newNote);
       await persistLocalNotes();
@@ -310,8 +516,14 @@
     window.rescueNote = async function(id) {
       const idx = localNotes.findIndex(n => n.id === id);
       if (idx === -1) return;
+
       const target = localNotes[idx];
-      const updated = { ...target, lastRescuedAt: Date.now(), rescueCount: (target.rescueCount || 0) + 1, archived: false };
+      const updated = {
+        ...target,
+        lastRescuedAt: Date.now(),
+        rescueCount: (target.rescueCount || 0) + 1,
+        archived: false
+      };
       localNotes.splice(idx, 1);
       localNotes.unshift(updated);
       selectedIndex = 0;
@@ -320,33 +532,44 @@
       showToast(`Riportata a galla (${updated.rescueCount}×) ↑`);
     };
 
-    window.startInlineEdit = function(id) { editingNoteId = id; confirmingDeleteId = null; render(); };
-    window.cancelInlineEdit = function() { editingNoteId = null; render(); };
+    window.startInlineEdit = function(id) {
+      editingNoteId = id;
+      confirmingDeleteId = null;
+      render();
+      setTimeout(() => {
+        const el = document.getElementById(`edit-textarea-${id}`);
+        if (el) {
+          el.focus();
+          el.setSelectionRange(el.value.length, el.value.length);
+        }
+      }, 20);
+    };
+
+    window.cancelInlineEdit = function() {
+      editingNoteId = null;
+      render();
+    };
 
     window.saveInlineEdit = async function(id) {
-      const textEl = document.getElementById(`edit-textarea-${id}`);
-      const coverEl = document.getElementById(`edit-cover-${id}`);
-      const synopsisEl = document.getElementById(`edit-synopsis-${id}`);
-      if (!textEl) return;
-      const newText = textEl.value.trim();
+      const el = document.getElementById(`edit-textarea-${id}`);
+      if (!el) return;
+      const newText = el.value.trim();
       if (!newText) return;
+
       const idx = localNotes.findIndex(n => n.id === id);
       if (idx === -1) return;
-      localNotes[idx] = {
-        ...localNotes[idx],
-        text: newText,
-        coverUrl: coverEl ? coverEl.value.trim() : localNotes[idx].coverUrl,
-        synopsis: synopsisEl ? synopsisEl.value.trim() : localNotes[idx].synopsis
-      };
+
+      localNotes[idx] = { ...localNotes[idx], text: newText };
       editingNoteId = null;
       await persistLocalNotes();
       render();
-      showToast('Scheda libro aggiornata');
+      showToast('Nota aggiornata');
     };
 
     window.toggleArchiveNote = async function(id) {
       const idx = localNotes.findIndex(n => n.id === id);
       if (idx === -1) return;
+
       const nextState = !localNotes[idx].archived;
       localNotes[idx] = { ...localNotes[idx], archived: nextState };
       await persistLocalNotes();
@@ -354,7 +577,11 @@
       showToast(nextState ? 'Spostata in archivio 📦' : 'Ripristinata nel flusso');
     };
 
-    window.askDeleteNote = function(id) { confirmingDeleteId = (confirmingDeleteId === id) ? null : id; render(); };
+    window.askDeleteNote = function(id) {
+      confirmingDeleteId = (confirmingDeleteId === id) ? null : id;
+      render();
+    };
+
     window.confirmDeleteNote = async function(id) {
       confirmingDeleteId = null;
       localNotes = localNotes.filter(n => n.id !== id);
@@ -363,65 +590,7 @@
       showToast('Nota eliminata');
     };
 
-    window.openCoverSearchModal = function(noteId) {
-      activeCoverTargetNoteId = noteId;
-      const note = localNotes.find(n => n.id === noteId);
-      const { body } = parsePrefix(note ? note.text : '');
-      document.getElementById('coverSearchQuery').value = body.trim();
-      document.getElementById('coverSearchResults').innerHTML = `<p class="col-span-full text-center text-xs py-8" style="color: var(--text-muted);">Premi "Cerca" per trovare copertine sul web.</p>`;
-      document.getElementById('coverSearchModal').classList.remove('hidden');
-      document.getElementById('coverSearchModal').classList.add('flex');
-      if (body.trim().length > 2) executeCoverSearch();
-    };
-
-    window.closeCoverModal = function() {
-      activeCoverTargetNoteId = null;
-      document.getElementById('coverSearchModal').classList.add('hidden');
-      document.getElementById('coverSearchModal').classList.remove('flex');
-    };
-
-    window.executeCoverSearch = async function() {
-      const q = document.getElementById('coverSearchQuery').value.trim();
-      const container = document.getElementById('coverSearchResults');
-      if (!q) return;
-      container.innerHTML = `<p class="col-span-full text-center text-xs py-8 animate-pulse" style="color: var(--text-muted);">Ricerca copertine in corso...</p>`;
-      try {
-        const res = await fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(q)}`);
-        const data = await res.json();
-        const docs = (data.docs || []).filter(d => d.cover_i).slice(0, 16);
-        if (docs.length === 0) {
-          container.innerHTML = `<p class="col-span-full text-center text-xs py-8" style="color: var(--text-muted);">Nessuna copertina trovata.</p>`;
-          return;
-        }
-        container.innerHTML = docs.map(d => {
-          const coverUrl = `https://covers.openlibrary.org/b/id/${d.cover_i}-L.jpg`;
-          const title = escapeHtml(d.title || '');
-          const author = escapeHtml((d.author_name || ['Autore ignoto'])[0]);
-          return `
-            <div onclick="selectCoverUrl('${encodeURI(coverUrl)}')"
-                 class="group bg-[var(--bg)] border border-[var(--border)] rounded-xl p-2 flex flex-col items-center cursor-pointer hover:border-[var(--accent)] transition-all">
-              <div class="w-full h-32 rounded-lg overflow-hidden bg-[var(--bg-subtle)] mb-1.5 border border-[var(--border)]">
-                <img src="${coverUrl}" alt="${title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform">
-              </div>
-              <p class="text-[11px] font-medium line-clamp-1 w-full text-center" style="color: var(--text);">${title}</p>
-              <p class="text-[9px] line-clamp-1 w-full text-center" style="color: var(--text-muted);">${author}</p>
-            </div>
-          `;
-        }).join('');
-      } catch (err) {
-        container.innerHTML = `<p class="col-span-full text-center text-xs py-8 text-red-500">Errore durante la ricerca.</p>`;
-      }
-    };
-
-    window.selectCoverUrl = function(url) {
-      const decodedUrl = decodeURI(url);
-      if (activeCoverTargetNoteId) {
-        const inputEl = document.getElementById(`edit-cover-${activeCoverTargetNoteId}`);
-        if (inputEl) { inputEl.value = decodedUrl; showToast('URL copertina inserito!'); }
-      }
-      closeCoverModal();
-    };
-
+    // --- PREFIX PARSING & GRAVITY CALCULATION ---
     function parsePrefix(text) {
       const match = (text || '').match(/^([a-zA-Z0-9_-]+):\s*(.*)$/s);
       if (!match) return { prefix: null, body: text || '', tagKey: null };
@@ -435,7 +604,7 @@
       const ageDays = (Date.now() - (lastRescuedAt || Date.now())) / 86400000;
       if (ageDays > 45) return 'gravity-3';
       if (ageDays > 14) return 'gravity-2';
-      if (ageDays > 3) return 'gravity-1';
+      if (ageDays > 3)  return 'gravity-1';
       return 'gravity-0';
     }
 
@@ -448,21 +617,28 @@
       if (hrs < 24) return `${hrs}h fa`;
       const days = Math.floor(hrs / 24);
       if (days < 30) return `${days}g fa`;
-      return `${Math.floor(days / 30)} mesi fa`;
+      const months = Math.floor(days / 30);
+      return `${months} mesi fa`;
     }
 
+    // --- QUICK PREFIX PILL INSERTION ---
     window.insertPrefix = function(prefix) {
       const input = document.getElementById('noteInput');
       const current = input.value;
       const existingMatch = current.match(/^([a-zA-Z0-9_-]+):\s*(.*)$/s);
-      if (existingMatch) input.value = `${prefix}: ${existingMatch[2]}`;
-      else input.value = `${prefix}: ${current}`;
+      if (existingMatch) {
+        input.value = `${prefix}: ${existingMatch[2]}`;
+      } else {
+        input.value = `${prefix}: ${current}`;
+      }
       input.focus();
     };
 
+    // --- FILTERING & RENDERING ---
     function getFilteredNotes() {
       const rawQuery = document.getElementById('searchInput').value || '';
       const queryNorm = rawQuery.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
       const sorted = [...localNotes].sort((a, b) => (b.lastRescuedAt || 0) - (a.lastRescuedAt || 0));
 
       return sorted.filter(note => {
@@ -471,73 +647,86 @@
         if (activeTag && prefix !== activeTag) return false;
         if (queryNorm) {
           const textNorm = (note.text || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-          const synopsisNorm = (note.synopsis || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-          if (!textNorm.includes(queryNorm) && !synopsisNorm.includes(queryNorm)) return false;
+          if (!textNorm.includes(queryNorm)) return false;
         }
         return true;
       });
     }
 
-    function renderBookCarousel() {
-      const section = document.getElementById('bookCarouselSection');
-      const carousel = document.getElementById('bookCarousel');
-      const bookNotes = localNotes.filter(n => !n.archived && parsePrefix(n.text).prefix === 'book');
-      if (bookNotes.length === 0) { section.classList.add('hidden'); return; }
-      section.classList.remove('hidden');
-      document.getElementById('bookCountLabel').textContent = `${bookNotes.length} libri`;
-      carousel.innerHTML = bookNotes.map(n => {
-        const { body } = parsePrefix(n.text);
-        const cover = n.coverUrl ? escapeHtml(n.coverUrl) : 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=300&auto=format&fit=crop';
-        return `
-          <div class="shrink-0 w-28 sm:w-32 bg-[var(--surface)] border border-[var(--border)] rounded-xl p-2 shadow-xs flex flex-col items-center text-center group cursor-pointer"
-               onclick="scrollToNote('${n.id}')">
-            <div class="w-20 h-28 sm:w-24 sm:h-36 rounded-lg overflow-hidden bg-[var(--bg-subtle)] mb-2 border border-[var(--border)] relative">
-              <img src="${cover}" alt="${escapeHtml(body)}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" onerror="this.src='https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=300&auto=format&fit=crop'">
-            </div>
-            <span class="text-xs font-serif-editorial font-medium line-clamp-2 w-full" style="color: var(--text);">${escapeHtml(body)}</span>
-          </div>
-        `;
-      }).join('');
-    }
-
-    window.scrollToNote = function(id) {
-      const el = document.getElementById(`card-${id}`);
-      if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); el.classList.add('selected'); setTimeout(() => el.classList.remove('selected'), 1800); }
-    };
-
     function renderTagsFilterBar() {
       const container = document.getElementById('tagsFilterBar');
       const source = localNotes.filter(n => Boolean(n.archived) === showArchived);
       const counts = {};
-      source.forEach(n => { const { prefix } = parsePrefix(n.text); if (prefix) counts[prefix] = (counts[prefix] || 0) + 1; });
+
+      source.forEach(n => {
+        const { prefix } = parsePrefix(n.text);
+        if (prefix) counts[prefix] = (counts[prefix] || 0) + 1;
+      });
+
       const prefixes = Object.keys(counts).sort();
-      if (prefixes.length === 0) { container.innerHTML = ''; return; }
-      const allChip = `<button type="button" onclick="setTagFilter(null)" class="text-xs px-3 py-1 rounded-full font-medium shrink-0 border transition-all ${!activeTag ? 'ring-1 ring-current' : 'opacity-60'}" style="background-color: var(--surface); border-color: var(--border); color: var(--text);">Tutte (${source.length})</button>`;
+      if (prefixes.length === 0) {
+        container.innerHTML = '';
+        return;
+      }
+
+      const allChip = `
+        <button type="button" onclick="setTagFilter(null)"
+          class="text-xs px-3 py-1 rounded-full font-medium shrink-0 border transition-all ${!activeTag ? 'ring-1 ring-current' : 'opacity-60'}"
+          style="background-color: var(--surface); border-color: var(--border); color: var(--text);">
+          Tutte (${source.length})
+        </button>
+      `;
+
       const tagChips = prefixes.map(p => {
         const key = KNOWN_TAGS.includes(p) ? p : 'custom';
         const isCurrent = activeTag === p;
         const dimClass = (activeTag && !isCurrent) ? 'opacity-45' : '';
-        return `<button type="button" onclick="setTagFilter('${escapeHtml(p)}')" class="tag-${key} ${dimClass} text-xs px-3 py-1 rounded-full font-semibold shrink-0 transition-all">${escapeHtml(p)}: ${counts[p]}</button>`;
+        return `
+          <button type="button" onclick="setTagFilter('${escapeHtml(p)}')"
+            class="tag-${key} ${dimClass} text-xs px-3 py-1 rounded-full font-semibold shrink-0 transition-all">
+            ${escapeHtml(p)}: ${counts[p]}
+          </button>
+        `;
       }).join('');
+
       container.innerHTML = allChip + tagChips;
     }
 
-    window.setTagFilter = function(tag) { activeTag = (activeTag === tag) ? null : tag; selectedIndex = -1; render(); };
+    window.setTagFilter = function(tag) {
+      activeTag = (activeTag === tag) ? null : tag;
+      selectedIndex = -1;
+      render();
+    };
 
     function render() {
-      renderBookCarousel();
       renderTagsFilterBar();
+
       const archivedCount = localNotes.filter(n => n.archived).length;
       document.getElementById('archiveCountBadge').textContent = archivedCount;
+
       const btnArch = document.getElementById('btnToggleArchive');
-      btnArch.style.backgroundColor = showArchived ? 'var(--accent)' : 'var(--surface)';
-      btnArch.style.color = showArchived ? 'var(--accent-fg)' : 'var(--text-secondary)';
-      document.getElementById('streamStatusText').textContent = showArchived ? `Archivio (${archivedCount} note)` : `Flusso attivo · ${localNotes.length - archivedCount} elementi`;
+      if (showArchived) {
+        btnArch.style.backgroundColor = 'var(--accent)';
+        btnArch.style.color = 'var(--accent-fg)';
+      } else {
+        btnArch.style.backgroundColor = 'var(--surface)';
+        btnArch.style.color = 'var(--text-secondary)';
+      }
+
+      document.getElementById('streamStatusText').textContent = showArchived
+        ? `Archivio (${archivedCount} note)`
+        : `Flusso attivo · ${localNotes.length - archivedCount} pensieri`;
 
       const filtered = getFilteredNotes();
       const stream = document.getElementById('notesStream');
+
       if (filtered.length === 0) {
-        stream.innerHTML = `<div class="rounded-xl p-10 text-center border border-dashed" style="border-color: var(--border); color: var(--text-muted);"><p class="font-serif-editorial text-lg mb-1">Nessun elemento in questa vista</p></div>`;
+        stream.innerHTML = `
+          <div class="rounded-xl p-10 text-center border border-dashed" style="border-color: var(--border); color: var(--text-muted);">
+            <p class="font-serif-editorial text-lg mb-1">Nessun pensiero in questa vista</p>
+            <p class="text-xs">Scrivi in alto per aggiungere al flusso o cambia i filtri attivi.</p>
+          </div>
+        `;
         return;
       }
 
@@ -548,75 +737,82 @@
         const borderAccentClass = tagKey ? `card-border-${tagKey}` : '';
         const isEditing = editingNoteId === note.id;
         const isConfirmingDelete = confirmingDeleteId === note.id;
-        const isBook = prefix === 'book';
 
-        const prefixBadgeHtml = prefix ? `<span class="tag-${tagKey} inline-block text-xs font-sans font-semibold px-2 py-0.5 rounded-md mr-2 align-middle">${escapeHtml(prefix)}:</span>` : '';
-        const rescuedHtml = (note.rescueCount || 0) > 0 ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium" style="background-color: var(--rescue-bg); color: var(--rescue-text); border: 1px solid var(--rescue-border);">↑ salvata ${formatRelativeTime(note.lastRescuedAt)} (${note.rescueCount}×)</span>` : '';
+        const prefixBadgeHtml = prefix
+          ? `<span class="tag-${tagKey} inline-block text-xs font-sans font-semibold px-2 py-0.5 rounded-md mr-2 align-middle">${escapeHtml(prefix)}:</span>`
+          : '';
+
+        const rescuedHtml = (note.rescueCount || 0) > 0
+          ? `<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium"
+               style="background-color: var(--rescue-bg); color: var(--rescue-text); border: 1px solid var(--rescue-border);">
+               ↑ salvata ${formatRelativeTime(note.lastRescuedAt)} (${note.rescueCount}×)
+             </span>`
+          : '';
 
         if (isEditing) {
           return `
-            <div class="note-card selected p-4 ${borderAccentClass} space-y-3">
-              <div>
-                <label class="text-[11px] font-semibold uppercase tracking-wider mb-1 block" style="color: var(--text-muted);">Testo / Titolo</label>
-                <textarea id="edit-textarea-${note.id}" rows="2" class="w-full bg-transparent border rounded-lg p-2.5 outline-none font-serif-editorial text-lg leading-relaxed" style="border-color: var(--border-strong); color: var(--text);">${escapeHtml(note.text)}</textarea>
-              </div>
-              ${isBook ? `
-                <div>
-                  <div class="flex items-center justify-between mb-1">
-                    <label class="text-[11px] font-semibold uppercase tracking-wider" style="color: var(--text-muted);">URL Copertina</label>
-                    <button type="button" onclick="openCoverSearchModal('${note.id}')" class="text-[11px] font-semibold px-2 py-0.5 rounded border transition-all hover:opacity-85" style="background-color: var(--accent); color: var(--accent-fg); border-color: var(--accent);">🔍 Cerca Copertina</button>
-                  </div>
-                  <input type="url" id="edit-cover-${note.id}" value="${escapeHtml(note.coverUrl || '')}" placeholder="https://..." class="w-full bg-transparent border rounded-lg p-2 text-xs outline-none" style="border-color: var(--border-strong); color: var(--text);">
-                </div>
-                <div>
-                  <label class="text-[11px] font-semibold uppercase tracking-wider mb-1 block" style="color: var(--text-muted);">Sinossi / Note</label>
-                  <textarea id="edit-synopsis-${note.id}" rows="3" placeholder="Scrivi una breve sinossi..." class="w-full bg-transparent border rounded-lg p-2.5 text-xs outline-none" style="border-color: var(--border-strong); color: var(--text);">${escapeHtml(note.synopsis || '')}</textarea>
-                </div>
-              ` : ''}
-              <div class="flex justify-end gap-2 pt-1">
+            <div class="note-card selected p-4 ${borderAccentClass}">
+              <textarea id="edit-textarea-${note.id}" rows="3"
+                class="w-full bg-transparent border rounded-lg p-2.5 outline-none font-serif-editorial text-lg leading-relaxed mb-3"
+                style="border-color: var(--border-strong); color: var(--text);">${escapeHtml(note.text)}</textarea>
+              <div class="flex justify-end gap-2">
                 <button type="button" onclick="cancelInlineEdit()" class="px-3 py-1.5 rounded-lg text-xs border" style="border-color: var(--border);">Annulla</button>
-                <button type="button" onclick="saveInlineEdit('${note.id}')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold" style="background-color: var(--accent); color: var(--accent-fg);">Salva</button>
+                <button type="button" onclick="saveInlineEdit('${note.id}')" class="px-3.5 py-1.5 rounded-lg text-xs font-semibold" style="background-color: var(--accent); color: var(--accent-fg);">Salva modifica</button>
               </div>
             </div>
           `;
         }
 
-        const bookDetailsHtml = isBook ? `
-          <div class="flex gap-4 mt-3 pt-3 border-t" style="border-color: var(--border);">
-            <div class="w-16 h-24 sm:w-20 sm:h-28 rounded-lg overflow-hidden bg-[var(--bg-subtle)] shrink-0 border border-[var(--border)]">
-              <img src="${escapeHtml(note.coverUrl || 'https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=300&auto=format&fit=crop')}" class="w-full h-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1543002588-bfa74002ed7e?q=80&w=300&auto=format&fit=crop'">
-            </div>
-            <div class="flex-1 text-xs leading-relaxed" style="color: var(--text-secondary);">
-              <p class="font-medium mb-1" style="color: var(--text);">Sinossi:</p>
-              <p class="italic font-serif-editorial text-sm">${escapeHtml(note.synopsis || 'Nessuna sinossi inserita. Clicca su modifica (✎) per cercare la copertina o scrivere una descrizione.')}</p>
-            </div>
-          </div>
-        ` : '';
-
         return `
           <div class="note-card-wrapper">
+            <!-- Touch Swipe Feedback Backdrop -->
             <div id="backdrop-${note.id}" class="swipe-backdrop">
               <span style="color: var(--rescue-text);">↑ Rescue in cima</span>
               <span style="color: var(--text-secondary);">${note.archived ? '📤 Ripristina' : '📦 Archivia'}</span>
             </div>
 
-            <article id="card-${note.id}" data-id="${note.id}" onclick="selectCard(${idx})" class="note-card ${gravityClass} ${isSelected} ${borderAccentClass} p-4 sm:p-5">
-              <div class="font-serif-editorial text-[1.12rem] sm:text-[1.2rem] leading-relaxed whitespace-pre-wrap break-words mb-2" style="color: var(--text);">${prefixBadgeHtml}${escapeHtml(body)}</div>
-              ${bookDetailsHtml}
-              <div class="flex items-center justify-between flex-wrap gap-2 pt-3 mt-3 border-t" style="border-color: var(--border);">
+            <article id="card-${note.id}" data-id="${note.id}"
+              onclick="selectCard(${idx})"
+              class="note-card ${gravityClass} ${isSelected} ${borderAccentClass} p-4 sm:p-5">
+              
+              <div class="font-serif-editorial text-[1.12rem] sm:text-[1.2rem] leading-relaxed whitespace-pre-wrap break-words mb-3.5" style="color: var(--text);">${prefixBadgeHtml}${escapeHtml(body)}</div>
+
+              <div class="flex items-center justify-between flex-wrap gap-2 pt-2 border-t" style="border-color: var(--border);">
                 <div class="flex items-center flex-wrap gap-2 text-xs" style="color: var(--text-muted);">
-                  ${rescuedHtml}<span>scritta ${formatRelativeTime(note.createdAt)}</span>
+                  ${rescuedHtml}
+                  <span>scritta ${formatRelativeTime(note.createdAt)}</span>
                 </div>
+
+                <!-- Touch-friendly Action Controls -->
                 <div class="flex items-center gap-1" onclick="event.stopPropagation()">
                   ${isConfirmingDelete ? `
                     <span class="text-xs mr-1" style="color: var(--danger-text);">Eliminare?</span>
-                    <button type="button" onclick="confirmDeleteNote('${note.id}')" class="px-2.5 py-1 rounded-md text-xs font-semibold" style="background-color: var(--danger-bg); color: var(--danger-text);">Sì</button>
-                    <button type="button" onclick="askDeleteNote('${note.id}')" class="px-2 py-1 rounded-md text-xs border" style="border-color: var(--border);">No</button>
+                    <button type="button" onclick="confirmDeleteNote('${note.id}')"
+                      class="px-2.5 py-1 rounded-md text-xs font-semibold"
+                      style="background-color: var(--danger-bg); color: var(--danger-text);">Sì</button>
+                    <button type="button" onclick="askDeleteNote('${note.id}')"
+                      class="px-2 py-1 rounded-md text-xs border" style="border-color: var(--border);">No</button>
                   ` : `
-                    <button type="button" onclick="rescueNote('${note.id}')" title="Riporta in cima (R)" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all active:scale-95" style="background-color: var(--rescue-bg); color: var(--rescue-text); border: 1px solid var(--rescue-border); min-height: 34px;">↑ Rescue</button>
-                    <button type="button" onclick="startInlineEdit('${note.id}')" title="Modifica (E)" class="p-2 rounded-lg text-xs transition-colors hover:opacity-80" style="color: var(--text-secondary); min-width: 34px; min-height: 34px;">✎</button>
-                    <button type="button" onclick="toggleArchiveNote('${note.id}')" title="Archivia (A)" class="p-2 rounded-lg text-xs transition-colors hover:opacity-80" style="color: var(--text-secondary); min-width: 34px; min-height: 34px;">${note.archived ? '📤' : '📦'}</button>
-                    <button type="button" onclick="askDeleteNote('${note.id}')" title="Elimina" class="p-2 rounded-lg text-xs transition-colors hover:opacity-80" style="color: var(--text-muted); min-width: 34px; min-height: 34px;">✕</button>
+                    <button type="button" onclick="rescueNote('${note.id}')" title="Riporta in cima (R)"
+                      class="px-3 py-1.5 rounded-lg text-xs font-semibold transition-all active:scale-95"
+                      style="background-color: var(--rescue-bg); color: var(--rescue-text); border: 1px solid var(--rescue-border); min-height: 34px;">
+                      ↑ Rescue
+                    </button>
+                    <button type="button" onclick="startInlineEdit('${note.id}')" title="Modifica (E)"
+                      class="p-2 rounded-lg text-xs transition-colors hover:opacity-80"
+                      style="color: var(--text-secondary); min-width: 34px; min-height: 34px;">
+                      ✎
+                    </button>
+                    <button type="button" onclick="toggleArchiveNote('${note.id}')" title="${note.archived ? 'Ripristina' : 'Archivia'} (A)"
+                      class="p-2 rounded-lg text-xs transition-colors hover:opacity-80"
+                      style="color: var(--text-secondary); min-width: 34px; min-height: 34px;">
+                      ${note.archived ? '📤' : '📦'}
+                    </button>
+                    <button type="button" onclick="askDeleteNote('${note.id}')" title="Elimina"
+                      class="p-2 rounded-lg text-xs transition-colors hover:opacity-80"
+                      style="color: var(--text-muted); min-width: 34px; min-height: 34px;">
+                      ✕
+                    </button>
                   `}
                 </div>
               </div>
@@ -624,27 +820,47 @@
           </div>
         `;
       }).join('');
+
       attachTouchSwipeListeners();
     }
 
-    window.selectCard = function(idx) { selectedIndex = idx; render(); };
+    window.selectCard = function(idx) {
+      selectedIndex = idx;
+      render();
+    };
 
+    // --- MOBILE TOUCH SWIPE GESTURES (SWIPE RIGHT = RESCUE, SWIPE LEFT = ARCHIVE) ---
     function attachTouchSwipeListeners() {
       const cards = document.querySelectorAll('.note-card[data-id]');
       cards.forEach(card => {
-        let startX = 0, startY = 0, currentX = 0, isDragging = false;
+        let startX = 0;
+        let startY = 0;
+        let currentX = 0;
+        let isDragging = false;
         const noteId = card.getAttribute('data-id');
         const backdrop = document.getElementById(`backdrop-${noteId}`);
+
         card.addEventListener('touchstart', (e) => {
           if (e.touches.length !== 1) return;
-          startX = e.touches[0].clientX; startY = e.touches[0].clientY; currentX = 0; isDragging = true;
+          startX = e.touches[0].clientX;
+          startY = e.touches[0].clientY;
+          currentX = 0;
+          isDragging = true;
           card.style.transition = 'none';
         }, { passive: true });
+
         card.addEventListener('touchmove', (e) => {
           if (!isDragging) return;
           const dx = e.touches[0].clientX - startX;
           const dy = e.touches[0].clientY - startY;
-          if (Math.abs(dy) > Math.abs(dx) && Math.abs(currentX) < 12) { isDragging = false; card.style.transform = ''; return; }
+
+          // Ignore if scrolling vertically
+          if (Math.abs(dy) > Math.abs(dx) && Math.abs(currentX) < 12) {
+            isDragging = false;
+            card.style.transform = '';
+            return;
+          }
+
           if (Math.abs(dx) > 12) {
             currentX = Math.max(-110, Math.min(110, dx));
             card.style.transform = `translateX(${currentX}px)`;
@@ -654,69 +870,135 @@
             }
           }
         }, { passive: true });
+
         card.addEventListener('touchend', () => {
           if (!isDragging) return;
           isDragging = false;
           card.style.transition = 'transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1)';
           card.style.transform = '';
           if (backdrop) backdrop.style.opacity = '0';
-          if (currentX > 72) window.rescueNote(noteId);
-          else if (currentX < -72) window.toggleArchiveNote(noteId);
+
+          if (currentX > 72) {
+            window.rescueNote(noteId);
+          } else if (currentX < -72) {
+            window.toggleArchiveNote(noteId);
+          }
           currentX = 0;
         });
       });
     }
 
+    // --- EVENT LISTENERS ---
     document.getElementById('btnThemeToggle').addEventListener('click', toggleTheme);
+
     window.closeImportModal = function() {
       pendingImportedNotes = null;
       document.getElementById('importChoiceModal').classList.add('hidden');
       document.getElementById('importChoiceModal').classList.remove('flex');
     };
 
+    // Capture Input Listeners
     const noteInput = document.getElementById('noteInput');
     let lastEnterTimestamp = 0;
+
     noteInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); addNote(noteInput.value); noteInput.value = ''; return; }
+      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        addNote(noteInput.value);
+        noteInput.value = '';
+        return;
+      }
       if (e.key === 'Enter' && !e.shiftKey) {
         const now = Date.now();
         if (now - lastEnterTimestamp < 420 && noteInput.value.trim().length > 0) {
-          e.preventDefault(); addNote(noteInput.value); noteInput.value = ''; lastEnterTimestamp = 0;
-        } else { lastEnterTimestamp = now; }
+          e.preventDefault();
+          addNote(noteInput.value);
+          noteInput.value = '';
+          lastEnterTimestamp = 0;
+        } else {
+          lastEnterTimestamp = now;
+        }
       }
     });
 
-    document.getElementById('btnAddNote').addEventListener('click', () => { addNote(noteInput.value); noteInput.value = ''; noteInput.focus(); });
+    document.getElementById('btnAddNote').addEventListener('click', () => {
+      addNote(noteInput.value);
+      noteInput.value = '';
+      noteInput.focus();
+    });
+
+    // Search & Archive Toggle
     const searchInput = document.getElementById('searchInput');
     const btnClearSearch = document.getElementById('btnClearSearch');
-    searchInput.addEventListener('input', () => { btnClearSearch.classList.toggle('hidden', !searchInput.value); selectedIndex = -1; render(); });
-    btnClearSearch.addEventListener('click', () => { searchInput.value = ''; btnClearSearch.classList.add('hidden'); render(); });
-    document.getElementById('btnToggleArchive').addEventListener('click', () => { showArchived = !showArchived; selectedIndex = -1; render(); });
 
+    searchInput.addEventListener('input', () => {
+      btnClearSearch.classList.toggle('hidden', !searchInput.value);
+      selectedIndex = -1;
+      render();
+    });
+
+    btnClearSearch.addEventListener('click', () => {
+      searchInput.value = '';
+      btnClearSearch.classList.add('hidden');
+      render();
+    });
+
+    document.getElementById('btnToggleArchive').addEventListener('click', () => {
+      showArchived = !showArchived;
+      selectedIndex = -1;
+      render();
+    });
+
+    // Keyboard Navigation (Up/Down, R, E, A)
     document.addEventListener('keydown', (e) => {
       const tag = document.activeElement?.tagName;
-      if (tag === 'TEXTAREA' || tag === 'INPUT') { if (e.key === 'Escape') document.activeElement.blur(); return; }
+      if (tag === 'TEXTAREA' || tag === 'INPUT') {
+        if (e.key === 'Escape') document.activeElement.blur();
+        return;
+      }
+
       const list = getFilteredNotes();
       if (list.length === 0) return;
-      if (e.key === 'ArrowDown') { e.preventDefault(); selectedIndex = Math.min(list.length - 1, selectedIndex + 1); render(); }
-      else if (e.key === 'ArrowUp') { e.preventDefault(); selectedIndex = Math.max(0, selectedIndex - 1); render(); }
-      else if (selectedIndex >= 0 && selectedIndex < list.length) {
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        selectedIndex = Math.min(list.length - 1, selectedIndex + 1);
+        render();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        selectedIndex = Math.max(0, selectedIndex - 1);
+        render();
+      } else if (selectedIndex >= 0 && selectedIndex < list.length) {
         const current = list[selectedIndex];
-        if (e.key.toLowerCase() === 'r') { e.preventDefault(); window.rescueNote(current.id); }
-        else if (e.key.toLowerCase() === 'e') { e.preventDefault(); window.startInlineEdit(current.id); }
-        else if (e.key.toLowerCase() === 'a') { e.preventDefault(); window.toggleArchiveNote(current.id); }
+        if (e.key.toLowerCase() === 'r') {
+          e.preventDefault();
+          window.rescueNote(current.id);
+        } else if (e.key.toLowerCase() === 'e') {
+          e.preventDefault();
+          window.startInlineEdit(current.id);
+        } else if (e.key.toLowerCase() === 'a') {
+          e.preventDefault();
+          window.toggleArchiveNote(current.id);
+        }
       }
     });
 
+    // --- LOCAL FILE & JSON OPERATIONS ---
     document.getElementById('btnExportJson').addEventListener('click', () => {
       const blob = new Blob([JSON.stringify(localNotes, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a'); a.href = url; a.download = `tyngdkraft-notes-${new Date().toISOString().slice(0, 10)}.json`; a.click();
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `tyngdkraft-notes-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
       URL.revokeObjectURL(url);
       showToast('File JSON esportato ⬇️');
     });
 
-    document.getElementById('btnImportJson').addEventListener('click', () => document.getElementById('hiddenFileInput').click());
+    document.getElementById('btnImportJson').addEventListener('click', () => {
+      document.getElementById('hiddenFileInput').click();
+    });
+
     document.getElementById('hiddenFileInput').addEventListener('change', (e) => {
       const file = e.target.files[0];
       if (!file) return;
@@ -724,31 +1006,65 @@
       reader.onload = (ev) => {
         try {
           const parsed = JSON.parse(ev.target.result);
-          if (!Array.isArray(parsed)) { showToast('Formato JSON non valido'); return; }
+          if (!Array.isArray(parsed)) {
+            showToast('Formato JSON non valido');
+            return;
+          }
           pendingImportedNotes = parsed;
-          document.getElementById('importModalDesc').textContent = `Trovate ${parsed.length} note. Vuoi unirle o sovrascrivere?`;
+          document.getElementById('importModalDesc').textContent =
+            `Trovate ${parsed.length} note nel file "${file.name}". Vuoi unirle alle note esistenti o sovrascrivere tutto?`;
           document.getElementById('importChoiceModal').classList.remove('hidden');
           document.getElementById('importChoiceModal').classList.add('flex');
-        } catch (err) { showToast('Errore lettura JSON'); }
+        } catch (err) {
+          showToast('Errore nella lettura del file JSON');
+        }
       };
-      reader.readAsText(file); e.target.value = '';
+      reader.readAsText(file);
+      e.target.value = '';
     });
 
     document.getElementById('btnImportMerge').addEventListener('click', async () => {
       if (!pendingImportedNotes) return;
       const map = new Map();
       localNotes.forEach(n => map.set(n.id, n));
-      pendingImportedNotes.forEach(n => { if (n && n.id && n.text) map.set(n.id, n); });
+      pendingImportedNotes.forEach(n => {
+        if (n && n.id && n.text) map.set(n.id, n);
+      });
       localNotes = Array.from(map.values());
-      await persistLocalNotes(); closeImportModal(); render(); showToast('Note unite');
+      await persistLocalNotes();
+      window.closeImportModal();
+      render();
+      showToast('Note unite con successo');
     });
 
     document.getElementById('btnImportReplace').addEventListener('click', async () => {
       if (!pendingImportedNotes) return;
       localNotes = pendingImportedNotes.filter(n => n && n.id && n.text);
-      await persistLocalNotes(); closeImportModal(); render(); showToast('Note sostituite');
+      await persistLocalNotes();
+      window.closeImportModal();
+      render();
+      showToast('Elenco note aggiornato dal file');
     });
 
+    document.getElementById('btnLinkLocalFile').addEventListener('click', async () => {
+      if (!('showSaveFilePicker' in window)) {
+        showToast('Usa Esporta/Importa JSON su questo browser');
+        return;
+      }
+      try {
+        fileHandle = await window.showSaveFilePicker({
+          suggestedName: 'tyngdkraft-notes.json',
+          types: [{ description: 'JSON File', accept: { 'application/json': ['.json'] } }]
+        });
+        await persistLocalNotes();
+        updateSyncBadge();
+        showToast(`Sincronizzazione attiva su ${fileHandle.name}`);
+      } catch (err) {
+        // User cancelled file picker
+      }
+    });
+
+    // --- UTILITIES ---
     function showToast(msg) {
       const container = document.getElementById('toastContainer');
       const textEl = document.getElementById('toastMessage');
@@ -763,9 +1079,12 @@
     }
 
     function escapeHtml(str) {
-      return (str || '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+      return (str || '').replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      }[m]));
     }
 
+    // Boot Application
     window.addEventListener('DOMContentLoaded', initApp);
   </script>
 </body>
