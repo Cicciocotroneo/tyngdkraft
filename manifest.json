@@ -1,0 +1,15 @@
+{
+  "name": "Tyngdkraft",
+  "short_name": "Tyngdkraft",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F7F5F0",
+  "theme_color": "#F7F5F0",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%231C1B18'%3E%3Crect width='512' height='512' rx='120' fill='%23F7F5F0'/%3E%3Cpath d='M256 120v220m0 0l-70-70m70 70l70-70' stroke='%231C1B18' stroke-width='40' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}
